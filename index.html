@@ -117,6 +117,7 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
     </div>
   </div>
   <button class="btn-hdr" onclick="abrirAdmin()">Editar</button>
+<button class="btn-hdr" onclick="exportarPDF()">Exportar PDF</button>
 </div>
 
 <div class="cards" id="cards"></div>
@@ -196,7 +197,7 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
   </div>
 </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 var PW="lebon2026", fil="todos", ter="", cI=null, cL=null;
 var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao"};
@@ -561,6 +562,29 @@ async function init(){
   atualizarSub();
   rTudo();
 }
+init();
+async function init(){
+  await carregarDados();
+  document.getElementById("loadingScreen").style.display="none";
+  atualizarSub();
+  rTudo();
+}
+
+// 👇 COLOCA AQUI
+function exportarPDF(){
+  var elemento = document.getElementById("tbox");
+
+  var opt = {
+    margin: 0.5,
+    filename: 'relatorio-efetivo.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'cm', format: 'a4', orientation: 'landscape' }
+  };
+
+  html2pdf().set(opt).from(elemento).save();
+}
+
 init();
 </script>
 
