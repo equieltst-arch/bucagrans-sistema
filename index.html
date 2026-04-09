@@ -430,7 +430,7 @@ function rGraf() {
   var bS=s.map(function(d){ return "<div class='bi'><div class='bl'><span>"+d.l+"</span><span><b>"+d.v+"</b> ("+Math.round(d.v/tot*100)+"%)</span></div><div class='bt'><div class='bf' style='width:"+Math.round(d.v/tot*100)+"%;background:"+d.c+"'></div></div></div>"; }).join("");
   var fc={};
   EF.forEach(function(e){fc[e.f]=(fc[e.f]||0)+1;});
-  var tf=Object.keys(fc).map(function(k){return [k,fc[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,7);
+  var tf=Object.keys(fc).map(function(k){return [k,fc[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
   var mF=tf[0]?tf[0][1]:1;
   var bF=tf.map(function(x){ return "<div class='bi'><div class='bl'><span style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:72%'>"+x[0]+"</span><span><b>"+x[1]+"</b></span></div><div class='bt'><div class='bf' style='width:"+Math.round(x[1]/mF*100)+"%;background:#0a1f3d'></div></div></div>"; }).join("");
   document.getElementById("charts").innerHTML="<div class='cbox'><div class='ctitle'>Por Setor</div>"+bS+"</div><div class='cbox'><div class='ctitle'>Top Funcoes</div>"+bF+"</div>";
