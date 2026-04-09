@@ -268,7 +268,7 @@ var EF_DEFAULT=[
 {re:"4866",n:"DHAYSON GABRIEL DOS SANTOS SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:""},
 {re:"4246",n:"DOUGLAS APARECIDO TESSAROLI",f:"COORDENADOR ADMINISTRATIVO",a:"20/01/2023",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
 {re:"4719",n:"EDUARDO LUIS PIVA",f:"OPERADOR ESCAVADEIRA",a:"23/01/2026",e3:"21/02/2026",e6:"23/03/2026",s:"O",aso:""},
-{re:"4792",n:"ELERSON SOARES WEBER",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"O",aso:""},
+{re:"4791",n:"ELERSON SOARES WEBER",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"O",aso:""},
 {re:"4589",n:"EMANOEL LEONARDO MANGUEIRA DA SILVA",f:"ELETRICISTA",a:"21/07/2025",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
 {re:"4865",n:"ELISON MARQUES DA SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:""},
 {re:"4543",n:"EQUIEL NATAN DA SILVA",f:"ENCARREGADO DE RH",a:"12/11/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
@@ -289,6 +289,7 @@ var EF_DEFAULT=[
 {re:"4783",n:"LUIZ HENRIQUE POLICENO ESCOBAR",f:"AJUDANTE GERAL",a:"13/02/2026",e3:"14/03/2026",e6:"13/04/2026",s:"O",aso:""},
 {re:"2",n:"MARCELO MARTON MAC FADDEN",f:"ENGENHEIRO RESIDENTE",a:"--",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
 {re:"4813",n:"MARCONE RIBEIRO DE SOUSA",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
+{re:"4879",n:"MARTIM VIEIRA DA SILVA ARAÚJO",f:"AJUDANTE GERAL",a:"10/04/2026",e3:"09/05/2026.",e6:"08/06/2026.",s:"A",aso:""},
 {re:"4848",n:"MAILSON COSTA PINHEIRO",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:""},
 {re:"4816",n:"NELSON PROENCA DE OLIVEIRA",f:"ENCARREGADO DE SERVICOS GERAIS",a:"03/03/2026",e3:"01/04/2026",e6:"01/05/2026",s:"A",aso:""},
 {re:"4849",n:"OSMAR ANTONIO PRITSCH",f:"ENCARREGADO GERAL DE OBRAS",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:""},
@@ -314,12 +315,11 @@ var TER_DEFAULT=[
 {n:"Julio Cesar Ribeiro dos Santos",e:"DJANGO TERRAPLANAGEM E TRANSPORTES",f:"Motorista C. Basculante"},
 {n:"Isaias Alves",e:"TREMEA SERVICOS E TRANSPORTES",f:"Motorista C. Basculante"},
 {n:"Kamile Dalcas",e:"ESTELAR",f:"Engenheira Civil"},
-{n:"Elizeu Maciel da Silva",e:"CONTERSOLO",f:"Encarregado de laboratorio"}
+{n:"Elizeu Maciel da Silva",e:"CONCRESOLO",f:"Encarregado de laboratorio"}
 ];
 
 var MOB_DEFAULT=[
 {n:"Felipe Oliveira Guelbert",f:"Aux. Laboratorio",o:"Agendando viagem..."},
-{n:"Martim Vieira",f:"Ajudante/Limpeza",o:"Aguardando Contrato"},
 {n:"Antonio Michel",f:"Armador",o:"Chegada 10/04"},
 {n:"Francisco da Silva Pereira",f:"Armador",o:"Chegada 14/04"},
 {n:"Guilber Kairon Camargo",f:"Armador",o:"Chegada 13/04"},
@@ -387,7 +387,7 @@ function showTip(e, re, nome, funcao){
     img.style.display="none";
     av.style.display="flex";
   };
-  img.src="Fotos/"+re+".jpg";
+  img.src="fotos/"+re+".jpg";
 
   document.getElementById("tipNome").textContent=nome;
   document.getElementById("tipFn").textContent=funcao;
