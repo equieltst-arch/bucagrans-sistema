@@ -10,7 +10,6 @@
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 .header{background:linear-gradient(135deg,#0a1f3d 0%,#1a3a6b 60%,#8b0000 100%);color:white;padding:13px 16px;display:flex;align-items:center;justify-content:space-between}
 .hL{display:flex;align-items:center;gap:12px}
-.-box{height:52px;width:80px;border-radius:6px;background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:4px}
 .hT h1{font-size:16px;font-weight:800}
 .hT p{font-size:9px;opacity:.8;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 .hT small{font-size:10px;opacity:.65;display:block;margin-top:2px}
@@ -29,7 +28,10 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 .sbar{margin:5px 12px 0;background:white;border-radius:10px;padding:8px 13px;box-shadow:0 1px 6px rgba(0,0,0,.08);border-left:4px solid #8b0000}
 .sbar-t{font-size:12px;font-weight:700;color:#0a1f3d}
 .sbar-c{font-size:11px;color:#aaa;margin-top:1px}
-.search{border:1.5px solid #dde3ea;border-radius:8px;padding:7px 11px;font-size:13px;outline:none;width:100%;margin-top:6px;box-sizing:border-box}
+.search-row{display:flex;gap:8px;margin-top:6px}
+.search{border:1.5px solid #dde3ea;border-radius:8px;padding:7px 11px;font-size:13px;outline:none;flex:1;box-sizing:border-box}
+.search-sel{border:1.5px solid #dde3ea;border-radius:8px;padding:7px 11px;font-size:12px;outline:none;background:white;color:#444;cursor:pointer;min-width:160px}
+.search-sel:focus{border-color:#0a1f3d}
 .tbox{margin:8px 12px 12px;background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden}
 .sdiv{padding:6px 14px 3px;font-size:10px;font-weight:700;color:#666;letter-spacing:1px;background:#f7f8fa;border-top:2px solid #eef0f3;text-transform:uppercase}
 .tscroll{overflow-x:auto}
@@ -47,6 +49,7 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 .aso-warn{background:#fff3cd;color:#856404;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .aso-venc{background:#fdecea;color:#8b0000;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;animation:pulse .8s infinite alternate}
 .aso-nd{background:#f0f2f5;color:#aaa;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
+.bset{background:#f0e8ff;color:#6a0dad;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap}
 @keyframes pulse{from{opacity:1}to{opacity:.6}}
 .charts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 12px 20px}
 .cbox{background:white;border-radius:12px;padding:13px 14px;box-shadow:0 2px 10px rgba(0,0,0,.07);border-top:3px solid #8b0000}
@@ -92,54 +95,16 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 .logo-box{height:55px;width:auto;max-width:120px;object-fit:contain}
 
 /* ── TOOLTIP DE FOTO ── */
-#fotoTip{
-display:none;
-position:fixed;
-z-index:9999;
-background:white;
-border-radius:14px;
-box-shadow:0 8px 32px rgba(0,0,0,.2);
-padding:12px;
-text-align:center;
-width:150px;
-pointer-events:none;
-border:2px solid #e8edf5;
-transition:opacity .1s;
-}
-#fotoTip img{
-width:118px;height:118px;
-object-fit:cover;
-border-radius:9px;
-display:block;
-margin:0 auto 7px;
-background:#eef0f3;
-}
-#fotoTip .ft-avatar{
-width:118px;height:118px;
-border-radius:9px;
-background:linear-gradient(135deg,#0a1f3d,#1a3a6b);
-display:none;
-align-items:center;justify-content:center;
-margin:0 auto 7px;
-font-size:46px;font-weight:800;color:white;
-}
-#fotoTip .ft-nome{
-font-size:11px;font-weight:700;color:#0a1f3d;
-line-height:1.35;word-break:break-word;white-space:normal;
-}
-#fotoTip .ft-fn{
-font-size:10px;color:#888;margin-top:3px;white-space:normal;
-}
-.nome-tip{
-cursor:default;
-border-bottom:1px dashed #bbb;
-}
+#fotoTip{display:none;position:fixed;z-index:9999;background:white;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.2);padding:12px;text-align:center;width:150px;pointer-events:none;border:2px solid #e8edf5;}
+#fotoTip img{width:118px;height:118px;object-fit:cover;border-radius:9px;display:block;margin:0 auto 7px;background:#eef0f3;}
+#fotoTip .ft-avatar{width:118px;height:118px;border-radius:9px;background:linear-gradient(135deg,#0a1f3d,#1a3a6b);display:none;align-items:center;justify-content:center;margin:0 auto 7px;font-size:46px;font-weight:800;color:white;}
+#fotoTip .ft-nome{font-size:11px;font-weight:700;color:#0a1f3d;line-height:1.35;word-break:break-word;white-space:normal;}
+#fotoTip .ft-fn{font-size:10px;color:#888;margin-top:3px;white-space:normal;}
+.nome-tip{cursor:default;border-bottom:1px dashed #bbb;}
 </style>
 
 </head>
 <body>
-
-<!-- Tooltip global -->
 
 <div id="fotoTip">
   <img id="tipImg" src="">
@@ -170,7 +135,27 @@ border-bottom:1px dashed #bbb;
 <div class="sbar">
   <div class="sbar-t" id="sT">Todos os registros</div>
   <div class="sbar-c" id="sC"></div>
-  <input class="search" id="busca" placeholder="Buscar nome ou funcao..." oninput="buscar()">
+  <div class="search-row">
+    <input class="search" id="busca" placeholder="Buscar nome ou funcao..." oninput="buscar()">
+    <select class="search-sel" id="filtroSetor" onchange="buscar()">
+      <option value="">Todos os setores</option>
+      <option>ARMAÇÃO</option>
+      <option>CARPINTARIA DE CAMPO</option>
+      <option>CENTRAL DE CARPINTARIA</option>
+      <option>CENTRAL DE CONCRETO</option>
+      <option>ELETRICA/BOMBEAMENTO</option>
+      <option>ENGENHARIA</option>
+      <option>LANÇAMENTO DE CONCRETO</option>
+      <option>MANUTENÇÃO MECANICA</option>
+      <option>MONTAGEM</option>
+      <option>RH</option>
+      <option>TERRAPLENAGEM</option>
+      <option>TOPOGRAFIA</option>
+      <option>TRANSPORTES</option>
+      <option>LIMPEZA</option>
+      <option>APONTAMENTO</option>
+    </select>
+  </div>
 </div>
 <div class="tbox" id="tbox"></div>
 <div class="charts" id="charts"></div>
@@ -212,6 +197,22 @@ border-bottom:1px dashed #bbb;
           <input id="ne6" placeholder="Exp.60 ou INDET.">
         </div>
         <input id="naso" placeholder="Venc. ASO dd/mm/aaaa (opcional)">
+        <select id="nset">
+          <option value="">-- Setor --</option>
+          <option>ARMAÇÃO</option>
+          <option>CARPINTARIA DE CAMPO</option>
+          <option>CENTRAL DE CARPINTARIA</option>
+          <option>CENTRAL DE CONCRETO</option>
+          <option>ELETRICA/BOMBEAMENTO</option>
+          <option>ENGENHARIA</option>
+          <option>LANÇAMENTO DE CONCRETO</option>
+          <option>MANUTENÇÃO MECANICA</option>
+          <option>MONTAGEM</option>
+          <option>RH</option>
+          <option>TERRAPLENAGEM</option>
+          <option>TOPOGRAFIA</option>
+          <option>TRANSPORTES</option>
+        </select>
         <button class="badd" onclick="aEF()">Adicionar</button>
         <div class="ok" id="okEF">Adicionado!</div>
       </div>
@@ -251,57 +252,57 @@ var PW="lebon2026", fil="todos", ter="", cI=null, cL=null;
 var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao"};
 
 var EF_DEFAULT=[
-{re:"4818",n:"ABMAEL VIEIRA DE ARAUJO",f:"PEDREIRO",a:"04/03/2026",e3:"03/04/2026",e6:"03/05/2026",s:"O",aso:""},
-{re:"4784",n:"ADALTON DE OLIVEIRA",f:"OPERADOR DE CENTRAL DE CONCRETO",a:"14/02/2026",e3:"15/03/2026",e6:"14/04/2026",s:"O",aso:""},
-{re:"4826",n:"ADAO DOS SANTOS",f:"MOTORISTA CAMINHAO BETONEIRA",a:"12/03/2026",e3:"10/04/2026",e6:"10/05/2026",s:"O",aso:""},
-{re:"4790",n:"ADEMAR PAZ DE OLIVEIRA",f:"PEDREIRO",a:"23/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4787",n:"ADEMILSON CEZAR DE OLIVEIRA",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/02/2026",e3:"19/03/2026",e6:"18/04/2026",s:"O",aso:""},
-{re:"4877",n:"ALCIONE GOMES DA SILVA",f:" SOLDADOR DE FORMA",a:"09/04/2026",e3:"08/05/2026",e6:"07/06/2026",s:"O",aso:""},
-{re:"4836",n:"ANTONIO JOEL FREITAS",f:"ENCARREGADO DE ARMACAO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:""},
-{re:"4867",n:"ANTONIO GUIMARAES DE SOUSA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:""},
-{re:"4383",n:"CARLOS SANTOS MEDEIROS DE SOUZA",f:"SOLDADOR",a:"13/05/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4792",n:"CLESIO DE CARVALHO COSTA",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"A",aso:""},
-{re:"4837",n:"CLEVERSON JUNIOR CAMARGO",f:"LIDER DE CARPINTARIA",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:""},
-{re:"4708",n:"CLODOALDO ZAPAVOSKI COUTINHO",f:"ENCARREGADO DE TERRAPLANAGEM",a:"19/01/2026",e3:"12/02/2026",e6:"14/03/2026",s:"O",aso:""},
-{re:"4730",n:"DILVAR SOARES",f:"OPERADOR RETROESCAVADEIRA",a:"28/01/2026",e3:"26/02/2026",e6:"28/03/2026",s:"O",aso:""},
-{re:"4832",n:"DANIEL DE LIMA FARIAS",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/03/2026",e3:"16/04/2026",e6:"16/05/2026",s:"O",aso:""},
-{re:"4866",n:"DHAYSON GABRIEL DOS SANTOS SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:""},
-{re:"4246",n:"DOUGLAS APARECIDO TESSAROLI",f:"COORDENADOR ADMINISTRATIVO",a:"20/01/2023",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
-{re:"4719",n:"EDUARDO LUIS PIVA",f:"OPERADOR ESCAVADEIRA",a:"23/01/2026",e3:"21/02/2026",e6:"23/03/2026",s:"O",aso:""},
-{re:"4791",n:"ELERSON SOARES WEBER",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"O",aso:""},
-{re:"4589",n:"EMANOEL LEONARDO MANGUEIRA DA SILVA",f:"ELETRICISTA",a:"21/07/2025",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4865",n:"ELISON MARQUES DA SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:""},
-{re:"4543",n:"EQUIEL NATAN DA SILVA",f:"ENCARREGADO DE RH",a:"12/11/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
-{re:"4838",n:"FRANCISCO DAS CHAGAS DA SILVA ALVES",f:"LIDER DE CONCRETO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:""},
-{re:"4260",n:"GILBERTO SAMUELSSON",f:"ENCARREGADO GERAL",a:"06/02/2023",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4731",n:"HELIEL KLEM",f:"OPERADOR ESCAVADEIRA",a:"28/01/2026",e3:"26/02/2026",e6:"28/03/2026",s:"O",aso:""},
-{re:"4875",n:"ISAQUE SOARES DA SILVA",f:"PEDREIRO",a:"07/04/2026",e3:"06/05/2026",e6:"05/06/2026",s:"O",aso:""},
-{re:"4823",n:"JACSON PAULO CLEIN",f:"OPERADOR TRATOR ESTEIRA",a:"06/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4839",n:"JAIRO PONTES CALDAS",f:"CARPINTEIRO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:""},
-{re:"4692",n:"JOAO CARLOS FERNANDES",f:"ENCARREGADO DE SESSAO TECNICA",a:"13/01/2026",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
-{re:"4733",n:"JOAO PINTO DO NASCIMENTO",f:"MOTORISTA CAMINHAO COMBOIO",a:"30/01/2026",e3:"28/02/2026",e6:"30/03/2026",s:"O",aso:""},
-{re:"4718",n:"JOAO ROBERTO BAIRROS",f:"MOTORISTA CAMINHAO BASCULANTE",a:"23/01/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4445",n:"JOSE DHEIZOM MORAIS DA ROSA",f:"COORDENADOR DE SEGURANCA DO TRABALHO",a:"14/08/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
-{re:"4716",n:"JOSE JOSMAR FRANCA",f:"MECANICO",a:"21/01/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4794",n:"JOSE ROGERIO FREITAS DA SILVA",f:"OPERADOR ESCAVADEIRA",a:"24/02/2026",e3:"25/03/2026",e6:"24/04/2026",s:"O",aso:""},
-{re:"4847",n:"JOSIEL DA SILVA PEREIRA",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:""},
-{re:"4829",n:"LAERCIO GADELHA JACINTO",f:"BOMBEIRO HIDRAULICO",a:"16/03/2026",e3:"14/04/2026",e6:"14/05/2026",s:"O",aso:""},
-{re:"4783",n:"LUIZ HENRIQUE POLICENO ESCOBAR",f:"AJUDANTE GERAL",a:"13/02/2026",e3:"14/03/2026",e6:"13/04/2026",s:"O",aso:""},
-{re:"2",n:"MARCELO MARTON MAC FADDEN",f:"ENGENHEIRO RESIDENTE",a:"--",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
-{re:"4813",n:"MARCONE RIBEIRO DE SOUSA",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4879",n:"MARTIM VIEIRA DA SILVA ARAÚJO",f:"AJUDANTE GERAL",a:"10/04/2026",e3:"09/05/2026.",e6:"08/06/2026.",s:"A",aso:""},
-{re:"4848",n:"MAILSON COSTA PINHEIRO",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:""},
-{re:"4816",n:"NELSON PROENCA DE OLIVEIRA",f:"ENCARREGADO DE SERVICOS GERAIS",a:"03/03/2026",e3:"01/04/2026",e6:"01/05/2026",s:"A",aso:""},
-{re:"4849",n:"OSMAR ANTONIO PRITSCH",f:"ENCARREGADO GERAL DE OBRAS",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:""},
-{re:"4850",n:"PEDRO DOS SANTOS",f:"ARMADOR",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:""},
-{re:"4414",n:"RAI GARAJAU DA SILVA",f:"CARPINTEIRO",a:"12/06/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4840",n:"SEBASTIAO DE LIMA CAMARGO",f:"CARPINTEIRO",a:"24/03/2026",e3:"22/04/2026",e6:"22/05/2026",s:"O",aso:""},
-{re:"4418",n:"SIDNEI CIBINELI GURIAN",f:"ENGENHEIRO CIVIL",a:"26/07/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4425",n:"SIDNEI SIQUEIRA AVILA",f:"ENCARREGADO DE CARPINTARIA",a:"02/08/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4793",n:"TALISON MIGUEL DA SILVA",f:"AJUDANTE GERAL",a:"24/02/2026",e3:"INDET.",e6:"INDET.",s:"A",aso:""},
-{re:"4786",n:"VALDAIR ANTONIO MAIA DA SILVA",f:"LIDER DE CARPINTARIA",a:"17/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4814",n:"VALMIR MOREIRA JUNIOR",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:""},
-{re:"4788",n:"WILLIAN DE CAMPOS PEREIRA",f:"AUXILIAR TOPOGRAFO",a:"18/02/2026",e3:"20/03/2026",e6:"19/04/2026",s:"O",aso:""},
+{re:"4818",n:"ABMAEL VIEIRA DE ARAUJO",f:"PEDREIRO",a:"04/03/2026",e3:"03/04/2026",e6:"03/05/2026",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
+{re:"4784",n:"ADALTON DE OLIVEIRA",f:"OPERADOR DE CENTRAL DE CONCRETO",a:"14/02/2026",e3:"15/03/2026",e6:"14/04/2026",s:"O",aso:"",set:"CENTRAL DE CONCRETO"},
+{re:"4826",n:"ADAO DOS SANTOS",f:"MOTORISTA CAMINHAO BETONEIRA",a:"12/03/2026",e3:"10/04/2026",e6:"10/05/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4790",n:"ADEMAR PAZ DE OLIVEIRA",f:"PEDREIRO",a:"23/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
+{re:"4787",n:"ADEMILSON CEZAR DE OLIVEIRA",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/02/2026",e3:"19/03/2026",e6:"18/04/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4877",n:"ALCIONE GOMES DA SILVA",f:" SOLDADOR DE FORMA",a:"09/04/2026",e3:"08/05/2026",e6:"07/06/2026",s:"O",aso:"",set:"ARMAÇÃO"},
+{re:"4836",n:"ANTONIO JOEL FREITAS",f:"ENCARREGADO DE ARMACAO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"",set:"ARMAÇÃO"},
+{re:"4867",n:"ANTONIO GUIMARAES DE SOUSA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
+{re:"4383",n:"CARLOS SANTOS MEDEIROS DE SOUZA",f:"SOLDADOR",a:"13/05/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"MONTAGEM"},
+{re:"4792",n:"CLESIO DE CARVALHO COSTA",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"A",aso:"",set:"APONTAMENTO"},
+{re:"4837",n:"CLEVERSON JUNIOR CAMARGO",f:"LIDER DE CARPINTARIA",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"",set:"CARPINTARIA DE CAMPO"},
+{re:"4708",n:"CLODOALDO ZAPAVOSKI COUTINHO",f:"ENCARREGADO DE TERRAPLANAGEM",a:"19/01/2026",e3:"12/02/2026",e6:"14/03/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4730",n:"DILVAR SOARES",f:"OPERADOR RETROESCAVADEIRA",a:"28/01/2026",e3:"26/02/2026",e6:"28/03/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4832",n:"DANIEL DE LIMA FARIAS",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/03/2026",e3:"16/04/2026",e6:"16/05/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4866",n:"DHAYSON GABRIEL DOS SANTOS SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
+{re:"4246",n:"DOUGLAS APARECIDO TESSAROLI",f:"COORDENADOR ADMINISTRATIVO",a:"20/01/2023",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"ADMINISTRAÇÃO"},
+{re:"4719",n:"EDUARDO LUIS PIVA",f:"OPERADOR ESCAVADEIRA",a:"23/01/2026",e3:"21/02/2026",e6:"23/03/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4792",n:"ELERSON SOARES WEBER",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"O",aso:"",set:"TRANSPORTES"},
+{re:"4589",n:"EMANOEL LEONARDO MANGUEIRA DA SILVA",f:"ELETRICISTA",a:"21/07/2025",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"ELETRICA/BOMBEAMENTO"},
+{re:"4865",n:"ELISON MARQUES DA SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4543",n:"EQUIEL NATAN DA SILVA",f:"ENCARREGADO DE RH",a:"12/11/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"RH"},
+{re:"4838",n:"FRANCISCO DAS CHAGAS DA SILVA ALVES",f:"LIDER DE CONCRETO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
+{re:"4260",n:"GILBERTO SAMUELSSON",f:"ENCARREGADO GERAL",a:"06/02/2023",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"ENGENHARIA"},
+{re:"4731",n:"HELIEL KLEM",f:"OPERADOR ESCAVADEIRA",a:"28/01/2026",e3:"26/02/2026",e6:"28/03/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4875",n:"ISAQUE SOARES DA SILVA",f:"PEDREIRO",a:"07/04/2026",e3:"06/05/2026",e6:"05/06/2026",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
+{re:"4823",n:"JACSON PAULO CLEIN",f:"OPERADOR TRATOR ESTEIRA",a:"06/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4839",n:"JAIRO PONTES CALDAS",f:"CARPINTEIRO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"",set:"CARPINTARIA DE CAMPO"},
+{re:"4692",n:"JOAO CARLOS FERNANDES",f:"ENCARREGADO DE SESSAO TECNICA",a:"13/01/2026",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"ENGENHARIA"},
+{re:"4733",n:"JOAO PINTO DO NASCIMENTO",f:"MOTORISTA CAMINHAO COMBOIO",a:"30/01/2026",e3:"28/02/2026",e6:"30/03/2026",s:"O",aso:"",set:"MANUTENÇÃO MECANICA"},
+{re:"4718",n:"JOAO ROBERTO BAIRROS",f:"MOTORISTA CAMINHAO BASCULANTE",a:"23/01/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4445",n:"JOSE DHEIZOM MORAIS DA ROSA",f:"COORDENADOR DE SEGURANCA DO TRABALHO",a:"14/08/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"ENGENHARIA"},
+{re:"4716",n:"JOSE JOSMAR FRANCA",f:"MECANICO",a:"21/01/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"MANUTENÇÃO MECANICA"},
+{re:"4794",n:"JOSE ROGERIO FREITAS DA SILVA",f:"OPERADOR ESCAVADEIRA",a:"24/02/2026",e3:"25/03/2026",e6:"24/04/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
+{re:"4847",n:"JOSIEL DA SILVA PEREIRA",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"",set:"ARMAÇÃO"},
+{re:"4829",n:"LAERCIO GADELHA JACINTO",f:"BOMBEIRO HIDRAULICO",a:"16/03/2026",e3:"14/04/2026",e6:"14/05/2026",s:"O",aso:"",set:"ELETRICA/BOMBEAMENTO"},
+{re:"4783",n:"LUIZ HENRIQUE POLICENO ESCOBAR",f:"AJUDANTE GERAL",a:"13/02/2026",e3:"14/03/2026",e6:"13/04/2026",s:"O",aso:"",set:"CENTRAL DE CARPINTARIA"},
+{re:"2",n:"MARCELO MARTON MAC FADDEN",f:"ENGENHEIRO RESIDENTE",a:"--",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"ENGENHARIA"},
+{re:"4813",n:"MARCONE RIBEIRO DE SOUSA",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CENTRAL DE CARPINTARIA"},
+{re:"4879",n:"MARTIM VIEIRA DA SILVA ARAÚJO",f:"AJUDANTE GERAL",a:"10/04/2026",e3:"09/05/2026.",e6:"08/06/2026.",s:"A",aso:"",set:"LIMPEZA"},
+{re:"4848",n:"MAILSON COSTA PINHEIRO",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"",set:"ELETRICA/BOMBEAMENTO"},
+{re:"4816",n:"NELSON PROENCA DE OLIVEIRA",f:"ENCARREGADO DE SERVICOS GERAIS",a:"03/03/2026",e3:"01/04/2026",e6:"01/05/2026",s:"A",aso:"",set:"LIMPEZA"},
+{re:"4849",n:"OSMAR ANTONIO PRITSCH",f:"ENCARREGADO GERAL DE OBRAS",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"",set:"ENGENHARIA"},
+{re:"4850",n:"PEDRO DOS SANTOS",f:"ARMADOR",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"",set:"ARMAÇÃO"},
+{re:"4414",n:"RAI GARAJAU DA SILVA",f:"CARPINTEIRO",a:"12/06/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CENTRAL DE CONCRETO"},
+{re:"4840",n:"SEBASTIAO DE LIMA CAMARGO",f:"CARPINTEIRO",a:"24/03/2026",e3:"22/04/2026",e6:"22/05/2026",s:"O",aso:"",set:"CARPINTARIA DE CAMPO"},
+{re:"4418",n:"SIDNEI CIBINELI GURIAN",f:"ENGENHEIRO CIVIL",a:"26/07/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"ENGENHARIA"},
+{re:"4425",n:"SIDNEI SIQUEIRA AVILA",f:"ENCARREGADO DE CARPINTARIA",a:"02/08/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CARPINTARIA DE CAMPO"},
+{re:"4793",n:"TALISON MIGUEL DA SILVA",f:"AJUDANTE GERAL",a:"24/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"RH"},
+{re:"4786",n:"VALDAIR ANTONIO MAIA DA SILVA",f:"LIDER DE CARPINTARIA",a:"17/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CENTRAL DE CARPINTARIA"},
+{re:"4814",n:"VALMIR MOREIRA JUNIOR",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CENTRAL DE CARPINTARIA"},
+{re:"4788",n:"WILLIAN DE CAMPOS PEREIRA",f:"AUXILIAR TOPOGRAFO",a:"18/02/2026",e3:"20/03/2026",e6:"19/04/2026",s:"O",aso:"",set:"TOPOGRAFIA"},
 ];
 
 var TER_DEFAULT=[
@@ -315,7 +316,7 @@ var TER_DEFAULT=[
 {n:"Julio Cesar Ribeiro dos Santos",e:"DJANGO TERRAPLANAGEM E TRANSPORTES",f:"Motorista C. Basculante"},
 {n:"Isaias Alves",e:"TREMEA SERVICOS E TRANSPORTES",f:"Motorista C. Basculante"},
 {n:"Kamile Dalcas",e:"ESTELAR",f:"Engenheira Civil"},
-{n:"Elizeu Maciel da Silva",e:"CONCRESOLO",f:"Encarregado de laboratorio"}
+{n:"Elizeu Maciel da Silva",e:"CONTERSOLO",f:"Encarregado de laboratorio"}
 ];
 
 var MOB_DEFAULT=[
@@ -335,6 +336,8 @@ async function carregarDados(){
     if(result&&result.value){
       var saved=JSON.parse(result.value);
       EF=saved.EF||EF_DEFAULT;TER=saved.TER||TER_DEFAULT;MOB=saved.MOB||MOB_DEFAULT;DT=saved.DT||dataHoje();
+      // Garante campo set nos registros antigos
+      EF.forEach(function(e){if(e.set===undefined)e.set="";});
     } else {
       EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));DT=dataHoje();
     }
@@ -364,57 +367,40 @@ function asoHtml(aso){if(!aso)return "<span class='aso-nd'>-</span>";var st=asoS
 function adm(){return EF.filter(function(e){return e.s==="A";});}
 function op(){return EF.filter(function(e){return e.s==="O";});}
 
-// ── TOOLTIP DE FOTO ──
-function nomeHtml(re, nome, funcao){
-  // Escapa aspas para uso inline
+// ── TOOLTIP FOTO ──
+function nomeHtml(re,nome,funcao){
   var nEsc=nome.replace(/'/g,"&#39;");
   var fEsc=funcao.replace(/'/g,"&#39;");
   return "<span class='nome-tip' onmouseenter='showTip(event,\""+re+"\",\""+nEsc+"\",\""+fEsc+"\")' onmouseleave='hideTip()'><b>"+nome+"</b></span>";
 }
-
-function showTip(e, re, nome, funcao){
+function showTip(e,re,nome,funcao){
   var tip=document.getElementById("fotoTip");
   var img=document.getElementById("tipImg");
   var av=document.getElementById("tipAvatar");
-  var inicial=nome?nome.trim()[0]:"?";
-
-  // Reset
-  img.style.display="block";
-  av.style.display="none";
-  av.textContent=inicial;
-
-  img.onerror=function(){
-    img.style.display="none";
-    av.style.display="flex";
-  };
+  img.style.display="block";av.style.display="none";
+  av.textContent=nome?nome.trim()[0]:"?";
+  img.onerror=function(){img.style.display="none";av.style.display="flex";};
   img.src="Fotos/"+re+".jpg";
-
   document.getElementById("tipNome").textContent=nome;
   document.getElementById("tipFn").textContent=funcao;
-  tip.style.display="block";
-  moverTip(e);
+  tip.style.display="block";moverTip(e);
 }
-
 function moverTip(e){
   var tip=document.getElementById("fotoTip");
-  var x=e.clientX+18, y=e.clientY+18;
-  var tw=tip.offsetWidth||160, th=tip.offsetHeight||180;
-  if(x+tw>window.innerWidth-8)  x=e.clientX-tw-10;
+  var x=e.clientX+18,y=e.clientY+18;
+  var tw=tip.offsetWidth||160,th=tip.offsetHeight||180;
+  if(x+tw>window.innerWidth-8) x=e.clientX-tw-10;
   if(y+th>window.innerHeight-8) y=e.clientY-th-10;
-  tip.style.left=x+"px";
-  tip.style.top=y+"px";
+  tip.style.left=x+"px";tip.style.top=y+"px";
 }
-
-function hideTip(){
-  document.getElementById("fotoTip").style.display="none";
-}
-
+function hideTip(){document.getElementById("fotoTip").style.display="none";}
 document.addEventListener("mousemove",function(e){
   var tip=document.getElementById("fotoTip");
   if(tip.style.display==="block") moverTip(e);
 });
 
 function gL(){
+  var fSetor=document.getElementById("filtroSetor")?document.getElementById("filtroSetor").value:"";
   var r;
   if(fil==="todos") r=EF.map(function(x){return Object.assign({},x,{t:"ef"});}).concat(TER.map(function(x){return Object.assign({},x,{t:"ter"});})).concat(MOB.map(function(x){return Object.assign({},x,{t:"mob"});}));
   else if(fil==="efetivo") r=EF.map(function(x){return Object.assign({},x,{t:"ef"});});
@@ -422,18 +408,19 @@ function gL(){
   else if(fil==="op")      r=op().map(function(x){return Object.assign({},x,{t:"ef"});});
   else if(fil==="terceiros") r=TER.map(function(x){return Object.assign({},x,{t:"ter"});});
   else r=MOB.map(function(x){return Object.assign({},x,{t:"mob"});});
-  if(ter) r=r.filter(function(x){return(x.n||"").toLowerCase().indexOf(ter)>-1||(x.f||"").toLowerCase().indexOf(ter)>-1||(x.e||"").toLowerCase().indexOf(ter)>-1;});
+  if(ter) r=r.filter(function(x){return(x.n||"").toLowerCase().indexOf(ter)>-1||(x.f||"").toLowerCase().indexOf(ter)>-1||(x.e||"").toLowerCase().indexOf(ter)>-1||(x.set||"").toLowerCase().indexOf(ter)>-1;});
+  if(fSetor) r=r.filter(function(x){return(x.set||"")=== fSetor;});
   return r;
 }
 
 function rCards(){
   var A=adm(),O=op();
   var d=[
-    {id:"todos",    v:EF.length+TER.length+MOB.length,l:"TOTAL GERAL",   c:"c0"},
+    {id:"todos",    v:EF.length+TER.length+MOB.length,l:"TOTAL GERAL",c:"c0"},
     {id:"efetivo",  v:EF.length,  l:"TOTAL EFETIVO",c:"c1"},
     {id:"adm",      v:A.length,   l:"ADM",           c:"c2"},
     {id:"op",       v:O.length,   l:"OPERACIONAL",   c:"c3"},
-    {id:"terceiros",v:TER.length, l:"TERCEIROS",      c:"c4"},
+    {id:"terceiros",v:TER.length, l:"TERCEIROS",     c:"c4"},
     {id:"mob",      v:MOB.length, l:"MOBILIZACAO",   c:"c5"}
   ];
   document.getElementById("cards").innerHTML=d.map(function(c){
@@ -441,7 +428,7 @@ function rCards(){
   }).join("");
 }
 
-function sF(f){fil=f;ter="";document.getElementById("busca").value="";rCards();rTab();}
+function sF(f){fil=f;ter="";document.getElementById("busca").value="";document.getElementById("filtroSetor").value="";rCards();rTab();}
 function buscar(){ter=document.getElementById("busca").value.toLowerCase();rTab();}
 
 function rTab(){
@@ -455,10 +442,11 @@ function rTab(){
   if(!rows.length){h="<div class='norows'>Nenhum registro.</div>";}
   if(eR.length){
     if(mix) h+="<div class='sdiv'>EFETIVO</div>";
-    h+="<div class='tscroll'><table><thead><tr><th>#</th><th>RE</th><th>Nome</th><th>Funcao</th><th>Adm.</th><th>Exp.30</th><th>Exp.60</th><th>Setor</th><th>ASO Venc.</th></tr></thead><tbody>";
+    h+="<div class='tscroll'><table><thead><tr><th>#</th><th>RE</th><th>Nome</th><th>Funcao</th><th>Setor</th><th>Adm.</th><th>Exp.30</th><th>Exp.60</th><th>Setor ADM</th><th>ASO Venc.</th></tr></thead><tbody>";
     eR.forEach(function(r,i){
       var b=r.s==="A"?"<span class='badm'>ADM</span>":"<span class='bop'>OPER.</span>";
-      h+="<tr><td style='color:#bbb;font-size:9px'>"+(i+1)+"</td><td><b>"+r.re+"</b></td><td style='white-space:nowrap'>"+nomeHtml(r.re,r.n,r.f)+"</td><td style='color:#555;white-space:nowrap;font-size:10px'>"+r.f+"</td><td style='color:#999;font-size:10px'>"+r.a+"</td><td>"+expHtml(r.e3)+"</td><td>"+expHtml(r.e6)+"</td><td>"+b+"</td><td>"+asoHtml(r.aso)+"</td></tr>";
+      var setHtml=r.set?"<span class='bset'>"+r.set+"</span>":"<span style='color:#ccc;font-size:10px'>-</span>";
+      h+="<tr><td style='color:#bbb;font-size:9px'>"+(i+1)+"</td><td><b>"+r.re+"</b></td><td style='white-space:nowrap'>"+nomeHtml(r.re,r.n,r.f)+"</td><td style='color:#555;white-space:nowrap;font-size:10px'>"+r.f+"</td><td>"+setHtml+"</td><td style='color:#999;font-size:10px'>"+r.a+"</td><td>"+expHtml(r.e3)+"</td><td>"+expHtml(r.e6)+"</td><td>"+b+"</td><td>"+asoHtml(r.aso)+"</td></tr>";
     });
     h+="</tbody></table></div>";
   }
@@ -486,12 +474,13 @@ function rGraf(){
   var A=adm(),O=op(),tot=EF.length+TER.length+MOB.length||1;
   var s=[{l:"Operacional",v:O.length,c:"#27ae60"},{l:"ADM",v:A.length,c:"#1a3a6b"},{l:"Terceiros",v:TER.length,c:"#c0392b"},{l:"Mobilizacao",v:MOB.length,c:"#6a0dad"}];
   var bS=s.map(function(d){return "<div class='bi'><div class='bl'><span>"+d.l+"</span><span><b>"+d.v+"</b> ("+Math.round(d.v/tot*100)+"%)</span></div><div class='bt'><div class='bf' style='width:"+Math.round(d.v/tot*100)+"%;background:"+d.c+"'></div></div></div>";}).join("");
-  var fc={};
-  EF.forEach(function(e){fc[e.f]=(fc[e.f]||0)+1;});
-  var tf=Object.keys(fc).map(function(k){return[k,fc[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,7);
-  var mF=tf[0]?tf[0][1]:1;
-  var bF=tf.map(function(x){return "<div class='bi'><div class='bl'><span style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:72%'>"+x[0]+"</span><span><b>"+x[1]+"</b></span></div><div class='bt'><div class='bf' style='width:"+Math.round(x[1]/mF*100)+"%;background:#0a1f3d'></div></div></div>";}).join("");
-  document.getElementById("charts").innerHTML="<div class='cbox'><div class='ctitle'>Por Setor</div>"+bS+"</div><div class='cbox'><div class='ctitle'>Top Funcoes</div>"+bF+"</div>";
+  // Gráfico por setor
+  var sc={};
+  EF.forEach(function(e){if(e.set){sc[e.set]=(sc[e.set]||0)+1;}});
+  var ts=Object.keys(sc).map(function(k){return[k,sc[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var mS=ts[0]?ts[0][1]:1;
+  var bSet=ts.map(function(x){return "<div class='bi'><div class='bl'><span style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:72%'>"+x[0]+"</span><span><b>"+x[1]+"</b></span></div><div class='bt'><div class='bf' style='width:"+Math.round(x[1]/mS*100)+"%;background:#6a0dad'></div></div></div>";}).join("");
+  document.getElementById("charts").innerHTML="<div class='cbox'><div class='ctitle'>Por Setor ADM</div>"+bS+"</div><div class='cbox'><div class='ctitle'>Por Equipe</div>"+bSet+"</div>";
 }
 
 function rTudo(){rCards();rTab();rGraf();}
@@ -524,7 +513,8 @@ function rListas(){
   for(var i=0;i<EF.length;i++){
     var ic=cL==="EF"&&cI===i;
     var asoInfo=EF[i].aso?" | ASO: "+EF[i].aso:"";
-    hE+="<div class='prow'><div class='pinfo'><div class='pname'>"+EF[i].re+" - "+EF[i].n+"</div><div class='pfn'>"+EF[i].f+" | "+(EF[i].s==="A"?"ADM":"OPER.")+asoInfo+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='EF' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
+    var setInfo=EF[i].set?" | "+EF[i].set:"";
+    hE+="<div class='prow'><div class='pinfo'><div class='pname'>"+EF[i].re+" - "+EF[i].n+"</div><div class='pfn'>"+EF[i].f+" | "+(EF[i].s==="A"?"ADM":"OPER.")+setInfo+asoInfo+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='EF' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
   }
   document.getElementById("lEF").innerHTML=hE||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Vazia.</div>";
   var hT="";
@@ -552,10 +542,11 @@ function cRem(b){
 }
 function mOk(id){var e=document.getElementById(id);e.style.display="block";setTimeout(function(){e.style.display="none";},2500);}
 function aEF(){
-  var re=document.getElementById("nre").value.trim(),n=document.getElementById("nno").value.trim().toUpperCase(),f=document.getElementById("nfn").value.trim().toUpperCase(),a=document.getElementById("nad").value.trim(),s=document.getElementById("nst").value,e3=document.getElementById("ne3").value.trim()||"INDET.",e6=document.getElementById("ne6").value.trim()||"INDET.",aso=document.getElementById("naso").value.trim();
+  var re=document.getElementById("nre").value.trim(),n=document.getElementById("nno").value.trim().toUpperCase(),f=document.getElementById("nfn").value.trim().toUpperCase(),a=document.getElementById("nad").value.trim(),s=document.getElementById("nst").value,e3=document.getElementById("ne3").value.trim()||"INDET.",e6=document.getElementById("ne6").value.trim()||"INDET.",aso=document.getElementById("naso").value.trim(),set=document.getElementById("nset").value;
   if(!re||!n||!f||!a){alert("Preencha RE, Nome, Funcao e Admissao.");return;}
-  EF.push({re:re,n:n,f:f,a:a,e3:e3,e6:e6,s:s,aso:aso});
+  EF.push({re:re,n:n,f:f,a:a,e3:e3,e6:e6,s:s,aso:aso,set:set});
   ["nre","nno","nfn","nad","ne3","ne6","naso"].forEach(function(id){document.getElementById(id).value="";});
+  document.getElementById("nset").value="";
   rListas();rTudo();mOk("okEF");
 }
 function aTER(){
