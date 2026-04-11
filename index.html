@@ -358,7 +358,7 @@ async function carregarDados(){
 }
 async function persistirDados(){
   var payload=JSON.stringify({EF:EF,TER:TER,MOB:MOB,DT:DT});
-  var result=await window.storage.set(STORAGE_KEY,payload);
+  var result=await localStorage.setItem(STORAGE_KEY, payload);
   return !!result;
 }
 function dataHoje(){var h=new Date();return ("0"+h.getDate()).slice(-2)+"/"+("0"+(h.getMonth()+1)).slice(-2)+"/"+h.getFullYear();}
