@@ -623,15 +623,21 @@ init();
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  function salvarFuncionario(nome, funcao, registro) {
-    db.collection("funcionarios").add({
+  async function salvarFuncionario(nome, funcao, registro) {
+  try {
+    await db.collection("funcionarios").add({
       nome: nome,
       funcao: funcao,
       registro: registro,
       data: new Date()
     });
+
     alert("Salvo com sucesso!");
+  } catch (e) {
+    console.error(e);
+    alert("Erro ao salvar: " + e.message);
   }
+}
 </script>
 
 </body>
