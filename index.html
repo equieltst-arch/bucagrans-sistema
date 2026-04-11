@@ -426,31 +426,16 @@ function gL(){
 
 function rCards(){
   var A=adm(),O=op();
-
-  // CONTROLE ASO
-  var asoVenc=0, asoWarn=0, asoOk=0;
-
-  EF.forEach(function(e){
-    var st = asoStatus(e.aso);
-    if(st==="venc") asoVenc++;
-    else if(st==="warn") asoWarn++;
-    else if(st==="ok") asoOk++;
-  });
-
   var d=[
     {id:"todos",    v:EF.length+TER.length+MOB.length,l:"TOTAL GERAL",c:"c0"},
     {id:"efetivo",  v:EF.length,  l:"TOTAL EFETIVO",c:"c1"},
     {id:"adm",      v:A.length,   l:"ADM",           c:"c2"},
     {id:"op",       v:O.length,   l:"OPERACIONAL",   c:"c3"},
     {id:"terceiros",v:TER.length, l:"TERCEIROS",     c:"c4"},
-    {id:"mob",      v:MOB.length, l:"MOBILIZAÇÃO",   c:"c5"},
-
-    // NOVO CARD
-    {id:"aso", v:asoVenc, l:"ASO VENCIDO", c:"c4"}
+    {id:"mob",      v:MOB.length, l:"MOBILIZACAO",   c:"c5"}
   ];
-
   document.getElementById("cards").innerHTML=d.map(function(c){
-    return "<div class='card "+c.c+"' onclick='sF(\""+c.id+"\")'><div class='num'>"+c.v+"</div><div class='lbl'>"+c.l+"</div></div>";
+    return "<div class='card "+c.c+(fil===c.id?" active":"")+"' onclick='sF(\""+c.id+"\")'><div class='num'>"+c.v+"</div><div class='lbl'>"+c.l+"</div></div>";
   }).join("");
 }
 
@@ -612,6 +597,10 @@ function exportarPDF(){
 }
 async function init(){
   await carregarDados();
+
+  calcularASOAutomatico(); // se você adicionou
+  alertaASO(); // 🚨 ALERTA AUTOMÁTICO
+
   document.getElementById("loadingScreen").style.display="none";
   atualizarSub();
   rTudo();
