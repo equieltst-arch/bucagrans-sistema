@@ -2,11 +2,19 @@
 
 <html lang="pt-BR">
 <head>
+  <script>
+  if (!sessionStorage.getItem("visitou")) {
+    sessionStorage.setItem("visitou", "sim");
+    window.location.href = "welcome.html";
+  }
+</script>
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Bucagrans - PCH Lebon Regis</title>
-<link rel="icon" href="favicon.png" type="image/png">
+  <link rel="icon" href="favicon.png" type="image/png">
 <link rel="shortcut icon" href="favicon.png">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
@@ -103,42 +111,10 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 #fotoTip .ft-nome{font-size:11px;font-weight:700;color:#0a1f3d;line-height:1.35;word-break:break-word;white-space:normal;}
 #fotoTip .ft-fn{font-size:10px;color:#888;margin-top:3px;white-space:normal;}
 .nome-tip{cursor:default;border-bottom:1px dashed #bbb;}
-
-/* ── TELA DE LOGIN ── */
-#loginScreen{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#0a1f3d 0%,#1a3a6b 60%,#8b0000 100%);z-index:9999;display:flex;align-items:center;justify-content:center;}
-#loginScreen.hidden{display:none;}
-.login-box{background:white;border-radius:18px;padding:32px 28px 24px;max-width:360px;width:90%;box-shadow:0 16px 48px rgba(0,0,0,.35);}
-.login-logo{text-align:center;margin-bottom:18px;}
-.login-logo img{height:60px;object-fit:contain;}
-.login-title{font-size:18px;font-weight:800;color:#0a1f3d;text-align:center;margin-bottom:2px;}
-.login-sub{font-size:11px;color:#aaa;text-align:center;margin-bottom:22px;text-transform:uppercase;letter-spacing:.7px;}
-.login-field{width:100%;border:1.5px solid #dde3ea;border-radius:8px;padding:11px 13px;font-size:14px;outline:none;box-sizing:border-box;margin-bottom:11px;transition:border-color .15s;}
-.login-field:focus{border-color:#0a1f3d;}
-.login-field.err{border-color:#c0392b;}
-.login-err{color:#c0392b;font-size:12px;margin-bottom:10px;display:none;text-align:center;font-weight:600;}
-.login-btn{width:100%;background:linear-gradient(135deg,#0a1f3d,#1a3a6b);color:white;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-top:2px;}
-.login-footer{text-align:center;font-size:10px;color:#ccc;margin-top:16px;}
 </style>
 
 </head>
 <body>
-
-<!-- ── TELA DE LOGIN ── -->
-
-<div id="loginScreen">
-  <div class="login-box">
-    <div class="login-logo">
-      <img src="logo bucagrans.jpg" onerror="this.style.display='none'">
-    </div>
-    <div class="login-title">BUCAGRANS CONSTRUTORA</div>
-    <div class="login-sub">PCH Lebon Regis — Acesso ao Sistema</div>
-    <input class="login-field" id="loginUser" type="text" placeholder="Usuário" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()">
-    <input class="login-field" id="loginPass" type="password" placeholder="Senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
-    <div class="login-err" id="loginErr">Usuário ou senha incorretos.</div>
-    <button class="login-btn" onclick="doLogin()">Entrar</button>
-    <div class="login-footer">BUCAGRANS CONSTRUTORA DE OBRAS S/A</div>
-  </div>
-</div>
 
 <div id="fotoTip">
   <img id="tipImg" src="">
@@ -154,17 +130,15 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 
 <div class="header">
   <div class="hL">
-    <img src="logo bucagrans.jpg" class="logo-box" onerror="this.style.display='none'">
+    <img src="logo bucagrans.jpg" class="logo-box">
     <div class="hT">
       <h1>BUCAGRANS CONSTRUTORA</h1>
       <p>PCH Lebon Regis - Status Efetivo</p>
       <small id="sub"></small>
     </div>
   </div>
-  <div style="display:flex;gap:8px">
-    <button class="btn-hdr" onclick="abrirAdmin()">Editar</button>
-    <button class="btn-hdr" onclick="exportarPDF()">Exportar PDF</button>
-  </div>
+  <button class="btn-hdr" onclick="abrirAdmin()">Editar</button>
+  <button class="btn-hdr" onclick="exportarPDF()">Exportar PDF</button>
 </div>
 
 <div class="cards" id="cards"></div>
@@ -248,8 +222,6 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
           <option>TERRAPLENAGEM</option>
           <option>TOPOGRAFIA</option>
           <option>TRANSPORTES</option>
-          <option>LIMPEZA</option>
-          <option>APONTAMENTO</option>
         </select>
         <button class="badd" onclick="aEF()">Adicionar</button>
         <div class="ok" id="okEF">Adicionado!</div>
@@ -286,38 +258,16 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-// ─────────────────────────────────────────────
-// CORREÇÃO 1: Senhas movidas para hashes SHA-256
-// para não ficarem expostas em texto puro.
-// Hash de "lebon2026" e "363914" / "admin"
-// ─────────────────────────────────────────────
-var HASH_LOGIN_USER = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; // "admin"
-var HASH_LOGIN_PASS = "5e0ab8c911a4074ce3ab3d81bca0edceac7d0a2e8c711ac49be434d7297de199"; // "363914"
-var HASH_PAINEL_PW  = "445a004c49002ddd551271b37966fb7bd4416aac6e24f4964278a7e593a1141a"; // "lebon2026"
-
-async function sha256(msg){
-  var buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
-}
-
-var fil="todos", ter="", cI=null, cL=null;
+var PW="lebon2026", fil="todos", ter="", cI=null, cL=null;
 var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao"};
 
-// ─────────────────────────────────────────────
-// CORREÇÃO 2: REs duplicados corrigidos
-//   4792 duplicado → ELERSON recebe 4792B (identificador único)
-//   4793 duplicado → VALDIR   recebe 4793B
-// CORREÇÃO 3: Datas com ponto final corrigidas
-//   MARTIM VIEIRA: "09/05/2026." → "09/05/2026"
-//                  "08/06/2026." → "08/06/2026"
-// ─────────────────────────────────────────────
 var EF_DEFAULT=[
 {re:"4818",n:"ABMAEL VIEIRA DE ARAUJO",f:"PEDREIRO",a:"04/03/2026",e3:"03/04/2026",e6:"03/05/2026",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
 {re:"4784",n:"ADALTON DE OLIVEIRA",f:"OPERADOR DE CENTRAL DE CONCRETO",a:"14/02/2026",e3:"15/03/2026",e6:"14/04/2026",s:"O",aso:"",set:"CENTRAL DE CONCRETO"},
 {re:"4826",n:"ADAO DOS SANTOS",f:"MOTORISTA CAMINHAO BETONEIRA",a:"12/03/2026",e3:"10/04/2026",e6:"10/05/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
 {re:"4790",n:"ADEMAR PAZ DE OLIVEIRA",f:"PEDREIRO",a:"23/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
 {re:"4787",n:"ADEMILSON CEZAR DE OLIVEIRA",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/02/2026",e3:"19/03/2026",e6:"18/04/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
-{re:"4877",n:"ALCIONE GOMES DA SILVA",f:"SOLDADOR DE FORMA",a:"09/04/2026",e3:"08/05/2026",e6:"07/06/2026",s:"O",aso:"",set:"ARMAÇÃO"},
+{re:"4877",n:"ALCIONE GOMES DA SILVA",f:" SOLDADOR DE FORMA",a:"09/04/2026",e3:"08/05/2026",e6:"07/06/2026",s:"O",aso:"",set:"ARMAÇÃO"},
 {re:"4836",n:"ANTONIO JOEL FREITAS",f:"ENCARREGADO DE ARMACAO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"",set:"ARMAÇÃO"},
 {re:"4867",n:"ANTONIO GUIMARAES DE SOUSA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
 {re:"4383",n:"CARLOS SANTOS MEDEIROS DE SOUZA",f:"SOLDADOR",a:"13/05/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"MONTAGEM"},
@@ -329,8 +279,7 @@ var EF_DEFAULT=[
 {re:"4866",n:"DHAYSON GABRIEL DOS SANTOS SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"",set:"LANÇAMENTO DE CONCRETO"},
 {re:"4246",n:"DOUGLAS APARECIDO TESSAROLI",f:"COORDENADOR ADMINISTRATIVO",a:"20/01/2023",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"ADMINISTRAÇÃO"},
 {re:"4719",n:"EDUARDO LUIS PIVA",f:"OPERADOR ESCAVADEIRA",a:"23/01/2026",e3:"21/02/2026",e6:"23/03/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
-// CORREÇÃO 2: RE 4792 duplicado → usando identificador único 4792B para ELERSON
-{re:"4792B",n:"ELERSON SOARES WEBER",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"O",aso:"",set:"TRANSPORTES"},
+{re:"4792",n:"ELERSON SOARES WEBER",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"O",aso:"",set:"TRANSPORTES"},
 {re:"4589",n:"EMANOEL LEONARDO MANGUEIRA DA SILVA",f:"ELETRICISTA",a:"21/07/2025",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"ELETRICA/BOMBEAMENTO"},
 {re:"4865",n:"ELISON MARQUES DA SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"",set:"TERRAPLENAGEM"},
 {re:"4543",n:"EQUIEL NATAN DA SILVA",f:"ENCARREGADO DE RH",a:"12/11/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"RH"},
@@ -351,8 +300,7 @@ var EF_DEFAULT=[
 {re:"4783",n:"LUIZ HENRIQUE POLICENO ESCOBAR",f:"AJUDANTE GERAL",a:"13/02/2026",e3:"14/03/2026",e6:"13/04/2026",s:"O",aso:"",set:"CENTRAL DE CARPINTARIA"},
 {re:"2",n:"MARCELO MARTON MAC FADDEN",f:"ENGENHEIRO RESIDENTE",a:"--",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"ENGENHARIA"},
 {re:"4813",n:"MARCONE RIBEIRO DE SOUSA",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CENTRAL DE CARPINTARIA"},
-// CORREÇÃO 3: Datas com ponto final removidos + CORREÇÃO campo s: "A" → "O" (era limpeza, provavelmente operacional)
-{re:"4879",n:"MARTIM VIEIRA DA SILVA ARAÚJO",f:"AJUDANTE GERAL",a:"10/04/2026",e3:"09/05/2026",e6:"08/06/2026",s:"O",aso:"",set:"LIMPEZA"},
+{re:"4879",n:"MARTIM VIEIRA DA SILVA ARAÚJO",f:"AJUDANTE GERAL",a:"10/04/2026",e3:"09/05/2026.",e6:"08/06/2026.",s:"A",aso:"",set:"LIMPEZA"},
 {re:"4848",n:"MAILSON COSTA PINHEIRO",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"",set:"ELETRICA/BOMBEAMENTO"},
 {re:"4816",n:"NELSON PROENCA DE OLIVEIRA",f:"ENCARREGADO DE SERVICOS GERAIS",a:"03/03/2026",e3:"01/04/2026",e6:"01/05/2026",s:"A",aso:"",set:"LIMPEZA"},
 {re:"4849",n:"OSMAR ANTONIO PRITSCH",f:"ENCARREGADO GERAL DE OBRAS",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"",set:"ENGENHARIA"},
@@ -362,8 +310,7 @@ var EF_DEFAULT=[
 {re:"4418",n:"SIDNEI CIBINELI GURIAN",f:"ENGENHEIRO CIVIL",a:"26/07/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"ENGENHARIA"},
 {re:"4425",n:"SIDNEI SIQUEIRA AVILA",f:"ENCARREGADO DE CARPINTARIA",a:"02/08/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CARPINTARIA DE CAMPO"},
 {re:"4793",n:"TALISON MIGUEL DA SILVA",f:"AJUDANTE GERAL",a:"24/02/2026",e3:"INDET.",e6:"INDET.",s:"A",aso:"",set:"RH"},
-// CORREÇÃO 2: RE 4793 duplicado → usando identificador único 4793B para VALDIR
-{re:"4793B",n:"VALDIR DA SILVA BEHEREND",f:"ENCARREGADO DE MANUTENÇÃO",a:"16/06/2010",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"MANUTENÇÃO MECANICA"},
+{re:"4793",n:"VALDIR DA SILVA BEHEREND",f:"ENCARREGADO DE MANUTENÇÃO",a:"16/06/2010",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"MANUTENÇÃO MECANICA"},
 {re:"4786",n:"VALDAIR ANTONIO MAIA DA SILVA",f:"LIDER DE CARPINTARIA",a:"17/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CENTRAL DE CARPINTARIA"},
 {re:"4814",n:"VALMIR MOREIRA JUNIOR",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"",set:"CENTRAL DE CARPINTARIA"},
 {re:"4788",n:"WILLIAN DE CAMPOS PEREIRA",f:"AUXILIAR TOPOGRAFO",a:"18/02/2026",e3:"20/03/2026",e6:"19/04/2026",s:"O",aso:"",set:"TOPOGRAFIA"},
@@ -388,66 +335,34 @@ var MOB_DEFAULT=[
 {n:"Francisco da Silva Pereira",f:"Armador",o:"Chegada 14/04"},
 {n:"Guilber Kairon Camargo",f:"Armador",o:"Exame 13/04"},
 {n:"Jean Augusto Camargo",f:"Armador",o:"Exame 13/04"}
+  
 ];
 
 var EF=[], TER=[], MOB=[], DT="";
 var STORAGE_KEY="bucagrans-pch-data";
 
-// ─────────────────────────────────────────────
-// CORREÇÃO 4: carregarDados garante campos
-// ausentes (aso, set) em todos os registros
-// ─────────────────────────────────────────────
 async function carregarDados(){
-  var saved=null;
-  if(typeof window.storage!=="undefined"){
-    try{var result=await window.storage.get(STORAGE_KEY);if(result&&result.value)saved=JSON.parse(result.value);}catch(e){}
-  }
-  if(!saved){
-    try{var raw=localStorage.getItem(STORAGE_KEY);if(raw)saved=JSON.parse(raw);}catch(e){}
-  }
-  if(saved){
-    EF=saved.EF||EF_DEFAULT;
-    TER=saved.TER||TER_DEFAULT;
-    MOB=saved.MOB||MOB_DEFAULT;
-    DT=saved.DT||dataHoje();
-    // Garante campos ausentes em todos os registros carregados
-    EF.forEach(function(e){
-      if(e.set===undefined) e.set="";
-      if(e.aso===undefined) e.aso="";
-      if(e.s===undefined) e.s="O";
-    });
-  } else {
-    EF=JSON.parse(JSON.stringify(EF_DEFAULT));
-    TER=JSON.parse(JSON.stringify(TER_DEFAULT));
-    MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));
-    DT=dataHoje();
+  try{
+    var result=await window.storage.get(STORAGE_KEY);
+    if(result&&result.value){
+      var saved=JSON.parse(result.value);
+      EF=saved.EF||EF_DEFAULT;TER=saved.TER||TER_DEFAULT;MOB=saved.MOB||MOB_DEFAULT;DT=saved.DT||dataHoje();
+      // Garante campo set nos registros antigos
+      EF.forEach(function(e){if(e.set===undefined)e.set="";});
+    } else {
+      EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));DT=dataHoje();
+    }
+  } catch(e){
+    EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));DT=dataHoje();
   }
 }
-
 async function persistirDados(){
   var payload=JSON.stringify({EF:EF,TER:TER,MOB:MOB,DT:DT});
-  if(typeof window.storage!=="undefined"){
-    try{var result=await window.storage.set(STORAGE_KEY,payload);if(result)return true;}catch(e){}
-  }
-  try{localStorage.setItem(STORAGE_KEY,payload);return true;}catch(e){return false;}
+  var result=await window.storage.set(STORAGE_KEY,payload);
+  return !!result;
 }
-
 function dataHoje(){var h=new Date();return ("0"+h.getDate()).slice(-2)+"/"+("0"+(h.getMonth()+1)).slice(-2)+"/"+h.getFullYear();}
-
-// ─────────────────────────────────────────────
-// CORREÇÃO 5: parseDt limpa pontos e espaços
-// antes de processar para evitar NaN em datas
-// com pontuação acidental
-// ─────────────────────────────────────────────
-function parseDt(s){
-  if(!s) return null;
-  s=s.replace(/[.\s]/g,""); // remove pontos e espaços extras
-  var p=s.split("/");
-  if(p.length!==3) return null;
-  var d=parseInt(p[0]),m=parseInt(p[1]),y=parseInt(p[2]);
-  if(isNaN(d)||isNaN(m)||isNaN(y)) return null;
-  return new Date(y,m-1,d);
-}
+function parseDt(s){if(!s)return null;var p=s.split("/");if(p.length!==3)return null;return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));}
 
 function expHtml(val){
   if(!val||val==="INDET.")return "<span style='color:#bbb;font-size:10px'>INDET.</span>";
@@ -570,6 +485,7 @@ function rGraf(){
   var A=adm(),O=op(),tot=EF.length+TER.length+MOB.length||1;
   var s=[{l:"Operacional",v:O.length,c:"#27ae60"},{l:"ADM",v:A.length,c:"#1a3a6b"},{l:"Terceiros",v:TER.length,c:"#c0392b"},{l:"Mobilizacao",v:MOB.length,c:"#6a0dad"}];
   var bS=s.map(function(d){return "<div class='bi'><div class='bl'><span>"+d.l+"</span><span><b>"+d.v+"</b> ("+Math.round(d.v/tot*100)+"%)</span></div><div class='bt'><div class='bf' style='width:"+Math.round(d.v/tot*100)+"%;background:"+d.c+"'></div></div></div>";}).join("");
+  // Gráfico por setor
   var sc={};
   EF.forEach(function(e){if(e.set){sc[e.set]=(sc[e.set]||0)+1;}});
   var ts=Object.keys(sc).map(function(k){return[k,sc[k]];}).sort(function(a,b){return b[1]-a[1];});
@@ -590,12 +506,8 @@ function abrirAdmin(){
   document.getElementById("ov").classList.add("on");
 }
 function fAdmin(){document.getElementById("ov").classList.remove("on");}
-
-// CORREÇÃO 1: chk() agora usa comparação de hash assíncrona
-async function chk(){
-  var val=document.getElementById("pwi").value;
-  var h=await sha256(val);
-  if(h===HASH_PAINEL_PW){
+function chk(){
+  if(document.getElementById("pwi").value===PW){
     document.getElementById("pLogin").style.display="none";
     document.getElementById("pEd").style.display="block";
     document.getElementById("saveStatus").textContent="";
@@ -606,7 +518,6 @@ async function chk(){
     document.getElementById("pwi").classList.add("err");
   }
 }
-
 function mAba(n){for(var i=0;i<3;i++){document.getElementById("a"+i).style.display=i===n?"block":"none";document.getElementById("t"+i).className="tab"+(i===n?" on":"");}}
 function rListas(){
   var hE="";
@@ -684,39 +595,7 @@ function exportarPDF(){
   var opt={margin:.5,filename:'relatorio-efetivo.pdf',image:{type:'jpeg',quality:1},html2canvas:{scale:2},jsPDF:{unit:'cm',format:'a4',orientation:'landscape'}};
   html2pdf().set(opt).from(document.getElementById("tbox")).save();
 }
-
-// CORREÇÃO 1: doLogin() usa hash SHA-256 para comparar credenciais
-async function doLogin(){
-  var u=document.getElementById("loginUser").value.trim();
-  var p=document.getElementById("loginPass").value;
-  var errEl=document.getElementById("loginErr");
-  var hu=await sha256(u);
-  var hp=await sha256(p);
-  if(hu===HASH_LOGIN_USER && hp===HASH_LOGIN_PASS){
-    sessionStorage.setItem("logado","sim");
-    document.getElementById("loginScreen").classList.add("hidden");
-    errEl.style.display="none";
-    document.getElementById("loginUser").classList.remove("err");
-    document.getElementById("loginPass").classList.remove("err");
-    await carregarDados();
-    document.getElementById("loadingScreen").style.display="none";
-    atualizarSub();
-    rTudo();
-  } else {
-    errEl.style.display="block";
-    document.getElementById("loginUser").classList.add("err");
-    document.getElementById("loginPass").classList.add("err");
-    document.getElementById("loginPass").value="";
-  }
-}
-
 async function init(){
-  if(sessionStorage.getItem("logado")!=="sim"){
-    document.getElementById("loadingScreen").style.display="none";
-    document.getElementById("loginUser").focus();
-    return;
-  }
-  document.getElementById("loginScreen").classList.add("hidden");
   await carregarDados();
   document.getElementById("loadingScreen").style.display="none";
   atualizarSub();
