@@ -597,10 +597,6 @@ function exportarPDF(){
 }
 async function init(){
   await carregarDados();
-
-  calcularASOAutomatico(); // se você adicionou
-  alertaASO(); // 🚨 ALERTA AUTOMÁTICO
-
   document.getElementById("loadingScreen").style.display="none";
   atualizarSub();
   rTudo();
