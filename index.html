@@ -8,7 +8,6 @@
     window.location.href = "welcome.html";
   }
 </script>
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Bucagrans - PCH Lebon Regis</title>
@@ -23,7 +22,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 .hT h1{font-size:16px;font-weight:800}
 .hT p{font-size:9px;opacity:.8;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 .hT small{font-size:10px;opacity:.65;display:block;margin-top:2px}
+.hR{display:flex;gap:8px;align-items:center}
 .btn-hdr{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);color:white;padding:8px 15px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700}
+.btn-hdr-excel{background:rgba(39,174,96,.35);border:1.5px solid rgba(39,174,96,.7);color:white;padding:8px 15px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:12px 12px 5px}
 .card{border-radius:12px;padding:12px 10px 9px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.12);border:3px solid transparent;user-select:none}
 .card.active{border-color:rgba(255,255,255,.9);transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.2)}
@@ -137,8 +138,11 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
       <small id="sub"></small>
     </div>
   </div>
-  <button class="btn-hdr" onclick="abrirAdmin()">Editar</button>
-  <button class="btn-hdr" onclick="exportarPDF()">Exportar PDF</button>
+  <div class="hR">
+    <button class="btn-hdr" onclick="abrirAdmin()">Editar</button>
+    <button class="btn-hdr" onclick="exportarPDF()">Exportar PDF</button>
+    <button class="btn-hdr-excel" onclick="exportarExcel()">&#128196; Exportar Excel</button>
+  </div>
 </div>
 
 <div class="cards" id="cards"></div>
@@ -257,6 +261,8 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
 var PW="lebon2026", fil="todos", ter="", cI=null, cL=null;
 var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao"};
@@ -350,7 +356,6 @@ async function carregarDados(){
     if(result&&result.value){
       var saved=JSON.parse(result.value);
       EF=saved.EF||EF_DEFAULT;TER=saved.TER||TER_DEFAULT;MOB=saved.MOB||MOB_DEFAULT;DT=saved.DT||dataHoje();
-      // Garante campo set nos registros antigos
       EF.forEach(function(e){if(e.set===undefined)e.set="";});
     } else {
       EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));DT=dataHoje();
@@ -488,7 +493,6 @@ function rGraf(){
   var A=adm(),O=op(),tot=EF.length+TER.length+MOB.length||1;
   var s=[{l:"Operacional",v:O.length,c:"#27ae60"},{l:"ADM",v:A.length,c:"#1a3a6b"},{l:"Terceiros",v:TER.length,c:"#c0392b"},{l:"Mobilizacao",v:MOB.length,c:"#6a0dad"}];
   var bS=s.map(function(d){return "<div class='bi'><div class='bl'><span>"+d.l+"</span><span><b>"+d.v+"</b> ("+Math.round(d.v/tot*100)+"%)</span></div><div class='bt'><div class='bf' style='width:"+Math.round(d.v/tot*100)+"%;background:"+d.c+"'></div></div></div>";}).join("");
-  // Gráfico por setor
   var sc={};
   EF.forEach(function(e){if(e.set){sc[e.set]=(sc[e.set]||0)+1;}});
   var ts=Object.keys(sc).map(function(k){return[k,sc[k]];}).sort(function(a,b){return b[1]-a[1];});
@@ -594,10 +598,56 @@ async function salvar(){
   }
   btn.disabled=false;btn.textContent="Salvar e Fechar";
 }
+
 function exportarPDF(){
   var opt={margin:.5,filename:'relatorio-efetivo.pdf',image:{type:'jpeg',quality:1},html2canvas:{scale:2},jsPDF:{unit:'cm',format:'a4',orientation:'landscape'}};
   html2pdf().set(opt).from(document.getElementById("tbox")).save();
 }
+
+function exportarExcel(){
+  var wb = XLSX.utils.book_new();
+
+  // ── Aba: Efetivo ──
+  var efData = [["RE","Nome","Funcao","Setor","Admissao","Exp.30","Exp.60","Setor ADM","ASO Venc."]];
+  EF.forEach(function(r){
+    efData.push([
+      r.re,
+      r.n,
+      r.f,
+      r.set||"",
+      r.a,
+      r.e3||"",
+      r.e6||"",
+      r.s==="A"?"ADM":"OPERACIONAL",
+      r.aso||""
+    ]);
+  });
+  var wsEF = XLSX.utils.aoa_to_sheet(efData);
+  wsEF["!cols"] = [{wch:8},{wch:36},{wch:30},{wch:26},{wch:12},{wch:12},{wch:12},{wch:14},{wch:12}];
+  XLSX.utils.book_append_sheet(wb, wsEF, "Efetivo");
+
+  // ── Aba: Terceiros ──
+  var terData = [["Nome","Empresa","Funcao"]];
+  TER.forEach(function(r){
+    terData.push([r.n, r.e, r.f]);
+  });
+  var wsTER = XLSX.utils.aoa_to_sheet(terData);
+  wsTER["!cols"] = [{wch:32},{wch:30},{wch:26}];
+  XLSX.utils.book_append_sheet(wb, wsTER, "Terceiros");
+
+  // ── Aba: Mobilizacao ──
+  var mobData = [["Nome","Funcao","Status"]];
+  MOB.forEach(function(r){
+    mobData.push([r.n, r.f, r.o]);
+  });
+  var wsMOB = XLSX.utils.aoa_to_sheet(mobData);
+  wsMOB["!cols"] = [{wch:32},{wch:26},{wch:20}];
+  XLSX.utils.book_append_sheet(wb, wsMOB, "Mobilizacao");
+
+  var hoje = dataHoje().replace(/\//g,"-");
+  XLSX.writeFile(wb, "efetivo-pch-lebon-regis-" + hoje + ".xlsx");
+}
+
 async function init(){
   await carregarDados();
   document.getElementById("loadingScreen").style.display="none";
