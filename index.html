@@ -261,7 +261,7 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 
 <script>
 var PW="lebon2026", fil="todos", ter="", cI=null, cL=null;
@@ -604,48 +604,210 @@ function exportarPDF(){
   html2pdf().set(opt).from(document.getElementById("tbox")).save();
 }
 
-function exportarExcel(){
-  var wb = XLSX.utils.book_new();
+var SETOR_CORES_XL={
+  "TERRAPLENAGEM":        {bg:"E8F5E9",fg:"1A6B35"},
+  "LANÇAMENTO DE CONCRETO":{bg:"E3F0FB",fg:"1560A0"},
+  "ARMAÇÃO":              {bg:"F3E8FF",fg:"6A0DAD"},
+  "CARPINTARIA DE CAMPO": {bg:"FFF3E0",fg:"E65100"},
+  "CENTRAL DE CARPINTARIA":{bg:"E0F7FA",fg:"00695C"},
+  "CENTRAL DE CONCRETO":  {bg:"E8EAF6",fg:"3949AB"},
+  "ELETRICA/BOMBEAMENTO": {bg:"FFF8E1",fg:"F57F17"},
+  "ENGENHARIA":           {bg:"FCE4EC",fg:"880E4F"},
+  "MANUTENÇÃO MECANICA":  {bg:"E8F5E9",fg:"2E7D32"},
+  "MONTAGEM":             {bg:"F1F8E9",fg:"558B2F"},
+  "RH":                   {bg:"FBE9E7",fg:"BF360C"},
+  "TOPOGRAFIA":           {bg:"E0F2F1",fg:"004D40"},
+  "TRANSPORTES":          {bg:"E8EAF6",fg:"283593"},
+  "LIMPEZA":              {bg:"F3E5F5",fg:"6A1B9A"},
+  "APONTAMENTO":          {bg:"E1F5FE",fg:"0277BD"},
+  "ADMINISTRAÇÃO":        {bg:"ECEFF1",fg:"37474F"},
+};
 
-  // ── Aba: Efetivo ──
-  var efData = [["RE","Nome","Funcao","Setor","Admissao","Exp.30","Exp.60","Setor ADM","ASO Venc."]];
-  EF.forEach(function(r){
-    efData.push([
-      r.re,
-      r.n,
-      r.f,
-      r.set||"",
-      r.a,
-      r.e3||"",
-      r.e6||"",
-      r.s==="A"?"ADM":"OPERACIONAL",
-      r.aso||""
-    ]);
+function xlParseDt(s){
+  if(!s||s==="INDET."||s==="!"||s==="--")return null;
+  s=s.replace(/\.$/,"").trim();
+  var p=s.split("/");
+  if(p.length!==3)return null;
+  return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));
+}
+function xlAsoStatus(aso){
+  var d=xlParseDt(aso);if(!d)return "nd";
+  var now=new Date();now.setHours(0,0,0,0);
+  var diff=Math.floor((d-now)/86400000);
+  if(diff<0)return "venc";if(diff<=30)return "warn";return "ok";
+}
+function xlExpStatus(val){
+  if(!val||val==="INDET.")return "indet";
+  var d=xlParseDt(val);if(!d)return "indet";
+  var now=new Date();now.setHours(0,0,0,0);
+  var diff=Math.floor((d-now)/86400000);
+  if(diff<0)return "venc";if(diff<=30)return "warn";return "ok";
+}
+
+function xlFill(argb){return {type:"pattern",pattern:"solid",fgColor:{argb:"FF"+argb}};}
+function xlFont(bold,argb,sz){return {name:"Arial",size:sz||10,bold:!!bold,color:{argb:"FF"+argb}};}
+function xlAlign(h,v){return {horizontal:h||"center",vertical:v||"middle",wrapText:true};}
+function xlBorder(){var s={style:"thin",color:{argb:"FFE0E0E0"}};return {bottom:s};}
+
+async function exportarExcel(){
+  var ExcelJS=window.ExcelJS;
+  var wb=new ExcelJS.Workbook();
+  wb.creator="Bucagrans"; wb.created=new Date();
+
+  // ════════════════════════════
+  //  ABA: EFETIVO
+  // ════════════════════════════
+  var ws=wb.addWorksheet("Efetivo",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:3}]});
+  ws.columns=[
+    {key:"idx",  width:4},
+    {key:"re",   width:8},
+    {key:"nome", width:34},
+    {key:"func", width:28},
+    {key:"setor",width:24},
+    {key:"adm",  width:12},
+    {key:"e3",   width:12},
+    {key:"e6",   width:12},
+    {key:"tp",   width:11},
+    {key:"aso",  width:13},
+  ];
+
+  // Linha 1 – título
+  ws.mergeCells("A1:J1");
+  var t=ws.getCell("A1");
+  t.value="BUCAGRANS CONSTRUTORA  –  PCH LEBON REGIS  |  Efetivo";
+  t.font=xlFont(true,"FFFFFF",13); t.fill=xlFill("0A1F3D"); t.alignment=xlAlign("center");
+  ws.getRow(1).height=28;
+
+  // Linha 2 – subtítulo
+  ws.mergeCells("A2:J2");
+  var s2=ws.getCell("A2");
+  s2.value="Atualizado em: "+DT+"   |   Total Efetivo: "+EF.length+" funcionários";
+  s2.font=xlFont(false,"888888",9); s2.fill=xlFill("F0F2F5"); s2.alignment=xlAlign("center");
+  ws.getRow(2).height=16;
+
+  // Linha 3 – cabeçalho
+  var hdrs=["#","RE","NOME","FUNÇÃO","SETOR","ADM.","EXP.30","EXP.60","TIPO","ASO VENC."];
+  var hRow=ws.getRow(3);
+  hdrs.forEach(function(h,i){
+    var c=hRow.getCell(i+1);
+    c.value=h; c.font=xlFont(true,"FFFFFF",9);
+    c.fill=xlFill("0A1F3D"); c.alignment=xlAlign("center");
   });
-  var wsEF = XLSX.utils.aoa_to_sheet(efData);
-  wsEF["!cols"] = [{wch:8},{wch:36},{wch:30},{wch:26},{wch:12},{wch:12},{wch:12},{wch:14},{wch:12}];
-  XLSX.utils.book_append_sheet(wb, wsEF, "Efetivo");
+  hRow.height=20;
 
-  // ── Aba: Terceiros ──
-  var terData = [["Nome","Empresa","Funcao"]];
-  TER.forEach(function(r){
-    terData.push([r.n, r.e, r.f]);
+  // Linhas de dados
+  EF.forEach(function(r,i){
+    var row=ws.getRow(4+i);
+    row.height=18;
+    var bgRow=i%2===0?"F7F8FA":"FFFFFF";
+
+    function sc(col,val,bold,fg,bg,hal){
+      var c=row.getCell(col);
+      c.value=val; c.font=xlFont(bold,fg||"333333");
+      c.fill=xlFill(bg||bgRow); c.alignment=xlAlign(hal||"left");
+      c.border=xlBorder();
+    }
+
+    // # índice
+    sc(1,i+1,false,"BBBBBB",bgRow,"center");
+    // RE
+    sc(2,r.re,true,"0A1F3D",bgRow,"center");
+    // Nome
+    sc(3,r.n,true,"111111",bgRow,"left");
+    // Função
+    sc(4,r.f,false,"555555",bgRow,"left");
+    // Setor (cor do setor)
+    var sc5=SETOR_CORES_XL[r.set]||{bg:"F0F2F5",fg:"666666"};
+    sc(5,r.set||"",true,sc5.fg,sc5.bg,"center");
+    // Admissão
+    sc(6,r.a,false,"888888",bgRow,"center");
+    // Exp30
+    var e3st=xlExpStatus(r.e3);
+    var e3fg=e3st==="warn"?"856404":(e3st==="indet"||e3st==="venc"?"BBBBBB":"888888");
+    sc(7,r.e3||"",e3st==="warn",e3fg,bgRow,"center");
+    // Exp60
+    var e6st=xlExpStatus(r.e6);
+    var e6fg=e6st==="warn"?"856404":(e6st==="indet"||e6st==="venc"?"BBBBBB":"888888");
+    sc(8,r.e6||"",e6st==="warn",e6fg,bgRow,"center");
+    // Tipo ADM/OPER
+    var isAdm=r.s==="A";
+    sc(9,isAdm?"ADM":"OPER.",true,isAdm?"1560A0":"1A6B35",isAdm?"DBE8F7":"D5F0E0","center");
+    // ASO
+    var ast=xlAsoStatus(r.aso);
+    var asoBg={ok:"D5F0E0",warn:"FFF3CD",venc:"FDECEA",nd:"F0F2F5"}[ast];
+    var asoFg={ok:"1A6B35",warn:"856404",venc:"8B0000",nd:"AAAAAA"}[ast];
+    var asoVal=(r.aso&&r.aso!=="!"&&r.aso!=="--")?r.aso:"-";
+    sc(10,asoVal,ast==="warn"||ast==="venc",asoFg,asoBg,"center");
   });
-  var wsTER = XLSX.utils.aoa_to_sheet(terData);
-  wsTER["!cols"] = [{wch:32},{wch:30},{wch:26}];
-  XLSX.utils.book_append_sheet(wb, wsTER, "Terceiros");
 
-  // ── Aba: Mobilizacao ──
-  var mobData = [["Nome","Funcao","Status"]];
-  MOB.forEach(function(r){
-    mobData.push([r.n, r.f, r.o]);
+  // ════════════════════════════
+  //  ABA: TERCEIROS
+  // ════════════════════════════
+  var ws2=wb.addWorksheet("Terceiros",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:2}]});
+  ws2.columns=[{width:4},{width:32},{width:32},{width:26}];
+
+  ws2.mergeCells("A1:D1");
+  var t2=ws2.getCell("A1");
+  t2.value="BUCAGRANS CONSTRUTORA  –  PCH LEBON REGIS  |  Terceiros";
+  t2.font=xlFont(true,"FFFFFF",13); t2.fill=xlFill("8B0000"); t2.alignment=xlAlign("center");
+  ws2.getRow(1).height=28;
+
+  var h2Row=ws2.getRow(2);
+  ["#","NOME","EMPRESA","FUNÇÃO"].forEach(function(h,i){
+    var c=h2Row.getCell(i+1);
+    c.value=h; c.font=xlFont(true,"FFFFFF",9);
+    c.fill=xlFill("8B0000"); c.alignment=xlAlign("center");
   });
-  var wsMOB = XLSX.utils.aoa_to_sheet(mobData);
-  wsMOB["!cols"] = [{wch:32},{wch:26},{wch:20}];
-  XLSX.utils.book_append_sheet(wb, wsMOB, "Mobilizacao");
+  h2Row.height=20;
 
-  var hoje = dataHoje().replace(/\//g,"-");
-  XLSX.writeFile(wb, "efetivo-pch-lebon-regis-" + hoje + ".xlsx");
+  TER.forEach(function(r,i){
+    var row=ws2.getRow(3+i); row.height=18;
+    var bg=i%2===0?"F7F8FA":"FFFFFF";
+    [[i+1,false,"BBBBBB",bg,"center"],[r.n,true,"111111",bg,"left"],[r.e,false,"555555",bg,"left"],[r.f,false,"555555",bg,"left"]].forEach(function(d,ci){
+      var c=row.getCell(ci+1);
+      c.value=d[0]; c.font=xlFont(d[1],d[2]); c.fill=xlFill(d[3]); c.alignment=xlAlign(d[4]); c.border=xlBorder();
+    });
+  });
+
+  // ════════════════════════════
+  //  ABA: MOBILIZAÇÃO
+  // ════════════════════════════
+  var ws3=wb.addWorksheet("Mobilização",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:2}]});
+  ws3.columns=[{width:4},{width:34},{width:28},{width:22}];
+
+  ws3.mergeCells("A1:D1");
+  var t3=ws3.getCell("A1");
+  t3.value="BUCAGRANS CONSTRUTORA  –  PCH LEBON REGIS  |  Em Mobilização";
+  t3.font=xlFont(true,"FFFFFF",13); t3.fill=xlFill("6A0DAD"); t3.alignment=xlAlign("center");
+  ws3.getRow(1).height=28;
+
+  var h3Row=ws3.getRow(2);
+  ["#","NOME","FUNÇÃO","STATUS"].forEach(function(h,i){
+    var c=h3Row.getCell(i+1);
+    c.value=h; c.font=xlFont(true,"FFFFFF",9);
+    c.fill=xlFill("6A0DAD"); c.alignment=xlAlign("center");
+  });
+  h3Row.height=20;
+
+  MOB.forEach(function(r,i){
+    var row=ws3.getRow(3+i); row.height=18;
+    var bg=i%2===0?"F7F8FA":"FFFFFF";
+    var aguard=(r.o||"").toLowerCase().indexOf("aguard")>-1;
+    var sBg=aguard?"FDE8D8":"D5F0E0"; var sFg=aguard?"8B0000":"1A6B35";
+    [[i+1,false,"BBBBBB",bg,"center"],[r.n,true,"111111",bg,"left"],[r.f,false,"555555",bg,"left"],[r.o,true,sFg,sBg,"center"]].forEach(function(d,ci){
+      var c=row.getCell(ci+1);
+      c.value=d[0]; c.font=xlFont(d[1],d[2]); c.fill=xlFill(d[3]); c.alignment=xlAlign(d[4]); c.border=xlBorder();
+    });
+  });
+
+  // ── Download ──
+  var buf=await wb.xlsx.writeBuffer();
+  var blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement("a");
+  a.href=url; a.download="efetivo-pch-lebon-regis-"+dataHoje().replace(/\//g,"-")+".xlsx";
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
 async function init(){
