@@ -561,32 +561,48 @@ var EF=[], TER=[], MOB=[], DT="", LOG=[];
 // ══════════════════════════════════════════
 var DATA_VERSION=2; // ← mude para 3, 4, 5... ao atualizar defaults
 
+// ── Camada de storage: usa window.storage (Claude) ou localStorage (navegador local) ──
+var _useCloudStorage=(typeof window.storage!=="undefined"&&window.storage!==null);
+
+async function storageGet(key){
+  if(_useCloudStorage){
+    try{var r=await window.storage.get(key);return(r&&r.value)?r.value:null;}catch(e){return null;}
+  }else{
+    try{return localStorage.getItem(key);}catch(e){return null;}
+  }
+}
+async function storageSet(key,value){
+  if(_useCloudStorage){
+    try{var r=await window.storage.set(key,value);return!!r;}catch(e){return false;}
+  }else{
+    try{localStorage.setItem(key,value);return true;}catch(e){return false;}
+  }
+}
+
 async function carregarDados(){
   try{
-    var result=await window.storage.get(STORAGE_KEY);
-    if(result&&result.value){
-      var saved=JSON.parse(result.value);
-      // Se a versão salva for diferente, reseta para os novos defaults
+    var raw=await storageGet(STORAGE_KEY);
+    if(raw){
+      var saved=JSON.parse(raw);
       if(!saved.v||saved.v!==DATA_VERSION){
         resetDefault();
-        // Salva imediatamente com a nova versão
         await persistirDados();
-      } else {
-        EF=saved.EF||EF_DEFAULT; TER=saved.TER||TER_DEFAULT; MOB=saved.MOB||MOB_DEFAULT; DT=saved.DT||dataHoje();
-        EF.forEach(function(e){if(e.set===undefined)e.set=""; if(e.obs===undefined)e.obs="";});
+      }else{
+        EF=saved.EF||EF_DEFAULT;TER=saved.TER||TER_DEFAULT;MOB=saved.MOB||MOB_DEFAULT;DT=saved.DT||dataHoje();
+        EF.forEach(function(e){if(e.set===undefined)e.set="";if(e.obs===undefined)e.obs="";});
         TER.forEach(function(e){if(e.obs===undefined)e.obs="";});
         MOB.forEach(function(e){if(e.obs===undefined)e.obs="";});
       }
-    } else {
+    }else{
       resetDefault();
     }
-  } catch(e){ resetDefault(); }
+  }catch(e){resetDefault();}
 
   try{
-    var lr=await window.storage.get(LOG_KEY);
-    if(lr&&lr.value) LOG=JSON.parse(lr.value);
+    var lr=await storageGet(LOG_KEY);
+    if(lr)LOG=JSON.parse(lr);
     else LOG=[];
-  } catch(e){ LOG=[]; }
+  }catch(e){LOG=[];}
 }
 function resetDefault(){
   EF=JSON.parse(JSON.stringify(EF_DEFAULT));
@@ -596,12 +612,11 @@ function resetDefault(){
 }
 async function persistirDados(){
   var payload=JSON.stringify({v:DATA_VERSION,EF:EF,TER:TER,MOB:MOB,DT:DT});
-  var result=await window.storage.set(STORAGE_KEY,payload);
-  return !!result;
+  return await storageSet(STORAGE_KEY,payload);
 }
 async function persistirLog(){
-  if(LOG.length>200) LOG=LOG.slice(LOG.length-200);
-  await window.storage.set(LOG_KEY,JSON.stringify(LOG));
+  if(LOG.length>200)LOG=LOG.slice(LOG.length-200);
+  await storageSet(LOG_KEY,JSON.stringify(LOG));
 }
 function adicionarLog(tipo,mensagem){
   LOG.push({tipo:tipo,msg:mensagem,dt:dataHoraAgora()});
