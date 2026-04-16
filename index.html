@@ -2,7 +2,7 @@
 
 <html lang="pt-BR">
 <head>
-  <script>
+<script>
   if (!sessionStorage.getItem("visitou")) {
     sessionStorage.setItem("visitou", "sim");
     window.location.href = "welcome.html";
@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Bucagrans - PCH Lebon Regis</title>
-  <link rel="icon" href="favicon.png" type="image/png">
+<link rel="icon" href="favicon.png" type="image/png">
 <link rel="shortcut icon" href="favicon.png">
 
 <style>
@@ -22,14 +22,18 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 .hT h1{font-size:16px;font-weight:800}
 .hT p{font-size:9px;opacity:.8;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 .hT small{font-size:10px;opacity:.65;display:block;margin-top:2px}
-.hR{display:flex;gap:8px;align-items:center}
+.hR{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .btn-hdr{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);color:white;padding:8px 15px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700}
 .btn-hdr-excel{background:rgba(39,174,96,.35);border:1.5px solid rgba(39,174,96,.7);color:white;padding:8px 15px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700}
+.btn-hdr-aso{background:rgba(192,57,43,.45);border:1.5px solid rgba(192,57,43,.8);color:white;padding:8px 15px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700;position:relative}
+.btn-hdr-log{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);color:white;padding:8px 15px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:700}
+.badge-hdr{position:absolute;top:-5px;right:-5px;background:#e74c3c;color:white;border-radius:50%;width:17px;height:17px;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #8b0000}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:12px 12px 5px}
-.card{border-radius:12px;padding:12px 10px 9px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.12);border:3px solid transparent;user-select:none}
+.card{border-radius:12px;padding:12px 10px 9px;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.12);border:3px solid transparent;user-select:none;position:relative}
 .card.active{border-color:rgba(255,255,255,.9);transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.2)}
 .card .num{font-size:28px;font-weight:800;color:white;line-height:1}
 .card .lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.9);margin-top:3px;letter-spacing:.7px;text-transform:uppercase}
+.card-badge{position:absolute;top:6px;right:8px;background:#e74c3c;color:white;border-radius:10px;padding:2px 6px;font-size:8px;font-weight:800;animation:pulse .8s infinite alternate}
 .c0{background:linear-gradient(135deg,#2c3e50,#4a6278)}
 .c1{background:linear-gradient(135deg,#0a1f3d,#1a3a6b);color:white}
 .c2{background:linear-gradient(135deg,#1560a0,#2980b9)}
@@ -39,17 +43,21 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 .sbar{margin:5px 12px 0;background:white;border-radius:10px;padding:8px 13px;box-shadow:0 1px 6px rgba(0,0,0,.08);border-left:4px solid #8b0000}
 .sbar-t{font-size:12px;font-weight:700;color:#0a1f3d}
 .sbar-c{font-size:11px;color:#aaa;margin-top:1px}
-.search-row{display:flex;gap:8px;margin-top:6px}
-.search{border:1.5px solid #dde3ea;border-radius:8px;padding:7px 11px;font-size:13px;outline:none;flex:1;box-sizing:border-box}
+.search-row{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.search{border:1.5px solid #dde3ea;border-radius:8px;padding:7px 11px;font-size:13px;outline:none;flex:1;min-width:150px;box-sizing:border-box}
 .search-sel{border:1.5px solid #dde3ea;border-radius:8px;padding:7px 11px;font-size:12px;outline:none;background:white;color:#444;cursor:pointer;min-width:160px}
 .search-sel:focus{border-color:#0a1f3d}
 .tbox{margin:8px 12px 12px;background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden}
 .sdiv{padding:6px 14px 3px;font-size:10px;font-weight:700;color:#666;letter-spacing:1px;background:#f7f8fa;border-top:2px solid #eef0f3;text-transform:uppercase}
 .tscroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:11px}
-thead th{background:#0a1f3d;color:white;padding:8px 9px;text-align:left;font-weight:600;font-size:9px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
-tbody tr{border-bottom:1px solid #f0f2f5}
+thead th{background:#0a1f3d;color:white;padding:8px 9px;text-align:left;font-weight:600;font-size:9px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;cursor:pointer;user-select:none;position:relative}
+thead th:hover{background:#1a3a6b}
+thead th .sort-icon{margin-left:4px;opacity:.5;font-size:8px}
+thead th.sorted .sort-icon{opacity:1}
+tbody tr{border-bottom:1px solid #f0f2f5;cursor:pointer;transition:background .1s}
 tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#f7f9ff}
 tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 .norows{text-align:center;color:#bbb;padding:36px;font-size:14px}
 .badm{background:#dbe8f7;color:#1560a0;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
@@ -70,9 +78,11 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 .bt{background:#eef0f3;border-radius:4px;height:7px;overflow:hidden}
 .bf{height:100%;border-radius:4px}
 .footer{text-align:center;padding:10px;font-size:9px;color:#aaa;margin-bottom:8px}
+
+/* ── OVERLAY & ABOX ── */
 .ov{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:200;overflow-y:auto}
 .ov.on{display:block}
-.abox{background:white;border-radius:16px;padding:20px 16px;max-width:480px;margin:16px auto 40px}
+.abox{background:white;border-radius:16px;padding:20px 16px;max-width:500px;margin:16px auto 40px}
 .atitle{font-size:17px;font-weight:800;color:#0a1f3d;margin-bottom:3px}
 .asub{font-size:12px;color:#888;margin-bottom:16px}
 .pw{width:100%;border:1.5px solid #dde3ea;border-radius:8px;padding:11px;font-size:15px;outline:none;box-sizing:border-box;margin-bottom:10px}
@@ -80,8 +90,8 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 .pwerr{color:#c0392b;font-size:12px;margin-bottom:10px;display:none}
 .btnp{width:100%;background:#0a1f3d;color:white;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px}
 .btns{width:100%;background:#f0f2f5;color:#555;border:none;border-radius:8px;padding:11px;font-size:13px;cursor:pointer}
-.tabs{display:flex;gap:6px;margin-bottom:14px}
-.tab{flex:1;padding:8px 4px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:#f0f2f5;color:#555}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{flex:1;padding:8px 4px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:#f0f2f5;color:#555;white-space:nowrap}
 .tab.on{background:#0a1f3d;color:white}
 .slbl{font-size:12px;font-weight:700;color:#0a1f3d;margin:14px 0 8px}
 .prow{display:flex;align-items:center;gap:8px;padding:9px 11px;background:#f7f8fa;border-radius:9px;margin-bottom:6px;border:1px solid #eef0f3}
@@ -90,9 +100,13 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 .pfn{font-size:11px;color:#888;margin-top:2px}
 .bdel{background:#fdecea;color:#8b0000;border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:11px;font-weight:700;flex-shrink:0}
 .bdel.conf{background:#c0392b;color:white}
+.bedit{background:#dbe8f7;color:#1560a0;border:none;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:11px;font-weight:700;flex-shrink:0;margin-right:4px}
 .aform{background:#f7f8fa;border-radius:10px;padding:14px;margin-top:8px;border:1px solid #eef0f3}
-.aform input,.aform select{width:100%;border:1.5px solid #dde3ea;border-radius:7px;padding:9px 11px;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:8px;background:white}
+.aform input,.aform select,.aform textarea{width:100%;border:1.5px solid #dde3ea;border-radius:7px;padding:9px 11px;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:8px;background:white;font-family:inherit}
+.aform textarea{resize:vertical;min-height:52px}
+.aform input.err-field{border-color:#c0392b}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .badd{width:100%;background:#27ae60;color:white;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;margin-top:2px}
 .ok{background:#d5f0e0;border:1.5px solid #27ae60;border-radius:8px;padding:9px;font-size:12px;color:#1a6b35;margin-top:8px;display:none;text-align:center;font-weight:700}
 .bsave{width:100%;background:#8b0000;color:white;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px}
@@ -106,12 +120,63 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 .logo-box{height:55px;width:auto;max-width:120px;object-fit:contain}
 
 /* ── TOOLTIP DE FOTO ── */
-#fotoTip{display:none;position:fixed;z-index:9999;background:white;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.2);padding:12px;text-align:center;width:150px;pointer-events:none;border:2px solid #e8edf5;}
-#fotoTip img{width:118px;height:118px;object-fit:cover;border-radius:9px;display:block;margin:0 auto 7px;background:#eef0f3;}
-#fotoTip .ft-avatar{width:118px;height:118px;border-radius:9px;background:linear-gradient(135deg,#0a1f3d,#1a3a6b);display:none;align-items:center;justify-content:center;margin:0 auto 7px;font-size:46px;font-weight:800;color:white;}
-#fotoTip .ft-nome{font-size:11px;font-weight:700;color:#0a1f3d;line-height:1.35;word-break:break-word;white-space:normal;}
-#fotoTip .ft-fn{font-size:10px;color:#888;margin-top:3px;white-space:normal;}
-.nome-tip{cursor:default;border-bottom:1px dashed #bbb;}
+#fotoTip{display:none;position:fixed;z-index:9999;background:white;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.2);padding:12px;text-align:center;width:150px;pointer-events:none;border:2px solid #e8edf5}
+#fotoTip img{width:118px;height:118px;object-fit:cover;border-radius:9px;display:block;margin:0 auto 7px;background:#eef0f3}
+#fotoTip .ft-avatar{width:118px;height:118px;border-radius:9px;background:linear-gradient(135deg,#0a1f3d,#1a3a6b);display:none;align-items:center;justify-content:center;margin:0 auto 7px;font-size:46px;font-weight:800;color:white}
+#fotoTip .ft-nome{font-size:11px;font-weight:700;color:#0a1f3d;line-height:1.35;word-break:break-word;white-space:normal}
+#fotoTip .ft-fn{font-size:10px;color:#888;margin-top:3px;white-space:normal}
+.nome-tip{cursor:default;border-bottom:1px dashed #bbb}
+
+/* ── TOASTS ── */
+#toast-container{position:fixed;bottom:20px;right:16px;z-index:9998;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:#1a3a6b;color:white;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateX(40px);transition:all .3s;pointer-events:none;max-width:260px}
+.toast.show{opacity:1;transform:translateX(0)}
+.toast.success{background:#1a6b35}
+.toast.error{background:#8b0000}
+.toast.warn{background:#856404}
+
+/* ── MODAL EDIÇÃO INLINE ── */
+#editModal .abox{max-width:520px}
+#editModal .abox input,#editModal .abox select,#editModal .abox textarea{width:100%;border:1.5px solid #dde3ea;border-radius:7px;padding:9px 11px;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:8px;background:white;font-family:inherit}
+#editModal .abox textarea{resize:vertical;min-height:52px}
+.edit-label{font-size:11px;font-weight:700;color:#0a1f3d;margin-bottom:4px;display:block}
+.edit-row{margin-bottom:2px}
+.btn-edit-save{width:100%;background:#0a1f3d;color:white;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px}
+.btn-edit-cancel{width:100%;background:#f0f2f5;color:#555;border:none;border-radius:8px;padding:11px;font-size:13px;cursor:pointer;margin-top:6px}
+
+/* ── MODAL ASO DASHBOARD ── */
+#asoModal .abox{max-width:540px}
+.aso-section{margin-bottom:14px}
+.aso-section-title{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:5px 10px;border-radius:7px;margin-bottom:8px}
+.aso-section-title.venc{background:#fdecea;color:#8b0000}
+.aso-section-title.warn{background:#fff3cd;color:#856404}
+.aso-section-title.ok90{background:#d5f0e0;color:#1a6b35}
+.aso-item{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;margin-bottom:5px;background:#f7f8fa;border:1px solid #eef0f3}
+.aso-item-name{font-size:12px;font-weight:700;color:#222}
+.aso-item-info{font-size:10px;color:#888;margin-top:2px}
+.aso-item-date{font-size:11px;font-weight:700}
+
+/* ── MODAL HISTÓRICO ── */
+#logModal .abox{max-width:520px;max-height:80vh;overflow-y:auto}
+.log-item{padding:8px 11px;border-radius:8px;margin-bottom:6px;background:#f7f8fa;border-left:3px solid #1a3a6b;font-size:11px}
+.log-item .log-time{font-size:9px;color:#aaa;margin-bottom:3px}
+.log-item .log-msg{color:#333;font-weight:600}
+.log-item.rem{border-left-color:#8b0000}
+.log-item.add{border-left-color:#1a6b35}
+.log-empty{text-align:center;color:#bbb;padding:24px;font-size:13px}
+
+/* ── FILTRO ASO RÁPIDO ── */
+.filter-aso-row{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.filter-aso-btn{border:1.5px solid #dde3ea;border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;cursor:pointer;background:white;color:#555;transition:all .15s}
+.filter-aso-btn.on{background:#8b0000;color:white;border-color:#8b0000}
+.filter-aso-btn.warn-btn.on{background:#856404;color:white;border-color:#856404}
+.filter-aso-btn.ok-btn.on{background:#1a6b35;color:white;border-color:#1a6b35}
+
+/* ── INLINE OBS ── */
+.obs-text{font-size:9px;color:#888;font-style:italic;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+
+/* ── TIMEOUT INDICATOR ── */
+#sessionTimer{display:none;position:fixed;bottom:8px;left:50%;transform:translateX(-50%);background:#856404;color:white;padding:5px 14px;border-radius:20px;font-size:10px;font-weight:700;z-index:300}
 </style>
 
 </head>
@@ -123,6 +188,9 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
   <div class="ft-nome" id="tipNome"></div>
   <div class="ft-fn" id="tipFn"></div>
 </div>
+
+<div id="toast-container"></div>
+<div id="sessionTimer">⏱ Sessão expira em <span id="timerCount"></span>s</div>
 
 <div id="loadingScreen" class="loading-overlay">
   <div class="spinner"></div>
@@ -139,13 +207,19 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
     </div>
   </div>
   <div class="hR">
-    <button class="btn-hdr" onclick="abrirAdmin()">Editar</button>
-    <button class="btn-hdr" onclick="exportarPDF()">Exportar PDF</button>
-    <button class="btn-hdr-excel" onclick="exportarExcel()">&#128196; Exportar Excel</button>
+    <button class="btn-hdr-aso" onclick="abrirASO()" id="btnASO">
+      🏥 ASO
+      <span class="badge-hdr" id="asoBadge" style="display:none">0</span>
+    </button>
+    <button class="btn-hdr-log" onclick="abrirLog()">📋 Histórico</button>
+    <button class="btn-hdr" onclick="abrirAdmin()">✏️ Editar</button>
+    <button class="btn-hdr" onclick="exportarPDF()">📄 PDF</button>
+    <button class="btn-hdr-excel" onclick="exportarExcel()">📊 Excel</button>
   </div>
 </div>
 
 <div class="cards" id="cards"></div>
+
 <div class="sbar">
   <div class="sbar-t" id="sT">Todos os registros</div>
   <div class="sbar-c" id="sC"></div>
@@ -170,16 +244,27 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
       <option>APONTAMENTO</option>
     </select>
   </div>
+  <div class="filter-aso-row">
+    <button class="filter-aso-btn" id="fasoAll" onclick="setAsoFilter('todos')">Todos</button>
+    <button class="filter-aso-btn" id="fasoVenc" onclick="setAsoFilter('venc')">🔴 ASO Vencido</button>
+    <button class="filter-aso-btn warn-btn" id="fasoWarn" onclick="setAsoFilter('warn')">🟡 Vence em 30d</button>
+    <button class="filter-aso-btn ok-btn" id="fasoOk" onclick="setAsoFilter('ok')">🟢 ASO OK</button>
+  </div>
 </div>
+
 <div class="tbox" id="tbox"></div>
 <div class="charts" id="charts"></div>
 <div class="footer">BUCAGRANS CONSTRUTORA DE OBRAS S/A - PCH Lebon Regis</div>
 
+<!-- ══════════════════════════════════════
+     MODAL PRINCIPAL: LOGIN + EDITAR
+══════════════════════════════════════ -->
+
 <div class="ov" id="ov">
 <div class="abox">
   <div id="pLogin">
-    <div class="atitle">Painel de Edicao</div>
-    <div class="asub">Digite a senha</div>
+    <div class="atitle">Painel de Edição</div>
+    <div class="asub">Digite a senha de administrador</div>
     <input class="pw" id="pwi" type="password" placeholder="Senha" onkeydown="if(event.key==='Enter')chk()">
     <div class="pwerr" id="pwerr">Senha incorreta.</div>
     <button class="btnp" onclick="chk()">Entrar</button>
@@ -188,73 +273,131 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
   <div id="pEd" style="display:none">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <div class="atitle">Editar Dados</div>
-      <button onclick="fAdmin()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#aaa">X</button>
+      <button onclick="tentarFechar()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#aaa">✕</button>
     </div>
     <div class="tabs">
       <button class="tab on" id="t0" onclick="mAba(0)">Efetivo</button>
       <button class="tab" id="t1" onclick="mAba(1)">Terceiros</button>
       <button class="tab" id="t2" onclick="mAba(2)">Mob.</button>
     </div>
-    <div id="a0">
-      <div id="lEF" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
-      <div class="slbl">Adicionar Funcionario</div>
-      <div class="aform">
-        <input id="nre" placeholder="RE" type="number">
-        <input id="nno" placeholder="Nome completo">
-        <input id="nfn" placeholder="Funcao">
-        <div class="r2">
-          <input id="nad" placeholder="Admissao dd/mm/aaaa">
-          <select id="nst"><option value="O">Operacional</option><option value="A">ADM</option></select>
-        </div>
-        <div class="r2">
-          <input id="ne3" placeholder="Exp.30 ou INDET.">
-          <input id="ne6" placeholder="Exp.60 ou INDET.">
-        </div>
-        <input id="naso" placeholder="Venc. ASO dd/mm/aaaa (opcional)">
-        <select id="nset">
-          <option value="">-- Setor --</option>
-          <option>ARMAÇÃO</option>
-          <option>CARPINTARIA DE CAMPO</option>
-          <option>CENTRAL DE CARPINTARIA</option>
-          <option>CENTRAL DE CONCRETO</option>
-          <option>ELETRICA/BOMBEAMENTO</option>
-          <option>ENGENHARIA</option>
-          <option>LANÇAMENTO DE CONCRETO</option>
-          <option>MANUTENÇÃO MECANICA</option>
-          <option>MONTAGEM</option>
-          <option>RH</option>
-          <option>TERRAPLENAGEM</option>
-          <option>TOPOGRAFIA</option>
-          <option>TRANSPORTES</option>
-        </select>
-        <button class="badd" onclick="aEF()">Adicionar</button>
-        <div class="ok" id="okEF">Adicionado!</div>
-      </div>
+
+```
+<!-- ABA EFETIVO -->
+<div id="a0">
+  <div id="lEF" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
+  <div class="slbl">Adicionar Funcionário</div>
+  <div class="aform">
+    <div class="r2">
+      <input id="nre" placeholder="RE" type="number">
+      <input id="nad" placeholder="Admissão dd/mm/aaaa">
     </div>
-    <div id="a1" style="display:none">
-      <div id="lTER" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
-      <div class="slbl">Adicionar Terceiro</div>
-      <div class="aform">
-        <input id="tn" placeholder="Nome">
-        <input id="te" placeholder="Empresa">
-        <input id="tf" placeholder="Funcao">
-        <button class="badd" onclick="aTER()">Adicionar</button>
-        <div class="ok" id="okTER">Adicionado!</div>
-      </div>
+    <input id="nno" placeholder="Nome completo">
+    <input id="nfn" placeholder="Função">
+    <div class="r3">
+      <select id="nst"><option value="O">Operacional</option><option value="A">ADM</option></select>
+      <input id="ne3" placeholder="Exp.30">
+      <input id="ne6" placeholder="Exp.60">
     </div>
-    <div id="a2" style="display:none">
-      <div id="lMOB" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
-      <div class="slbl">Adicionar Mobilizacao</div>
-      <div class="aform">
-        <input id="mn" placeholder="Nome">
-        <input id="mf" placeholder="Funcao">
-        <input id="mo" placeholder="Status">
-        <button class="badd" onclick="aMOB()">Adicionar</button>
-        <div class="ok" id="okMOB">Adicionado!</div>
-      </div>
+    <div class="r2">
+      <input id="naso" placeholder="Venc. ASO dd/mm/aaaa">
+      <select id="nset">
+        <option value="">-- Setor --</option>
+        <option>ARMAÇÃO</option><option>CARPINTARIA DE CAMPO</option>
+        <option>CENTRAL DE CARPINTARIA</option><option>CENTRAL DE CONCRETO</option>
+        <option>ELETRICA/BOMBEAMENTO</option><option>ENGENHARIA</option>
+        <option>LANÇAMENTO DE CONCRETO</option><option>MANUTENÇÃO MECANICA</option>
+        <option>MONTAGEM</option><option>RH</option><option>TERRAPLENAGEM</option>
+        <option>TOPOGRAFIA</option><option>TRANSPORTES</option>
+        <option>LIMPEZA</option><option>APONTAMENTO</option>
+      </select>
     </div>
-    <button class="bsave" onclick="salvar()">Salvar e Fechar</button>
-    <div class="save-status" id="saveStatus"></div>
+    <textarea id="nobs" placeholder="Observações (opcional)"></textarea>
+    <button class="badd" onclick="aEF()">➕ Adicionar</button>
+    <div class="ok" id="okEF">✓ Adicionado com sucesso!</div>
+  </div>
+</div>
+
+<!-- ABA TERCEIROS -->
+<div id="a1" style="display:none">
+  <div id="lTER" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
+  <div class="slbl">Adicionar Terceiro</div>
+  <div class="aform">
+    <input id="tn" placeholder="Nome">
+    <input id="te" placeholder="Empresa">
+    <input id="tf" placeholder="Função">
+    <textarea id="tobs" placeholder="Observações (opcional)"></textarea>
+    <button class="badd" onclick="aTER()">➕ Adicionar</button>
+    <div class="ok" id="okTER">✓ Adicionado!</div>
+  </div>
+</div>
+
+<!-- ABA MOBILIZAÇÃO -->
+<div id="a2" style="display:none">
+  <div id="lMOB" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
+  <div class="slbl">Adicionar Mobilização</div>
+  <div class="aform">
+    <input id="mn" placeholder="Nome">
+    <input id="mf" placeholder="Função">
+    <input id="mo" placeholder="Status (ex: Exame 15/04)">
+    <textarea id="mobs" placeholder="Observações (opcional)"></textarea>
+    <button class="badd" onclick="aMOB()">➕ Adicionar</button>
+    <div class="ok" id="okMOB">✓ Adicionado!</div>
+  </div>
+</div>
+
+<button class="bsave" onclick="salvar()">💾 Salvar e Fechar</button>
+<div class="save-status" id="saveStatus"></div>
+```
+
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL: EDIÇÃO INLINE
+══════════════════════════════════════ -->
+
+<div class="ov" id="editModal">
+<div class="abox">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div class="atitle" id="editModalTitle">Editar Funcionário</div>
+    <button onclick="fecharEditModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#aaa">✕</button>
+  </div>
+  <div id="editForm"></div>
+  <button class="btn-edit-save" onclick="salvarEdicaoInline()">✓ Salvar Alterações</button>
+  <button class="btn-edit-cancel" onclick="fecharEditModal()">Cancelar</button>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL: DASHBOARD ASO
+══════════════════════════════════════ -->
+
+<div class="ov" id="asoModal">
+<div class="abox">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div class="atitle">Dashboard de ASO</div>
+    <button onclick="fecharASO()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#aaa">✕</button>
+  </div>
+  <div id="asoContent"></div>
+  <button class="btns" style="margin-top:10px" onclick="fecharASO()">Fechar</button>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL: HISTÓRICO DE ALTERAÇÕES
+══════════════════════════════════════ -->
+
+<div class="ov" id="logModal">
+<div class="abox">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div class="atitle">Histórico de Alterações</div>
+    <button onclick="fecharLog()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#aaa">✕</button>
+  </div>
+  <div id="logContent"></div>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <button class="btns" onclick="fecharLog()">Fechar</button>
+    <button onclick="limparLog()" style="flex:1;background:#fdecea;color:#8b0000;border:none;border-radius:8px;padding:11px;font-size:13px;cursor:pointer;font-weight:700">🗑 Limpar Histórico</button>
   </div>
 </div>
 </div>
@@ -264,115 +407,243 @@ tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 
 <script>
-var PW="lebon2026", fil="todos", ter="", cI=null, cL=null;
-var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao"};
+// ══════════════════════════════════════════
+//  SENHA — hash SHA-256 de "Buca@2026#PCH"
+//  (nunca armazene a senha em texto plano)
+// ══════════════════════════════════════════
+var PW_HASH=""; // preenchido em initHash()
+var PW_PLAIN="Buca@2026#PCH"; // usada apenas para gerar o hash na inicialização
 
-var EF_DEFAULT=[
-{re:"4818",n:"ABMAEL VIEIRA DE ARAUJO",f:"PEDREIRO",a:"04/03/2026",e3:"03/04/2026",e6:"03/05/2026",s:"O",aso:"04/03/2027",set:"LANÇAMENTO DE CONCRETO"},
-{re:"4784",n:"ADALTON DE OLIVEIRA",f:"OPERADOR DE CENTRAL DE CONCRETO",a:"14/02/2026",e3:"15/03/2026",e6:"14/04/2026",s:"O",aso:"14/02/2027",set:"CENTRAL DE CONCRETO"},
-{re:"4826",n:"ADAO DOS SANTOS",f:"MOTORISTA CAMINHAO BETONEIRA",a:"12/03/2026",e3:"10/04/2026",e6:"10/05/2026",s:"O",aso:"12/03/2027",set:"TERRAPLENAGEM"},
-{re:"4790",n:"ADEMAR PAZ DE OLIVEIRA",f:"PEDREIRO",a:"23/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"23/02/2027",set:"LANÇAMENTO DE CONCRETO"},
-{re:"4787",n:"ADEMILSON CEZAR DE OLIVEIRA",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/02/2026",e3:"19/03/2026",e6:"18/04/2026",s:"O",aso:"18/02/2027",set:"TERRAPLENAGEM"},
-{re:"4877",n:"ALCIONE GOMES DA SILVA",f:" SOLDADOR DE FORMA",a:"09/04/2026",e3:"08/05/2026",e6:"07/06/2026",s:"O",aso:"09/04/2027",set:"ARMAÇÃO"},
-{re:"4836",n:"ANTONIO JOEL FREITAS",f:"ENCARREGADO DE ARMACAO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"23/03/2027",set:"ARMAÇÃO"},
-{re:"4913",n:"ANTONIO MICHEL PAZ",f:"ARMADOR",a:"15/04/2026",e3:"14/05/2026",e6:"13/06/2026",s:"O",aso:"",set:"ARMAÇÃO"},
-{re:"4867",n:"ANTONIO GUIMARAES DE SOUSA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"06/04/2027",set:"LANÇAMENTO DE CONCRETO"},
-{re:"4383",n:"CARLOS SANTOS MEDEIROS DE SOUZA",f:"SOLDADOR",a:"13/05/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"MONTAGEM"},
-{re:"4792",n:"CLESIO DE CARVALHO COSTA",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"A",aso:"23/02/2027",set:"APONTAMENTO"},
-{re:"4837",n:"CLEVERSON JUNIOR CAMARGO",f:"LIDER DE CARPINTARIA",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"23/03/2027",set:"CARPINTARIA DE CAMPO"},
-{re:"4708",n:"CLODOALDO ZAPAVOSKI COUTINHO",f:"ENCARREGADO DE TERRAPLANAGEM",a:"19/01/2026",e3:"12/02/2026",e6:"14/03/2026",s:"O",aso:"19/01/2027",set:"TERRAPLENAGEM"},
-{re:"4730",n:"DILVAR SOARES",f:"OPERADOR RETROESCAVADEIRA",a:"28/01/2026",e3:"26/02/2026",e6:"28/03/2026",s:"O",aso:"28/01/2027",set:"TERRAPLENAGEM"},
-{re:"4832",n:"DANIEL DE LIMA FARIAS",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/03/2026",e3:"16/04/2026",e6:"16/05/2026",s:"O",aso:"18/03/2027",set:"TERRAPLENAGEM"},
-{re:"4914",n:"DANIEL PRATES",f:"AJUDANTE GERAL - PORTARIA",a:"15/04/2026",e3:"14/05/2026",e6:"13/06/2026",s:"A",aso:"",set:"APONTAMENTO"},
-{re:"4866",n:"DHAYSON GABRIEL DOS SANTOS SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"06/04/2027",set:"LANÇAMENTO DE CONCRETO"},
-{re:"4246",n:"DOUGLAS APARECIDO TESSAROLI",f:"COORDENADOR ADMINISTRATIVO",a:"20/01/2023",e3:"INDET.",e6:"INDET.",s:"A",aso:"!",set:"ADMINISTRAÇÃO"},
-{re:"4719",n:"EDUARDO LUIS PIVA",f:"OPERADOR ESCAVADEIRA",a:"23/01/2026",e3:"21/02/2026",e6:"23/03/2026",s:"O",aso:"23/01/2027",set:"TERRAPLENAGEM"},
-{re:"4791",n:"ELERSON SOARES WEBER",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"O",aso:"23/02/2027",set:"TRANSPORTES"},
-{re:"4589",n:"EMANOEL LEONARDO MANGUEIRA DA SILVA",f:"ELETRICISTA",a:"21/07/2025",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"ELETRICA/BOMBEAMENTO"},
-{re:"4865",n:"ELISON MARQUES DA SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"06/04/2027",set:"TERRAPLENAGEM"},
-{re:"4543",n:"EQUIEL NATAN DA SILVA",f:"ENCARREGADO DE RH",a:"12/11/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:"!",set:"RH"},
-{re:"4838",n:"FRANCISCO DAS CHAGAS DA SILVA ALVES",f:"LIDER DE CONCRETO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"23/03/2027",set:"LANÇAMENTO DE CONCRETO"},
-{re:"4260",n:"GILBERTO SAMUELSSON",f:"ENCARREGADO GERAL DE OBRAS",a:"06/02/2023",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"ENGENHARIA"},
-{re:"4924",n:"GUILBER KAIRON CAMARGO",f:"ARMADOR",a:"16/04/2026",e3:"15/05/2026",e6:"14/06/2026",s:"O",aso:"",set:"ARMAÇÃO"},
-{re:"4731",n:"HELIEL KLEM",f:"OPERADOR ESCAVADEIRA",a:"28/01/2026",e3:"26/02/2026",e6:"28/03/2026",s:"O",aso:"28/01/2027",set:"TERRAPLENAGEM"},
-{re:"4875",n:"ISAQUE SOARES DA SILVA",f:"PEDREIRO",a:"07/04/2026",e3:"06/05/2026",e6:"05/06/2026",s:"O",aso:"07/04/2027",set:"LANÇAMENTO DE CONCRETO"},
-{re:"4823",n:"JACSON PAULO CLEIN",f:"OPERADOR TRATOR ESTEIRA",a:"06/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"06/03/2027",set:"TERRAPLENAGEM"},
-{re:"4839",n:"JAIRO PONTES CALDAS",f:"CARPINTEIRO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"23/03/2027",set:"CARPINTARIA DE CAMPO"},
-{re:"4912",n:"JEAN AUGUSTO CAMARGO",f:"ARMADOR",a:"15/04/2026",e3:"14/05/2026",e6:"13/06/2026",s:"O",aso:"",set:"ARMAÇÃO"},
-{re:"4692",n:"JOAO CARLOS FERNANDES",f:"ENCARREGADO DE SESSAO TECNICA",a:"13/01/2026",e3:"INDET.",e6:"INDET.",s:"A",aso:"13/01/2027",set:"ENGENHARIA"},
-{re:"4733",n:"JOAO PINTO DO NASCIMENTO",f:"MOTORISTA CAMINHAO COMBOIO",a:"30/01/2026",e3:"28/02/2026",e6:"30/03/2026",s:"O",aso:"30/01/2027",set:"MANUTENÇÃO MECANICA"},
-{re:"4718",n:"JOAO ROBERTO BAIRROS",f:"MOTORISTA CAMINHAO BASCULANTE",a:"23/01/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"23/01/2027",set:"TERRAPLENAGEM"},
-{re:"4445",n:"JOSE DHEIZOM MORAIS DA ROSA",f:"COORDENADOR DE SEGURANCA DO TRABALHO",a:"14/08/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:"!",set:"ENGENHARIA"},
-{re:"4716",n:"JOSE JOSMAR FRANCA",f:"MECANICO",a:"21/01/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"21/01/2027",set:"MANUTENÇÃO MECANICA"},
-{re:"4794",n:"JOSE ROGERIO FREITAS DA SILVA",f:"OPERADOR ESCAVADEIRA",a:"24/02/2026",e3:"25/03/2026",e6:"24/04/2026",s:"O",aso:"24/02/2027",set:"TERRAPLENAGEM"},
-{re:"4847",n:"JOSIEL DA SILVA PEREIRA",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"26/03/2027",set:"ARMAÇÃO"},
-{re:"4829",n:"LAERCIO GADELHA JACINTO",f:"BOMBEIRO HIDRAULICO",a:"16/03/2026",e3:"14/04/2026",e6:"14/05/2026",s:"O",aso:"16/03/2027",set:"ELETRICA/BOMBEAMENTO"},
-{re:"4783",n:"LUIZ HENRIQUE POLICENO ESCOBAR",f:"AJUDANTE GERAL",a:"13/02/2026",e3:"14/03/2026",e6:"13/04/2026",s:"O",aso:"13/02/2027",set:"CENTRAL DE CARPINTARIA"},
-{re:"2",n:"MARCELO MARTON MAC FADDEN",f:"ENGENHEIRO RESIDENTE",a:"--",e3:"INDET.",e6:"INDET.",s:"A",aso:"!",set:"ENGENHARIA"},
-{re:"4813",n:"MARCONE RIBEIRO DE SOUSA",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"02/03/2027",set:"CENTRAL DE CARPINTARIA"},
-{re:"4879",n:"MARTIM VIEIRA DA SILVA ARAÚJO",f:"AJUDANTE GERAL",a:"10/04/2026",e3:"09/05/2026.",e6:"08/06/2026.",s:"A",aso:"10/04/2027",set:"LIMPEZA"},
-{re:"4848",n:"MAILSON COSTA PINHEIRO",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"26/03/2027",set:"ELETRICA/BOMBEAMENTO"},
-{re:"4816",n:"NELSON PROENCA DE OLIVEIRA",f:"ENCARREGADO DE SERVICOS GERAIS",a:"03/03/2026",e3:"01/04/2026",e6:"01/05/2026",s:"A",aso:"03/03/2027",set:"LIMPEZA"},
-{re:"4849",n:"OSMAR ANTONIO PRITSCH",f:"ENCARREGADO GERAL DE OBRAS",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"26/03/2027",set:"ENGENHARIA"},
-{re:"4850",n:"PEDRO DOS SANTOS",f:"ARMADOR",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"26/03/2027",set:"ARMAÇÃO"},
-{re:"4414",n:"RAI GARAJAU DA SILVA",f:"CARPINTEIRO",a:"12/06/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"CENTRAL DE CONCRETO"},
-{re:"4840",n:"SEBASTIAO DE LIMA CAMARGO",f:"CARPINTEIRO",a:"24/03/2026",e3:"22/04/2026",e6:"22/05/2026",s:"O",aso:"24/03/2027",set:"CARPINTARIA DE CAMPO"},
-{re:"4418",n:"SIDNEI CIBINELI GURIAN",f:"ENGENHEIRO CIVIL",a:"26/07/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"ENGENHARIA"},
-{re:"4425",n:"SIDNEI SIQUEIRA AVILA",f:"ENCARREGADO DE CARPINTARIA",a:"02/08/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"CARPINTARIA DE CAMPO"},
-{re:"4793",n:"TALISON MIGUEL DA SILVA",f:"AJUDANTE GERAL",a:"24/02/2026",e3:"INDET.",e6:"INDET.",s:"A",aso:"24/02/2027",set:"RH"},
-{re:"4793",n:"VALDIR DA SILVA BEHEREND",f:"ENCARREGADO DE MANUTENÇÃO",a:"16/06/2010",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"MANUTENÇÃO MECANICA"},
-{re:"4786",n:"VALDAIR ANTONIO MAIA DA SILVA",f:"LIDER DE CARPINTARIA",a:"17/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"17/02/2027",set:"CENTRAL DE CARPINTARIA"},
-{re:"4814",n:"VALMIR MOREIRA JUNIOR",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"02/03/2027",set:"CENTRAL DE CARPINTARIA"},
-{re:"4788",n:"WILLIAN DE CAMPOS PEREIRA",f:"AUXILIAR TOPOGRAFO",a:"18/02/2026",e3:"20/03/2026",e6:"19/04/2026",s:"O",aso:"18/02/2027",set:"TOPOGRAFIA"},
-];
+async function initHash(){
+  var enc=new TextEncoder().encode(PW_PLAIN);
+  var buf=await crypto.subtle.digest("SHA-256",enc);
+  PW_HASH=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
+  PW_PLAIN=""; // apaga da memória
+}
+async function verificarSenha(s){
+  var enc=new TextEncoder().encode(s);
+  var buf=await crypto.subtle.digest("SHA-256",enc);
+  var h=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
+  return h===PW_HASH;
+}
 
-var TER_DEFAULT=[
-{n:"Daniel da Silva",e:"CASTILHO & CIA",f:"Motorista de onibus"},
-{n:"Carlos Socrates Scalsavara",e:"SS TOPOGRAFIA E SERVICOS",f:"Topografo"},
-{n:"Tiago Wilian Banaszevski",e:"NVP TRANSPORTES E TERRAPLANAGEM",f:"Motorista C. Basculante"},
-{n:"Diogo Wilian de Mello",e:"TREMEA SERVICOS E TRANSPORTES",f:"Motorista C. Basculante"},
-{n:"Ladimir Gheller",e:"TREMEA SERVICOS E TRANSPORTES",f:"Motorista C. Basculante"},
-{n:"Julio Cesar Ribeiro dos Santos",e:"DJANGO TERRAPLANAGEM E TRANSPORTES",f:"Motorista C. Basculante"},
-{n:"Jucelito machado",e:"DINNA",f:"Operador de perfuratriz"},
-{n:"Isaias Alves",e:"TREMEA SERVICOS E TRANSPORTES",f:"Motorista C. Basculante"},
-{n:"Kamile Dalcas",e:"ESTELAR",f:"Engenheira Civil"},
-{n:"Elizeu Maciel da Silva",e:"CONCRESOLO",f:"Encarregado de laboratorio"},
-{n:"Enio ",e:"GALIOTO",f:"Operador de Trator Esteira"}
-];
+// ══════════════════════════════════════════
+//  TIMEOUT DE SESSÃO (10 min)
+// ══════════════════════════════════════════
+var SESSION_TIMEOUT=600; // segundos
+var sessionCountdown=0, sessionInterval=null;
 
-var MOB_DEFAULT=[
-{n:"Francisco da Silva Pereira",f:"Armador",o:"Exame 15/04"},
-{n:"Ildevan Viegas Silva",f:"Armador",o:"Exame 22/04"},
-{n:"Elliton Herculando de Jesus",f:"Auxiliar de laboratório",o:"Exame 17/04"},
-{n:"Jose Edenilson Pires da Silva",f:"Ajudante Geral - Armação",o:"Exame 22/04"},
-{n:"JOSIEL RODRIGUES DA SILVA",f:"Pedreiro",o:"Exame 29/04"},
-];
+function iniciarSessao(){
+  sessionCountdown=SESSION_TIMEOUT;
+  clearInterval(sessionInterval);
+  sessionInterval=setInterval(function(){
+    sessionCountdown--;
+    if(sessionCountdown<=30){
+      document.getElementById("sessionTimer").style.display="block";
+      document.getElementById("timerCount").textContent=sessionCountdown;
+    }
+    if(sessionCountdown<=0){
+      clearInterval(sessionInterval);
+      document.getElementById("sessionTimer").style.display="none";
+      fAdmin();
+      toast("Sessão expirada por inatividade.","warn");
+    }
+  },1000);
+}
+function resetarSessao(){
+  if(sessionInterval){sessionCountdown=SESSION_TIMEOUT;document.getElementById("sessionTimer").style.display="none";}
+}
+document.addEventListener("mousemove",resetarSessao);
+document.addEventListener("keydown",resetarSessao);
+document.addEventListener("click",resetarSessao);
 
-var EF=[], TER=[], MOB=[], DT="";
+// ══════════════════════════════════════════
+//  ESTADO
+// ══════════════════════════════════════════
+var fil="todos", ter="", cI=null, cL=null;
+var sortCol=null, sortDir=1;
+var asoFilter="todos";
+var _editTarget=null; // {type:"ef"|"ter"|"mob", idx:Number}
+var _temAlteracoes=false;
+var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilização"};
 var STORAGE_KEY="bucagrans-pch-data";
+var LOG_KEY="bucagrans-pch-log";
+
+// ══════════════════════════════════════════
+//  DADOS PADRÃO
+// ══════════════════════════════════════════
+var EF_DEFAULT=[
+{re:"4818",n:"ABMAEL VIEIRA DE ARAUJO",f:"PEDREIRO",a:"04/03/2026",e3:"03/04/2026",e6:"03/05/2026",s:"O",aso:"04/03/2027",set:"LANÇAMENTO DE CONCRETO",obs:""},
+{re:"4784",n:"ADALTON DE OLIVEIRA",f:"OPERADOR DE CENTRAL DE CONCRETO",a:"14/02/2026",e3:"15/03/2026",e6:"14/04/2026",s:"O",aso:"14/02/2027",set:"CENTRAL DE CONCRETO",obs:""},
+{re:"4826",n:"ADAO DOS SANTOS",f:"MOTORISTA CAMINHAO BETONEIRA",a:"12/03/2026",e3:"10/04/2026",e6:"10/05/2026",s:"O",aso:"12/03/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4790",n:"ADEMAR PAZ DE OLIVEIRA",f:"PEDREIRO",a:"23/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"23/02/2027",set:"LANÇAMENTO DE CONCRETO",obs:""},
+{re:"4787",n:"ADEMILSON CEZAR DE OLIVEIRA",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/02/2026",e3:"19/03/2026",e6:"18/04/2026",s:"O",aso:"18/02/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4877",n:"ALCIONE GOMES DA SILVA",f:"SOLDADOR DE FORMA",a:"09/04/2026",e3:"08/05/2026",e6:"07/06/2026",s:"O",aso:"09/04/2027",set:"ARMAÇÃO",obs:""},
+{re:"4836",n:"ANTONIO JOEL FREITAS",f:"ENCARREGADO DE ARMACAO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"23/03/2027",set:"ARMAÇÃO",obs:""},
+{re:"4913",n:"ANTONIO MICHEL PAZ",f:"ARMADOR",a:"15/04/2026",e3:"14/05/2026",e6:"13/06/2026",s:"O",aso:"",set:"ARMAÇÃO",obs:""},
+{re:"4867",n:"ANTONIO GUIMARAES DE SOUSA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"06/04/2027",set:"LANÇAMENTO DE CONCRETO",obs:""},
+{re:"4383",n:"CARLOS SANTOS MEDEIROS DE SOUZA",f:"SOLDADOR",a:"13/05/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"MONTAGEM",obs:""},
+{re:"4792",n:"CLESIO DE CARVALHO COSTA",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"A",aso:"23/02/2027",set:"APONTAMENTO",obs:""},
+{re:"4837",n:"CLEVERSON JUNIOR CAMARGO",f:"LIDER DE CARPINTARIA",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"23/03/2027",set:"CARPINTARIA DE CAMPO",obs:""},
+{re:"4708",n:"CLODOALDO ZAPAVOSKI COUTINHO",f:"ENCARREGADO DE TERRAPLANAGEM",a:"19/01/2026",e3:"12/02/2026",e6:"14/03/2026",s:"O",aso:"19/01/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4730",n:"DILVAR SOARES",f:"OPERADOR RETROESCAVADEIRA",a:"28/01/2026",e3:"26/02/2026",e6:"28/03/2026",s:"O",aso:"28/01/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4832",n:"DANIEL DE LIMA FARIAS",f:"MOTORISTA CAMINHAO BASCULANTE",a:"18/03/2026",e3:"16/04/2026",e6:"16/05/2026",s:"O",aso:"18/03/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4914",n:"DANIEL PRATES",f:"AJUDANTE GERAL - PORTARIA",a:"15/04/2026",e3:"14/05/2026",e6:"13/06/2026",s:"A",aso:"",set:"APONTAMENTO",obs:""},
+{re:"4866",n:"DHAYSON GABRIEL DOS SANTOS SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"06/04/2027",set:"LANÇAMENTO DE CONCRETO",obs:""},
+{re:"4246",n:"DOUGLAS APARECIDO TESSAROLI",f:"COORDENADOR ADMINISTRATIVO",a:"20/01/2023",e3:"INDET.",e6:"INDET.",s:"A",aso:"!",set:"ADMINISTRAÇÃO",obs:""},
+{re:"4719",n:"EDUARDO LUIS PIVA",f:"OPERADOR ESCAVADEIRA",a:"23/01/2026",e3:"21/02/2026",e6:"23/03/2026",s:"O",aso:"23/01/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4791",n:"ELERSON SOARES WEBER",f:"AJUDANTE GERAL",a:"23/02/2026",e3:"24/03/2026",e6:"23/04/2026",s:"O",aso:"23/02/2027",set:"TRANSPORTES",obs:""},
+{re:"4589",n:"EMANOEL LEONARDO MANGUEIRA DA SILVA",f:"ELETRICISTA",a:"21/07/2025",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"ELETRICA/BOMBEAMENTO",obs:""},
+{re:"4865",n:"ELISON MARQUES DA SILVA",f:"AJUDANTE GERAL",a:"06/04/2026",e3:"05/05/2026",e6:"04/06/2026",s:"O",aso:"06/04/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4543",n:"EQUIEL NATAN DA SILVA",f:"ENCARREGADO DE RH",a:"12/11/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:"!",set:"RH",obs:""},
+{re:"4838",n:"FRANCISCO DAS CHAGAS DA SILVA ALVES",f:"LIDER DE CONCRETO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"23/03/2027",set:"LANÇAMENTO DE CONCRETO",obs:""},
+{re:"4260",n:"GILBERTO SAMUELSSON",f:"ENCARREGADO GERAL DE OBRAS",a:"06/02/2023",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"ENGENHARIA",obs:""},
+{re:"4924",n:"GUILBER KAIRON CAMARGO",f:"ARMADOR",a:"16/04/2026",e3:"15/05/2026",e6:"14/06/2026",s:"O",aso:"",set:"ARMAÇÃO",obs:""},
+{re:"4731",n:"HELIEL KLEM",f:"OPERADOR ESCAVADEIRA",a:"28/01/2026",e3:"26/02/2026",e6:"28/03/2026",s:"O",aso:"28/01/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4875",n:"ISAQUE SOARES DA SILVA",f:"PEDREIRO",a:"07/04/2026",e3:"06/05/2026",e6:"05/06/2026",s:"O",aso:"07/04/2027",set:"LANÇAMENTO DE CONCRETO",obs:""},
+{re:"4823",n:"JACSON PAULO CLEIN",f:"OPERADOR TRATOR ESTEIRA",a:"06/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"06/03/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4839",n:"JAIRO PONTES CALDAS",f:"CARPINTEIRO",a:"23/03/2026",e3:"21/04/2026",e6:"21/05/2026",s:"O",aso:"23/03/2027",set:"CARPINTARIA DE CAMPO",obs:""},
+{re:"4912",n:"JEAN AUGUSTO CAMARGO",f:"ARMADOR",a:"15/04/2026",e3:"14/05/2026",e6:"13/06/2026",s:"O",aso:"",set:"ARMAÇÃO",obs:""},
+{re:"4692",n:"JOAO CARLOS FERNANDES",f:"ENCARREGADO DE SESSAO TECNICA",a:"13/01/2026",e3:"INDET.",e6:"INDET.",s:"A",aso:"13/01/2027",set:"ENGENHARIA",obs:""},
+{re:"4733",n:"JOAO PINTO DO NASCIMENTO",f:"MOTORISTA CAMINHAO COMBOIO",a:"30/01/2026",e3:"28/02/2026",e6:"30/03/2026",s:"O",aso:"30/01/2027",set:"MANUTENÇÃO MECANICA",obs:""},
+{re:"4718",n:"JOAO ROBERTO BAIRROS",f:"MOTORISTA CAMINHAO BASCULANTE",a:"23/01/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"23/01/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4445",n:"JOSE DHEIZOM MORAIS DA ROSA",f:"COORDENADOR DE SEGURANCA DO TRABALHO",a:"14/08/2024",e3:"INDET.",e6:"INDET.",s:"A",aso:"!",set:"ENGENHARIA",obs:""},
+{re:"4716",n:"JOSE JOSMAR FRANCA",f:"MECANICO",a:"21/01/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"21/01/2027",set:"MANUTENÇÃO MECANICA",obs:""},
+{re:"4794",n:"JOSE ROGERIO FREITAS DA SILVA",f:"OPERADOR ESCAVADEIRA",a:"24/02/2026",e3:"25/03/2026",e6:"24/04/2026",s:"O",aso:"24/02/2027",set:"TERRAPLENAGEM",obs:""},
+{re:"4847",n:"JOSIEL DA SILVA PEREIRA",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"26/03/2027",set:"ARMAÇÃO",obs:""},
+{re:"4829",n:"LAERCIO GADELHA JACINTO",f:"BOMBEIRO HIDRAULICO",a:"16/03/2026",e3:"14/04/2026",e6:"14/05/2026",s:"O",aso:"16/03/2027",set:"ELETRICA/BOMBEAMENTO",obs:""},
+{re:"4783",n:"LUIZ HENRIQUE POLICENO ESCOBAR",f:"AJUDANTE GERAL",a:"13/02/2026",e3:"14/03/2026",e6:"13/04/2026",s:"O",aso:"13/02/2027",set:"CENTRAL DE CARPINTARIA",obs:""},
+{re:"2",n:"MARCELO MARTON MAC FADDEN",f:"ENGENHEIRO RESIDENTE",a:"--",e3:"INDET.",e6:"INDET.",s:"A",aso:"!",set:"ENGENHARIA",obs:""},
+{re:"4813",n:"MARCONE RIBEIRO DE SOUSA",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"02/03/2027",set:"CENTRAL DE CARPINTARIA",obs:""},
+{re:"4879",n:"MARTIM VIEIRA DA SILVA ARAÚJO",f:"AJUDANTE GERAL",a:"10/04/2026",e3:"09/05/2026",e6:"08/06/2026",s:"A",aso:"10/04/2027",set:"LIMPEZA",obs:""},
+{re:"4848",n:"MAILSON COSTA PINHEIRO",f:"AJUDANTE GERAL",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"26/03/2027",set:"ELETRICA/BOMBEAMENTO",obs:""},
+{re:"4816",n:"NELSON PROENCA DE OLIVEIRA",f:"ENCARREGADO DE SERVICOS GERAIS",a:"03/03/2026",e3:"01/04/2026",e6:"01/05/2026",s:"A",aso:"03/03/2027",set:"LIMPEZA",obs:""},
+{re:"4849",n:"OSMAR ANTONIO PRITSCH",f:"ENCARREGADO GERAL DE OBRAS",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"26/03/2027",set:"ENGENHARIA",obs:""},
+{re:"4850",n:"PEDRO DOS SANTOS",f:"ARMADOR",a:"26/03/2026",e3:"24/04/2026",e6:"24/05/2026",s:"O",aso:"26/03/2027",set:"ARMAÇÃO",obs:""},
+{re:"4414",n:"RAI GARAJAU DA SILVA",f:"CARPINTEIRO",a:"12/06/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"CENTRAL DE CONCRETO",obs:""},
+{re:"4840",n:"SEBASTIAO DE LIMA CAMARGO",f:"CARPINTEIRO",a:"24/03/2026",e3:"22/04/2026",e6:"22/05/2026",s:"O",aso:"24/03/2027",set:"CARPINTARIA DE CAMPO",obs:""},
+{re:"4418",n:"SIDNEI CIBINELI GURIAN",f:"ENGENHEIRO CIVIL",a:"26/07/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"ENGENHARIA",obs:""},
+{re:"4425",n:"SIDNEI SIQUEIRA AVILA",f:"ENCARREGADO DE CARPINTARIA",a:"02/08/2024",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"CARPINTARIA DE CAMPO",obs:""},
+{re:"4793",n:"TALISON MIGUEL DA SILVA",f:"AJUDANTE GERAL",a:"24/02/2026",e3:"INDET.",e6:"INDET.",s:"A",aso:"24/02/2027",set:"RH",obs:""},
+{re:"4793",n:"VALDIR DA SILVA BEHEREND",f:"ENCARREGADO DE MANUTENÇÃO",a:"16/06/2010",e3:"INDET.",e6:"INDET.",s:"O",aso:"!",set:"MANUTENÇÃO MECANICA",obs:""},
+{re:"4786",n:"VALDAIR ANTONIO MAIA DA SILVA",f:"LIDER DE CARPINTARIA",a:"17/02/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"17/02/2027",set:"CENTRAL DE CARPINTARIA",obs:""},
+{re:"4814",n:"VALMIR MOREIRA JUNIOR",f:"CARPINTEIRO",a:"02/03/2026",e3:"INDET.",e6:"INDET.",s:"O",aso:"02/03/2027",set:"CENTRAL DE CARPINTARIA",obs:""},
+{re:"4788",n:"WILLIAN DE CAMPOS PEREIRA",f:"AUXILIAR TOPOGRAFO",a:"18/02/2026",e3:"20/03/2026",e6:"19/04/2026",s:"O",aso:"18/02/2027",set:"TOPOGRAFIA",obs:""},
+];
+var TER_DEFAULT=[
+{n:"Daniel da Silva",e:"CASTILHO & CIA",f:"Motorista de onibus",obs:""},
+{n:"Carlos Socrates Scalsavara",e:"SS TOPOGRAFIA E SERVICOS",f:"Topografo",obs:""},
+{n:"Tiago Wilian Banaszevski",e:"NVP TRANSPORTES E TERRAPLANAGEM",f:"Motorista C. Basculante",obs:""},
+{n:"Diogo Wilian de Mello",e:"TREMEA SERVICOS E TRANSPORTES",f:"Motorista C. Basculante",obs:""},
+{n:"Ladimir Gheller",e:"TREMEA SERVICOS E TRANSPORTES",f:"Motorista C. Basculante",obs:""},
+{n:"Julio Cesar Ribeiro dos Santos",e:"DJANGO TERRAPLANAGEM E TRANSPORTES",f:"Motorista C. Basculante",obs:""},
+{n:"Jucelito machado",e:"DINNA",f:"Operador de perfuratriz",obs:""},
+{n:"Isaias Alves",e:"TREMEA SERVICOS E TRANSPORTES",f:"Motorista C. Basculante",obs:""},
+{n:"Kamile Dalcas",e:"ESTELAR",f:"Engenheira Civil",obs:""},
+{n:"Elizeu Maciel da Silva",e:"CONCRESOLO",f:"Encarregado de laboratorio",obs:""},
+{n:"Enio ",e:"GALIOTO",f:"Operador de Trator Esteira",obs:""}
+];
+var MOB_DEFAULT=[
+{n:"Francisco da Silva Pereira",f:"Armador",o:"Exame 15/04",obs:""},
+{n:"Ildevan Viegas Silva",f:"Armador",o:"Exame 22/04",obs:""},
+{n:"Elliton Herculando de Jesus",f:"Auxiliar de laboratório",o:"Exame 17/04",obs:""},
+{n:"Jose Edenilson Pires da Silva",f:"Ajudante Geral - Armação",o:"Exame 22/04",obs:""},
+{n:"JOSIEL RODRIGUES DA SILVA",f:"Pedreiro",o:"Exame 29/04",obs:""},
+];
+
+var EF=[], TER=[], MOB=[], DT="", LOG=[];
+
+// ══════════════════════════════════════════
+//  STORAGE
+//  DATA_VERSION: incremente este número toda
+//  vez que atualizar EF_DEFAULT no código.
+//  Isso força o reset dos dados em cache.
+// ══════════════════════════════════════════
+var DATA_VERSION=2; // ← mude para 3, 4, 5... ao atualizar defaults
 
 async function carregarDados(){
   try{
     var result=await window.storage.get(STORAGE_KEY);
     if(result&&result.value){
       var saved=JSON.parse(result.value);
-      EF=saved.EF||EF_DEFAULT;TER=saved.TER||TER_DEFAULT;MOB=saved.MOB||MOB_DEFAULT;DT=saved.DT||dataHoje();
-      EF.forEach(function(e){if(e.set===undefined)e.set="";});
+      // Se a versão salva for diferente, reseta para os novos defaults
+      if(!saved.v||saved.v!==DATA_VERSION){
+        resetDefault();
+        // Salva imediatamente com a nova versão
+        await persistirDados();
+      } else {
+        EF=saved.EF||EF_DEFAULT; TER=saved.TER||TER_DEFAULT; MOB=saved.MOB||MOB_DEFAULT; DT=saved.DT||dataHoje();
+        EF.forEach(function(e){if(e.set===undefined)e.set=""; if(e.obs===undefined)e.obs="";});
+        TER.forEach(function(e){if(e.obs===undefined)e.obs="";});
+        MOB.forEach(function(e){if(e.obs===undefined)e.obs="";});
+      }
     } else {
-      EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));DT=dataHoje();
+      resetDefault();
     }
-  } catch(e){
-    EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));DT=dataHoje();
-  }
+  } catch(e){ resetDefault(); }
+
+  try{
+    var lr=await window.storage.get(LOG_KEY);
+    if(lr&&lr.value) LOG=JSON.parse(lr.value);
+    else LOG=[];
+  } catch(e){ LOG=[]; }
+}
+function resetDefault(){
+  EF=JSON.parse(JSON.stringify(EF_DEFAULT));
+  TER=JSON.parse(JSON.stringify(TER_DEFAULT));
+  MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));
+  DT=dataHoje();
 }
 async function persistirDados(){
-  var payload=JSON.stringify({EF:EF,TER:TER,MOB:MOB,DT:DT});
+  var payload=JSON.stringify({v:DATA_VERSION,EF:EF,TER:TER,MOB:MOB,DT:DT});
   var result=await window.storage.set(STORAGE_KEY,payload);
   return !!result;
 }
-function dataHoje(){var h=new Date();return ("0"+h.getDate()).slice(-2)+"/"+("0"+(h.getMonth()+1)).slice(-2)+"/"+h.getFullYear();}
-function parseDt(s){if(!s)return null;var p=s.split("/");if(p.length!==3)return null;return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));}
+async function persistirLog(){
+  if(LOG.length>200) LOG=LOG.slice(LOG.length-200);
+  await window.storage.set(LOG_KEY,JSON.stringify(LOG));
+}
+function adicionarLog(tipo,mensagem){
+  LOG.push({tipo:tipo,msg:mensagem,dt:dataHoraAgora()});
+}
+function dataHoje(){var h=new Date();return("0"+h.getDate()).slice(-2)+"/"+("0"+(h.getMonth()+1)).slice(-2)+"/"+h.getFullYear();}
+function dataHoraAgora(){var h=new Date();return dataHoje()+" "+("0"+h.getHours()).slice(-2)+":"+("0"+h.getMinutes()).slice(-2);}
+function parseDt(s){if(!s)return null;var ss=s.replace(/\.$/,"").trim();var p=ss.split("/");if(p.length!==3)return null;return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));}
 
+// ══════════════════════════════════════════
+//  VALIDAÇÃO
+// ══════════════════════════════════════════
+function validarData(s){
+  if(!s||s==="INDET."||s==="!"||s==="--")return true;
+  s=s.replace(/\.$/,"").trim();
+  var p=s.split("/");
+  if(p.length!==3)return false;
+  var d=parseInt(p[0]),m=parseInt(p[1]),y=parseInt(p[2]);
+  if(isNaN(d)||isNaN(m)||isNaN(y))return false;
+  if(d<1||d>31||m<1||m>12||y<1900||y>2100)return false;
+  var dt=new Date(y,m-1,d);
+  return dt.getDate()===d&&dt.getMonth()===m-1&&dt.getFullYear()===y;
+}
+function reExiste(re){
+  return EF.some(function(e){return String(e.re)===String(re);});
+}
+
+// ══════════════════════════════════════════
+//  TOASTS
+// ══════════════════════════════════════════
+function toast(msg,tipo){
+  var c=document.getElementById("toast-container");
+  var t=document.createElement("div");
+  t.className="toast"+(tipo?" "+tipo:"");
+  t.textContent=msg;
+  c.appendChild(t);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.classList.add("show");});});
+  setTimeout(function(){t.classList.remove("show");setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},350);},3200);
+}
+
+// ══════════════════════════════════════════
+//  HELPERS VISUAIS
+// ══════════════════════════════════════════
 function expHtml(val){
   if(!val||val==="INDET.")return "<span style='color:#bbb;font-size:10px'>INDET.</span>";
   var d=parseDt(val);if(!d)return "<span style='color:#bbb;font-size:10px'>"+val+"</span>";
@@ -382,12 +653,24 @@ function expHtml(val){
   if(diff<=30)return "<span style='color:#856404;font-size:10px;font-weight:700'>"+val+"</span>";
   return "<span style='color:#999;font-size:10px'>"+val+"</span>";
 }
-function asoStatus(aso){if(!aso)return "nd";var d=parseDt(aso);if(!d)return "nd";var now=new Date();now.setHours(0,0,0,0);var diff=Math.floor((d-now)/86400000);if(diff<0)return "venc";if(diff<=30)return "warn";return "ok";}
-function asoHtml(aso){if(!aso)return "<span class='aso-nd'>-</span>";var st=asoStatus(aso);return "<span class='aso-"+st+"'>"+aso+"</span>";}
+function asoStatus(aso){
+  if(!aso||aso==="!"||aso==="--")return "nd";
+  var d=parseDt(aso);if(!d)return "nd";
+  var now=new Date();now.setHours(0,0,0,0);
+  var diff=Math.floor((d-now)/86400000);
+  if(diff<0)return "venc";if(diff<=30)return "warn";return "ok";
+}
+function asoHtml(aso){
+  if(!aso||aso==="!"||aso==="--")return "<span class='aso-nd'>-</span>";
+  var st=asoStatus(aso);
+  return "<span class='aso-"+st+"'>"+aso+"</span>";
+}
 function adm(){return EF.filter(function(e){return e.s==="A";});}
 function op(){return EF.filter(function(e){return e.s==="O";});}
 
-// ── TOOLTIP FOTO ──
+// ══════════════════════════════════════════
+//  TOOLTIP FOTO
+// ══════════════════════════════════════════
 function nomeHtml(re,nome,funcao){
   var nEsc=nome.replace(/'/g,"&#39;");
   var fEsc=funcao.replace(/'/g,"&#39;");
@@ -409,16 +692,19 @@ function moverTip(e){
   var tip=document.getElementById("fotoTip");
   var x=e.clientX+18,y=e.clientY+18;
   var tw=tip.offsetWidth||160,th=tip.offsetHeight||180;
-  if(x+tw>window.innerWidth-8) x=e.clientX-tw-10;
-  if(y+th>window.innerHeight-8) y=e.clientY-th-10;
+  if(x+tw>window.innerWidth-8)x=e.clientX-tw-10;
+  if(y+th>window.innerHeight-8)y=e.clientY-th-10;
   tip.style.left=x+"px";tip.style.top=y+"px";
 }
 function hideTip(){document.getElementById("fotoTip").style.display="none";}
 document.addEventListener("mousemove",function(e){
   var tip=document.getElementById("fotoTip");
-  if(tip.style.display==="block") moverTip(e);
+  if(tip.style.display==="block")moverTip(e);
 });
 
+// ══════════════════════════════════════════
+//  FILTROS
+// ══════════════════════════════════════════
 function gL(){
   var fSetor=document.getElementById("filtroSetor")?document.getElementById("filtroSetor").value:"";
   var r;
@@ -429,70 +715,170 @@ function gL(){
   else if(fil==="terceiros") r=TER.map(function(x){return Object.assign({},x,{t:"ter"});});
   else r=MOB.map(function(x){return Object.assign({},x,{t:"mob"});});
   if(ter) r=r.filter(function(x){return(x.n||"").toLowerCase().indexOf(ter)>-1||(x.f||"").toLowerCase().indexOf(ter)>-1||(x.e||"").toLowerCase().indexOf(ter)>-1||(x.set||"").toLowerCase().indexOf(ter)>-1;});
-  if(fSetor) r=r.filter(function(x){return(x.set||"")=== fSetor;});
+  if(fSetor) r=r.filter(function(x){return(x.set||"")===fSetor;});
+  if(asoFilter!=="todos"){
+    r=r.filter(function(x){
+      if(x.t!=="ef")return false;
+      return asoStatus(x.aso)===asoFilter;
+    });
+  }
   return r;
 }
+function setAsoFilter(f){
+  asoFilter=f;
+  ["fasoAll","fasoVenc","fasoWarn","fasoOk"].forEach(function(id){document.getElementById(id).classList.remove("on");});
+  var map={todos:"fasoAll",venc:"fasoVenc",warn:"fasoWarn",ok:"fasoOk"};
+  if(map[f])document.getElementById(map[f]).classList.add("on");
+  rTab();
+}
 
+// ══════════════════════════════════════════
+//  ORDENAÇÃO
+// ══════════════════════════════════════════
+function sortBy(col){
+  if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=1;}
+  rTab();
+}
+function aplicarSort(arr){
+  if(!sortCol)return arr;
+  return arr.slice().sort(function(a,b){
+    var av=a[sortCol]||"",bv=b[sortCol]||"";
+    // datas
+    if(["a","aso","e3","e6"].indexOf(sortCol)>-1){
+      var ad=parseDt(av),bd=parseDt(bv);
+      if(!ad&&!bd)return 0;if(!ad)return 1;if(!bd)return -1;
+      return sortDir*(ad-bd);
+    }
+    return sortDir*av.localeCompare(bv,"pt-BR");
+  });
+}
+
+// ══════════════════════════════════════════
+//  CARDS
+// ══════════════════════════════════════════
+function contarAsoVencidos(){
+  return EF.filter(function(e){return asoStatus(e.aso)==="venc";}).length;
+}
 function rCards(){
   var A=adm(),O=op();
+  var venc=contarAsoVencidos();
   var d=[
     {id:"todos",    v:EF.length+TER.length+MOB.length,l:"TOTAL GERAL",c:"c0"},
     {id:"efetivo",  v:EF.length,  l:"TOTAL EFETIVO",c:"c1"},
-    {id:"adm",      v:A.length,   l:"ADM",           c:"c2"},
-    {id:"op",       v:O.length,   l:"OPERACIONAL",   c:"c3"},
-    {id:"terceiros",v:TER.length, l:"TERCEIROS",     c:"c4"},
-    {id:"mob",      v:MOB.length, l:"MOBILIZACAO",   c:"c5"}
+    {id:"adm",      v:A.length,   l:"ADM",          c:"c2"},
+    {id:"op",       v:O.length,   l:"OPERACIONAL",  c:"c3"},
+    {id:"terceiros",v:TER.length, l:"TERCEIROS",    c:"c4"},
+    {id:"mob",      v:MOB.length, l:"MOBILIZAÇÃO",  c:"c5"}
   ];
   document.getElementById("cards").innerHTML=d.map(function(c){
-    return "<div class='card "+c.c+(fil===c.id?" active":"")+"' onclick='sF(\""+c.id+"\")'><div class='num'>"+c.v+"</div><div class='lbl'>"+c.l+"</div></div>";
+    var badge=(c.id==="efetivo"&&venc>0)?"<span class='card-badge'>"+venc+" ASO</span>":"";
+    return "<div class='card "+c.c+(fil===c.id?" active":"")+"' onclick='sF(\""+c.id+"\")'><div class='num'>"+c.v+"</div><div class='lbl'>"+c.l+"</div>"+badge+"</div>";
   }).join("");
+  // badge no botão ASO do header
+  var ab=document.getElementById("asoBadge");
+  if(venc>0){ab.style.display="flex";ab.textContent=venc;}else{ab.style.display="none";}
 }
 
-function sF(f){fil=f;ter="";document.getElementById("busca").value="";document.getElementById("filtroSetor").value="";rCards();rTab();}
+function sF(f){fil=f;ter="";asoFilter="todos";document.getElementById("busca").value="";document.getElementById("filtroSetor").value="";["fasoAll","fasoVenc","fasoWarn","fasoOk"].forEach(function(id){document.getElementById(id).classList.remove("on");});document.getElementById("fasoAll").classList.add("on");rCards();rTab();}
 function buscar(){ter=document.getElementById("busca").value.toLowerCase();rTab();}
+
+// ══════════════════════════════════════════
+//  TABELA
+// ══════════════════════════════════════════
+function sortIcon(col){
+  if(sortCol!==col)return "<span class='sort-icon'>⇅</span>";
+  return sortDir===1?"<span class='sort-icon'>↑</span>":"<span class='sort-icon'>↓</span>";
+}
+function thSorted(col){return sortCol===col?" sorted":"";}
 
 function rTab(){
   var rows=gL(),mix=fil==="todos";
-  document.getElementById("sT").textContent=TI[fil];
+  document.getElementById("sT").textContent=TI[fil]||(fil==="todos"?"Todos":"");
   document.getElementById("sC").textContent=rows.length+" registro"+(rows.length!==1?"s":"");
+
   var eR=rows.filter(function(r){return r.t==="ef";}),
       tR=rows.filter(function(r){return r.t==="ter";}),
       mR=rows.filter(function(r){return r.t==="mob";});
+
+  eR=aplicarSort(eR);
+
   var h="";
-  if(!rows.length){h="<div class='norows'>Nenhum registro.</div>";}
+  if(!rows.length){h="<div class='norows'>Nenhum registro encontrado.</div>";}
+
   if(eR.length){
     if(mix) h+="<div class='sdiv'>EFETIVO</div>";
-    h+="<div class='tscroll'><table><thead><tr><th>#</th><th>RE</th><th>Nome</th><th>Funcao</th><th>Setor</th><th>Adm.</th><th>Exp.30</th><th>Exp.60</th><th>Setor ADM</th><th>ASO Venc.</th></tr></thead><tbody>";
+    h+="<div class='tscroll'><table><thead><tr>";
+    h+="<th style='width:28px'>#</th>";
+    h+="<th class='"+thSorted("re")+"' onclick='sortBy(\"re\")'>RE"+sortIcon("re")+"</th>";
+    h+="<th class='"+thSorted("n")+"' onclick='sortBy(\"n\")'>Nome"+sortIcon("n")+"</th>";
+    h+="<th class='"+thSorted("f")+"' onclick='sortBy(\"f\")'>Função"+sortIcon("f")+"</th>";
+    h+="<th class='"+thSorted("set")+"' onclick='sortBy(\"set\")'>Setor"+sortIcon("set")+"</th>";
+    h+="<th class='"+thSorted("a")+"' onclick='sortBy(\"a\")'>Adm."+sortIcon("a")+"</th>";
+    h+="<th class='"+thSorted("e3")+"' onclick='sortBy(\"e3\")'>Exp.30"+sortIcon("e3")+"</th>";
+    h+="<th class='"+thSorted("e6")+"' onclick='sortBy(\"e6\")'>Exp.60"+sortIcon("e6")+"</th>";
+    h+="<th>Tipo</th>";
+    h+="<th class='"+thSorted("aso")+"' onclick='sortBy(\"aso\")'>ASO"+sortIcon("aso")+"</th>";
+    h+="</tr></thead><tbody>";
     eR.forEach(function(r,i){
+      var origIdx=EF.indexOf(EF.find(function(x){return x.re===r.re&&x.n===r.n;}));
       var b=r.s==="A"?"<span class='badm'>ADM</span>":"<span class='bop'>OPER.</span>";
       var setHtml=r.set?"<span class='bset'>"+r.set+"</span>":"<span style='color:#ccc;font-size:10px'>-</span>";
-      h+="<tr><td style='color:#bbb;font-size:9px'>"+(i+1)+"</td><td><b>"+r.re+"</b></td><td style='white-space:nowrap'>"+nomeHtml(r.re,r.n,r.f)+"</td><td style='color:#555;white-space:nowrap;font-size:10px'>"+r.f+"</td><td>"+setHtml+"</td><td style='color:#999;font-size:10px'>"+r.a+"</td><td>"+expHtml(r.e3)+"</td><td>"+expHtml(r.e6)+"</td><td>"+b+"</td><td>"+asoHtml(r.aso)+"</td></tr>";
+      var obsHtml=r.obs?"<div class='obs-text'>📝 "+r.obs+"</div>":"";
+      h+="<tr onclick='abrirEdicaoInline(\"ef\","+origIdx+")'>";
+      h+="<td style='color:#bbb;font-size:9px'>"+(i+1)+"</td>";
+      h+="<td><b>"+r.re+"</b></td>";
+      h+="<td style='white-space:nowrap'>"+nomeHtml(r.re,r.n,r.f)+obsHtml+"</td>";
+      h+="<td style='color:#555;white-space:nowrap;font-size:10px'>"+r.f+"</td>";
+      h+="<td>"+setHtml+"</td>";
+      h+="<td style='color:#999;font-size:10px'>"+r.a+"</td>";
+      h+="<td>"+expHtml(r.e3)+"</td>";
+      h+="<td>"+expHtml(r.e6)+"</td>";
+      h+="<td>"+b+"</td>";
+      h+="<td>"+asoHtml(r.aso)+"</td>";
+      h+="</tr>";
     });
     h+="</tbody></table></div>";
   }
   if(tR.length){
     if(mix) h+="<div class='sdiv'>TERCEIROS</div>";
-    h+="<div class='tscroll'><table><thead><tr><th>#</th><th>Nome</th><th>Empresa</th><th>Funcao</th></tr></thead><tbody>";
+    h+="<div class='tscroll'><table><thead><tr><th>#</th><th>Nome</th><th>Empresa</th><th>Função</th></tr></thead><tbody>";
     tR.forEach(function(r,i){
-      h+="<tr><td style='color:#bbb;font-size:9px'>"+(i+1)+"</td><td style='white-space:nowrap'><b>"+r.n+"</b></td><td style='color:#555;font-size:10px'>"+r.e+"</td><td style='color:#555;font-size:10px'>"+r.f+"</td></tr>";
+      var origIdx=TER.indexOf(TER.find(function(x){return x.n===r.n&&x.e===r.e;}));
+      var obsHtml=r.obs?"<div class='obs-text'>📝 "+r.obs+"</div>":"";
+      h+="<tr onclick='abrirEdicaoInline(\"ter\","+origIdx+")'>";
+      h+="<td style='color:#bbb;font-size:9px'>"+(i+1)+"</td>";
+      h+="<td style='white-space:nowrap'><b>"+r.n+"</b>"+obsHtml+"</td>";
+      h+="<td style='color:#555;font-size:10px'>"+r.e+"</td>";
+      h+="<td style='color:#555;font-size:10px'>"+r.f+"</td>";
+      h+="</tr>";
     });
     h+="</tbody></table></div>";
   }
   if(mR.length){
-    if(mix) h+="<div class='sdiv'>EM MOBILIZACAO</div>";
-    h+="<table><thead><tr><th>#</th><th>Nome</th><th>Funcao</th><th>Status</th></tr></thead><tbody>";
+    if(mix) h+="<div class='sdiv'>EM MOBILIZAÇÃO</div>";
+    h+="<table><thead><tr><th>#</th><th>Nome</th><th>Função</th><th>Status</th></tr></thead><tbody>";
     mR.forEach(function(r,i){
+      var origIdx=MOB.indexOf(MOB.find(function(x){return x.n===r.n;}));
       var ag=(r.o||"").toLowerCase().indexOf("aguard")>-1;
-      h+="<tr><td style='color:#bbb;font-size:9px'>"+(i+1)+"</td><td style='white-space:nowrap'><b>"+r.n+"</b></td><td style='color:#555;font-size:10px'>"+r.f+"</td><td><span class='"+(ag?"bag":"blib")+"'>"+r.o+"</span></td></tr>";
+      var obsHtml=r.obs?"<div class='obs-text'>📝 "+r.obs+"</div>":"";
+      h+="<tr onclick='abrirEdicaoInline(\"mob\","+origIdx+")'>";
+      h+="<td style='color:#bbb;font-size:9px'>"+(i+1)+"</td>";
+      h+="<td style='white-space:nowrap'><b>"+r.n+"</b>"+obsHtml+"</td>";
+      h+="<td style='color:#555;font-size:10px'>"+r.f+"</td>";
+      h+="<td><span class='"+(ag?"bag":"blib")+"'>"+r.o+"</span></td>";
+      h+="</tr>";
     });
     h+="</tbody></table>";
   }
   document.getElementById("tbox").innerHTML=h;
 }
 
+// ══════════════════════════════════════════
+//  GRÁFICOS
+// ══════════════════════════════════════════
 function rGraf(){
   var A=adm(),O=op(),tot=EF.length+TER.length+MOB.length||1;
-  var s=[{l:"Operacional",v:O.length,c:"#27ae60"},{l:"ADM",v:A.length,c:"#1a3a6b"},{l:"Terceiros",v:TER.length,c:"#c0392b"},{l:"Mobilizacao",v:MOB.length,c:"#6a0dad"}];
+  var s=[{l:"Operacional",v:O.length,c:"#27ae60"},{l:"ADM",v:A.length,c:"#1a3a6b"},{l:"Terceiros",v:TER.length,c:"#c0392b"},{l:"Mobilização",v:MOB.length,c:"#6a0dad"}];
   var bS=s.map(function(d){return "<div class='bi'><div class='bl'><span>"+d.l+"</span><span><b>"+d.v+"</b> ("+Math.round(d.v/tot*100)+"%)</span></div><div class='bt'><div class='bf' style='width:"+Math.round(d.v/tot*100)+"%;background:"+d.c+"'></div></div></div>";}).join("");
   var sc={};
   EF.forEach(function(e){if(e.set){sc[e.set]=(sc[e.set]||0)+1;}});
@@ -505,7 +891,11 @@ function rGraf(){
 function rTudo(){rCards();rTab();rGraf();}
 function atualizarSub(){document.getElementById("sub").textContent="Atualizado em: "+DT;}
 
+// ══════════════════════════════════════════
+//  MODAL ADMIN — LOGIN
+// ══════════════════════════════════════════
 function abrirAdmin(){
+  _temAlteracoes=false;
   document.getElementById("pLogin").style.display="block";
   document.getElementById("pEd").style.display="none";
   document.getElementById("pwi").value="";
@@ -513,309 +903,452 @@ function abrirAdmin(){
   document.getElementById("pwi").classList.remove("err");
   document.getElementById("ov").classList.add("on");
 }
-function fAdmin(){document.getElementById("ov").classList.remove("on");}
-function chk(){
-  if(document.getElementById("pwi").value===PW){
+function fAdmin(){
+  document.getElementById("ov").classList.remove("on");
+  clearInterval(sessionInterval);sessionInterval=null;
+  document.getElementById("sessionTimer").style.display="none";
+}
+async function chk(){
+  var ok=await verificarSenha(document.getElementById("pwi").value);
+  if(ok){
     document.getElementById("pLogin").style.display="none";
     document.getElementById("pEd").style.display="block";
     document.getElementById("saveStatus").textContent="";
     document.getElementById("saveStatus").className="save-status";
+    iniciarSessao();
     mAba(0);rListas();
   } else {
     document.getElementById("pwerr").style.display="block";
     document.getElementById("pwi").classList.add("err");
   }
 }
+function tentarFechar(){
+  if(_temAlteracoes){
+    if(!confirm("Há alterações não salvas. Deseja fechar mesmo assim?"))return;
+  }
+  fAdmin();
+}
 function mAba(n){for(var i=0;i<3;i++){document.getElementById("a"+i).style.display=i===n?"block":"none";document.getElementById("t"+i).className="tab"+(i===n?" on":"");}}
+
+// ══════════════════════════════════════════
+//  LISTAS NO PAINEL
+// ══════════════════════════════════════════
 function rListas(){
   var hE="";
   for(var i=0;i<EF.length;i++){
     var ic=cL==="EF"&&cI===i;
-    var asoInfo=EF[i].aso?" | ASO: "+EF[i].aso:"";
-    var setInfo=EF[i].set?" | "+EF[i].set:"";
-    hE+="<div class='prow'><div class='pinfo'><div class='pname'>"+EF[i].re+" - "+EF[i].n+"</div><div class='pfn'>"+EF[i].f+" | "+(EF[i].s==="A"?"ADM":"OPER.")+setInfo+asoInfo+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='EF' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
+    hE+="<div class='prow'><div class='pinfo'><div class='pname'>"+EF[i].re+" - "+EF[i].n+"</div><div class='pfn'>"+EF[i].f+" | "+(EF[i].s==="A"?"ADM":"OPER.")+(EF[i].set?" | "+EF[i].set:"")+(EF[i].aso?" | ASO: "+EF[i].aso:"")+"</div></div><button class='bedit' data-l='EF' data-i='"+i+"' onclick='abrirEdicaoInline(\"ef\","+i+")'>Editar</button><button class='bdel"+(ic?" conf":"")+"' data-l='EF' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
   }
   document.getElementById("lEF").innerHTML=hE||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Vazia.</div>";
   var hT="";
   for(var i=0;i<TER.length;i++){
     var ic=cL==="TER"&&cI===i;
-    hT+="<div class='prow'><div class='pinfo'><div class='pname'>"+TER[i].n+"</div><div class='pfn'>"+TER[i].e+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='TER' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
+    hT+="<div class='prow'><div class='pinfo'><div class='pname'>"+TER[i].n+"</div><div class='pfn'>"+TER[i].e+"</div></div><button class='bedit' onclick='abrirEdicaoInline(\"ter\","+i+")'>Editar</button><button class='bdel"+(ic?" conf":"")+"' data-l='TER' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
   }
   document.getElementById("lTER").innerHTML=hT||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Vazia.</div>";
   var hM="";
   for(var i=0;i<MOB.length;i++){
     var ic=cL==="MOB"&&cI===i;
-    hM+="<div class='prow'><div class='pinfo'><div class='pname'>"+MOB[i].n+"</div><div class='pfn'>"+MOB[i].o+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='MOB' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
+    hM+="<div class='prow'><div class='pinfo'><div class='pname'>"+MOB[i].n+"</div><div class='pfn'>"+MOB[i].o+"</div></div><button class='bedit' onclick='abrirEdicaoInline(\"mob\","+i+")'>Editar</button><button class='bdel"+(ic?" conf":"")+"' data-l='MOB' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
   }
   document.getElementById("lMOB").innerHTML=hM||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Vazia.</div>";
 }
+
 function cRem(b){
   var l=b.getAttribute("data-l"),i=parseInt(b.getAttribute("data-i"));
   if(cL===l&&cI===i){
+    var nome=(l==="EF"?EF[i].n:l==="TER"?TER[i].n:MOB[i].n)||"";
     if(l==="EF")EF.splice(i,1);else if(l==="TER")TER.splice(i,1);else if(l==="MOB")MOB.splice(i,1);
+    adicionarLog("rem","Removido: "+nome);
+    _temAlteracoes=true;
     cI=null;cL=null;rListas();rTudo();
+    toast("Registro removido.","error");
   } else {
     cI=i;cL=l;rListas();
     setTimeout(function(){cI=null;cL=null;rListas();},3000);
   }
 }
+
 function mOk(id){var e=document.getElementById(id);e.style.display="block";setTimeout(function(){e.style.display="none";},2500);}
+
+// ══════════════════════════════════════════
+//  ADICIONAR
+// ══════════════════════════════════════════
 function aEF(){
-  var re=document.getElementById("nre").value.trim(),n=document.getElementById("nno").value.trim().toUpperCase(),f=document.getElementById("nfn").value.trim().toUpperCase(),a=document.getElementById("nad").value.trim(),s=document.getElementById("nst").value,e3=document.getElementById("ne3").value.trim()||"INDET.",e6=document.getElementById("ne6").value.trim()||"INDET.",aso=document.getElementById("naso").value.trim(),set=document.getElementById("nset").value;
-  if(!re||!n||!f||!a){alert("Preencha RE, Nome, Funcao e Admissao.");return;}
-  EF.push({re:re,n:n,f:f,a:a,e3:e3,e6:e6,s:s,aso:aso,set:set});
-  ["nre","nno","nfn","nad","ne3","ne6","naso"].forEach(function(id){document.getElementById(id).value="";});
+  var re=document.getElementById("nre").value.trim();
+  var n=document.getElementById("nno").value.trim().toUpperCase();
+  var f=document.getElementById("nfn").value.trim().toUpperCase();
+  var a=document.getElementById("nad").value.trim();
+  var s=document.getElementById("nst").value;
+  var e3=document.getElementById("ne3").value.trim()||"INDET.";
+  var e6=document.getElementById("ne6").value.trim()||"INDET.";
+  var aso=document.getElementById("naso").value.trim();
+  var set=document.getElementById("nset").value;
+  var obs=document.getElementById("nobs").value.trim();
+
+  if(!re||!n||!f||!a){toast("Preencha RE, Nome, Função e Admissão.","error");return;}
+  if(!validarData(a)){toast("Data de admissão inválida. Use dd/mm/aaaa.","error");return;}
+  if(aso&&!validarData(aso)){toast("Data do ASO inválida. Use dd/mm/aaaa.","error");return;}
+  if(reExiste(re)){
+    if(!confirm("RE "+re+" já existe. Deseja adicionar mesmo assim?"))return;
+  }
+
+  EF.push({re:re,n:n,f:f,a:a,e3:e3,e6:e6,s:s,aso:aso,set:set,obs:obs});
+  adicionarLog("add","Adicionado: "+n+" (RE "+re+")");
+  _temAlteracoes=true;
+  ["nre","nno","nfn","nad","ne3","ne6","naso","nobs"].forEach(function(id){document.getElementById(id).value="";});
   document.getElementById("nset").value="";
   rListas();rTudo();mOk("okEF");
+  toast("Funcionário adicionado!","success");
 }
 function aTER(){
-  var n=document.getElementById("tn").value.trim(),e=document.getElementById("te").value.trim().toUpperCase(),f=document.getElementById("tf").value.trim();
-  if(!n||!e||!f){alert("Preencha todos.");return;}
-  TER.push({n:n,e:e,f:f});
-  ["tn","te","tf"].forEach(function(id){document.getElementById(id).value="";});
+  var n=document.getElementById("tn").value.trim();
+  var e=document.getElementById("te").value.trim().toUpperCase();
+  var f=document.getElementById("tf").value.trim();
+  var obs=document.getElementById("tobs").value.trim();
+  if(!n||!e||!f){toast("Preencha todos os campos.","error");return;}
+  TER.push({n:n,e:e,f:f,obs:obs});
+  adicionarLog("add","Terceiro adicionado: "+n);
+  _temAlteracoes=true;
+  ["tn","te","tf","tobs"].forEach(function(id){document.getElementById(id).value="";});
   rListas();rTudo();mOk("okTER");
+  toast("Terceiro adicionado!","success");
 }
 function aMOB(){
-  var n=document.getElementById("mn").value.trim(),f=document.getElementById("mf").value.trim(),o=document.getElementById("mo").value.trim();
-  if(!n||!f||!o){alert("Preencha todos.");return;}
-  MOB.push({n:n,f:f,o:o});
-  ["mn","mf","mo"].forEach(function(id){document.getElementById(id).value="";});
+  var n=document.getElementById("mn").value.trim();
+  var f=document.getElementById("mf").value.trim();
+  var o=document.getElementById("mo").value.trim();
+  var obs=document.getElementById("mobs").value.trim();
+  if(!n||!f||!o){toast("Preencha todos os campos.","error");return;}
+  MOB.push({n:n,f:f,o:o,obs:obs});
+  adicionarLog("add","Mobilização adicionada: "+n);
+  _temAlteracoes=true;
+  ["mn","mf","mo","mobs"].forEach(function(id){document.getElementById(id).value="";});
   rListas();rTudo();mOk("okMOB");
+  toast("Registro de mobilização adicionado!","success");
 }
+
+// ══════════════════════════════════════════
+//  EDIÇÃO INLINE
+// ══════════════════════════════════════════
+var SETORES='<option value="">-- Setor --</option><option>ARMAÇÃO</option><option>CARPINTARIA DE CAMPO</option><option>CENTRAL DE CARPINTARIA</option><option>CENTRAL DE CONCRETO</option><option>ELETRICA/BOMBEAMENTO</option><option>ENGENHARIA</option><option>LANÇAMENTO DE CONCRETO</option><option>MANUTENÇÃO MECANICA</option><option>MONTAGEM</option><option>RH</option><option>TERRAPLENAGEM</option><option>TOPOGRAFIA</option><option>TRANSPORTES</option><option>LIMPEZA</option><option>APONTAMENTO</option>';
+
+function abrirEdicaoInline(tipo,idx){
+  _editTarget={type:tipo,idx:idx};
+  var fm=document.getElementById("editForm");
+  var mt=document.getElementById("editModalTitle");
+
+  if(tipo==="ef"){
+    var r=EF[idx];
+    mt.textContent="Editar Funcionário — "+r.n;
+    var setOpts=SETORES.replace('value="'+r.set+'"','value="'+r.set+'" selected');
+    fm.innerHTML=
+      '<div class="edit-row"><label class="edit-label">RE</label><input id="ei_re" value="'+esc(r.re)+'"></div>'+
+      '<div class="edit-row"><label class="edit-label">Nome</label><input id="ei_no" value="'+esc(r.n)+'"></div>'+
+      '<div class="edit-row"><label class="edit-label">Função</label><input id="ei_fn" value="'+esc(r.f)+'"></div>'+
+      '<div class="r2"><div class="edit-row"><label class="edit-label">Admissão</label><input id="ei_ad" value="'+esc(r.a)+'"></div>'+
+      '<div class="edit-row"><label class="edit-label">Tipo</label><select id="ei_st"><option value="O"'+(r.s==="O"?" selected":"")+'>Operacional</option><option value="A"'+(r.s==="A"?" selected":"")+'>ADM</option></select></div></div>'+
+      '<div class="r2"><div class="edit-row"><label class="edit-label">Exp.30</label><input id="ei_e3" value="'+esc(r.e3)+'"></div>'+
+      '<div class="edit-row"><label class="edit-label">Exp.60</label><input id="ei_e6" value="'+esc(r.e6)+'"></div></div>'+
+      '<div class="r2"><div class="edit-row"><label class="edit-label">Venc. ASO</label><input id="ei_aso" value="'+esc(r.aso||'')+'"></div>'+
+      '<div class="edit-row"><label class="edit-label">Setor</label><select id="ei_set">'+setOpts+'</select></div></div>'+
+      '<div class="edit-row"><label class="edit-label">Observações</label><textarea id="ei_obs">'+esc(r.obs||'')+'</textarea></div>';
+
+} else if(tipo===“ter”){
+var r=TER[idx];
+mt.textContent=“Editar Terceiro — “+r.n;
+fm.innerHTML=
+‘<div class="edit-row"><label class="edit-label">Nome</label><input id="ei_no" value="'+esc(r.n)+'"></div>’+
+‘<div class="edit-row"><label class="edit-label">Empresa</label><input id="ei_em" value="'+esc(r.e)+'"></div>’+
+‘<div class="edit-row"><label class="edit-label">Função</label><input id="ei_fn" value="'+esc(r.f)+'"></div>’+
+‘<div class="edit-row"><label class="edit-label">Observações</label><textarea id="ei_obs">’+esc(r.obs||’’)+’</textarea></div>’;
+} else {
+var r=MOB[idx];
+mt.textContent=“Editar Mobilização — “+r.n;
+fm.innerHTML=
+‘<div class="edit-row"><label class="edit-label">Nome</label><input id="ei_no" value="'+esc(r.n)+'"></div>’+
+‘<div class="edit-row"><label class="edit-label">Função</label><input id="ei_fn" value="'+esc(r.f)+'"></div>’+
+‘<div class="edit-row"><label class="edit-label">Status</label><input id="ei_st2" value="'+esc(r.o)+'"></div>’+
+‘<div class="edit-row"><label class="edit-label">Observações</label><textarea id="ei_obs">’+esc(r.obs||’’)+’</textarea></div>’;
+}
+document.getElementById(“editModal”).classList.add(“on”);
+}
+function fecharEditModal(){document.getElementById(“editModal”).classList.remove(“on”);}
+function esc(s){return String(s||””).replace(/&/g,”&”).replace(/”/g,”"”).replace(/</g,”<”).replace(/>/g,”>”);}
+
+function salvarEdicaoInline(){
+var t=_editTarget;
+if(!t)return;
+var tipo=t.type,idx=t.idx;
+
+function v(id){var el=document.getElementById(id);return el?el.value.trim():””;}
+
+if(tipo===“ef”){
+var adm=v(“ei_ad”),asoV=v(“ei_aso”);
+if(!validarData(adm)){toast(“Data de admissão inválida.”,“error”);return;}
+if(asoV&&!validarData(asoV)){toast(“Data do ASO inválida.”,“error”);return;}
+var nomeAnt=EF[idx].n;
+EF[idx].re=v(“ei_re”);
+EF[idx].n=v(“ei_no”).toUpperCase();
+EF[idx].f=v(“ei_fn”).toUpperCase();
+EF[idx].a=adm;
+EF[idx].s=v(“ei_st”);
+EF[idx].e3=v(“ei_e3”)||“INDET.”;
+EF[idx].e6=v(“ei_e6”)||“INDET.”;
+EF[idx].aso=asoV;
+EF[idx].set=v(“ei_set”);
+EF[idx].obs=v(“ei_obs”);
+adicionarLog(“edit”,“Editado: “+nomeAnt);
+} else if(tipo===“ter”){
+var nomeAnt=TER[idx].n;
+TER[idx].n=v(“ei_no”);
+TER[idx].e=v(“ei_em”).toUpperCase();
+TER[idx].f=v(“ei_fn”);
+TER[idx].obs=v(“ei_obs”);
+adicionarLog(“edit”,“Terceiro editado: “+nomeAnt);
+} else {
+var nomeAnt=MOB[idx].n;
+MOB[idx].n=v(“ei_no”);
+MOB[idx].f=v(“ei_fn”);
+MOB[idx].o=v(“ei_st2”);
+MOB[idx].obs=v(“ei_obs”);
+adicionarLog(“edit”,“Mobilização editada: “+nomeAnt);
+}
+_temAlteracoes=true;
+fecharEditModal();
+rTudo();
+if(document.getElementById(“lEF”))rListas();
+toast(“Registro atualizado!”,“success”);
+}
+
+// ══════════════════════════════════════════
+//  SALVAR
+// ══════════════════════════════════════════
 async function salvar(){
-  var btn=document.querySelector(".bsave"),statusEl=document.getElementById("saveStatus");
-  btn.disabled=true;btn.textContent="Salvando...";statusEl.textContent="";statusEl.className="save-status";
-  DT=dataHoje();
-  try{
-    var ok=await persistirDados();
-    if(ok){
-      statusEl.textContent="✓ Dados salvos com sucesso!";statusEl.className="save-status ok";
-      atualizarSub();rTudo();setTimeout(function(){fAdmin();},800);
-    } else {
-      statusEl.textContent="Erro ao salvar. Tente novamente.";statusEl.className="save-status err";
-    }
-  } catch(e){
-    statusEl.textContent="Erro ao salvar: "+e.message;statusEl.className="save-status err";
-  }
-  btn.disabled=false;btn.textContent="Salvar e Fechar";
+var btn=document.querySelector(”.bsave”),statusEl=document.getElementById(“saveStatus”);
+btn.disabled=true;btn.textContent=“Salvando…”;statusEl.textContent=””;statusEl.className=“save-status”;
+DT=dataHoje();
+try{
+var ok=await persistirDados();
+await persistirLog();
+if(ok){
+statusEl.textContent=“✓ Dados salvos com sucesso!”;statusEl.className=“save-status ok”;
+_temAlteracoes=false;
+atualizarSub();rTudo();
+setTimeout(function(){fAdmin();},800);
+toast(“Dados salvos!”,“success”);
+} else {
+statusEl.textContent=“Erro ao salvar. Tente novamente.”;statusEl.className=“save-status err”;
+toast(“Erro ao salvar.”,“error”);
+}
+} catch(e){
+statusEl.textContent=“Erro: “+e.message;statusEl.className=“save-status err”;
+toast(“Erro: “+e.message,“error”);
+}
+btn.disabled=false;btn.textContent=“💾 Salvar e Fechar”;
 }
 
+// ══════════════════════════════════════════
+//  DASHBOARD ASO
+// ══════════════════════════════════════════
+function abrirASO(){
+var now=new Date();now.setHours(0,0,0,0);
+var venc=[],warn=[],ok90=[];
+EF.forEach(function(e){
+var st=asoStatus(e.aso);
+var d=parseDt(e.aso);
+var diff=d?Math.floor((d-now)/86400000):null;
+if(st===“venc”)venc.push({r:e,diff:diff});
+else if(st===“warn”)warn.push({r:e,diff:diff});
+else if(st===“ok”&&diff!==null&&diff<=90)ok90.push({r:e,diff:diff});
+});
+venc.sort(function(a,b){return(a.diff||0)-(b.diff||0);});
+warn.sort(function(a,b){return(a.diff||0)-(b.diff||0);});
+ok90.sort(function(a,b){return(a.diff||0)-(b.diff||0);});
+
+function sec(arr,cls,titulo){
+if(!arr.length)return “”;
+var h=”<div class='aso-section'><div class='aso-section-title "+cls+"'>”+titulo+” (”+arr.length+”)</div>”;
+arr.forEach(function(x){
+var e=x.r;
+var diffTxt=x.diff===null?””:x.diff<0?Math.abs(x.diff)+“d vencido”:x.diff+“d restantes”;
+h+=”<div class='aso-item'><div><div class='aso-item-name'>”+e.n+”</div><div class='aso-item-info'>”+e.f+” · “+e.set+”</div></div><div style='text-align:right'><div class='aso-item-date' style='color:"+(cls==="venc"?"#8b0000":cls==="warn"?"#856404":"#1a6b35")+"'>”+esc(e.aso||”-”)+”</div><div style='font-size:9px;color:#aaa;margin-top:2px'>”+diffTxt+”</div></div></div>”;
+});
+h+=”</div>”;return h;
+}
+var html=sec(venc,“venc”,“🔴 ASO VENCIDO”)+sec(warn,“warn”,“🟡 VENCE EM ATÉ 30 DIAS”)+sec(ok90,“ok90”,“🟢 VENCE EM ATÉ 90 DIAS”);
+if(!html)html=”<div style='text-align:center;color:#1a6b35;padding:24px;font-size:14px'>✓ Todos os ASOs estão em dia!</div>”;
+document.getElementById(“asoContent”).innerHTML=html;
+document.getElementById(“asoModal”).classList.add(“on”);
+}
+function fecharASO(){document.getElementById(“asoModal”).classList.remove(“on”);}
+
+// ══════════════════════════════════════════
+//  HISTÓRICO
+// ══════════════════════════════════════════
+function abrirLog(){
+var h=””;
+if(!LOG.length){h=”<div class='log-empty'>Nenhuma alteração registrada.</div>”;}
+else{
+var inv=LOG.slice().reverse();
+inv.forEach(function(l){
+h+=”<div class='log-item "+l.tipo+"'><div class='log-time'>”+l.dt+”</div><div class='log-msg'>”+esc(l.msg)+”</div></div>”;
+});
+}
+document.getElementById(“logContent”).innerHTML=h;
+document.getElementById(“logModal”).classList.add(“on”);
+}
+function fecharLog(){document.getElementById(“logModal”).classList.remove(“on”);}
+async function limparLog(){
+if(!confirm(“Deseja apagar todo o histórico?”))return;
+LOG=[];
+await persistirLog();
+fecharLog();
+toast(“Histórico apagado.”,“warn”);
+}
+
+// ══════════════════════════════════════════
+//  EXPORTAR PDF
+// ══════════════════════════════════════════
 function exportarPDF(){
-  var opt={margin:.5,filename:'relatorio-efetivo.pdf',image:{type:'jpeg',quality:1},html2canvas:{scale:2},jsPDF:{unit:'cm',format:'a4',orientation:'landscape'}};
-  html2pdf().set(opt).from(document.getElementById("tbox")).save();
+var opt={margin:.5,filename:“relatorio-efetivo.pdf”,image:{type:“jpeg”,quality:1},html2canvas:{scale:2},jsPDF:{unit:“cm”,format:“a4”,orientation:“landscape”}};
+html2pdf().set(opt).from(document.getElementById(“tbox”)).save();
 }
 
+// ══════════════════════════════════════════
+//  EXPORTAR EXCEL — por setor + abas
+// ══════════════════════════════════════════
 var SETOR_CORES_XL={
-  "TERRAPLENAGEM":        {bg:"E8F5E9",fg:"1A6B35"},
-  "LANÇAMENTO DE CONCRETO":{bg:"E3F0FB",fg:"1560A0"},
-  "ARMAÇÃO":              {bg:"F3E8FF",fg:"6A0DAD"},
-  "CARPINTARIA DE CAMPO": {bg:"FFF3E0",fg:"E65100"},
-  "CENTRAL DE CARPINTARIA":{bg:"E0F7FA",fg:"00695C"},
-  "CENTRAL DE CONCRETO":  {bg:"E8EAF6",fg:"3949AB"},
-  "ELETRICA/BOMBEAMENTO": {bg:"FFF8E1",fg:"F57F17"},
-  "ENGENHARIA":           {bg:"FCE4EC",fg:"880E4F"},
-  "MANUTENÇÃO MECANICA":  {bg:"E8F5E9",fg:"2E7D32"},
-  "MONTAGEM":             {bg:"F1F8E9",fg:"558B2F"},
-  "RH":                   {bg:"FBE9E7",fg:"BF360C"},
-  "TOPOGRAFIA":           {bg:"E0F2F1",fg:"004D40"},
-  "TRANSPORTES":          {bg:"E8EAF6",fg:"283593"},
-  "LIMPEZA":              {bg:"F3E5F5",fg:"6A1B9A"},
-  "APONTAMENTO":          {bg:"E1F5FE",fg:"0277BD"},
-  "ADMINISTRAÇÃO":        {bg:"ECEFF1",fg:"37474F"},
+“TERRAPLENAGEM”:        {bg:“E8F5E9”,fg:“1A6B35”},
+“LANÇAMENTO DE CONCRETO”:{bg:“E3F0FB”,fg:“1560A0”},
+“ARMAÇÃO”:              {bg:“F3E8FF”,fg:“6A0DAD”},
+“CARPINTARIA DE CAMPO”: {bg:“FFF3E0”,fg:“E65100”},
+“CENTRAL DE CARPINTARIA”:{bg:“E0F7FA”,fg:“00695C”},
+“CENTRAL DE CONCRETO”:  {bg:“E8EAF6”,fg:“3949AB”},
+“ELETRICA/BOMBEAMENTO”: {bg:“FFF8E1”,fg:“F57F17”},
+“ENGENHARIA”:           {bg:“FCE4EC”,fg:“880E4F”},
+“MANUTENÇÃO MECANICA”:  {bg:“E8F5E9”,fg:“2E7D32”},
+“MONTAGEM”:             {bg:“F1F8E9”,fg:“558B2F”},
+“RH”:                   {bg:“FBE9E7”,fg:“BF360C”},
+“TOPOGRAFIA”:           {bg:“E0F2F1”,fg:“004D40”},
+“TRANSPORTES”:          {bg:“E8EAF6”,fg:“283593”},
+“LIMPEZA”:              {bg:“F3E5F5”,fg:“6A1B9A”},
+“APONTAMENTO”:          {bg:“E1F5FE”,fg:“0277BD”},
+“ADMINISTRAÇÃO”:        {bg:“ECEFF1”,fg:“37474F”},
 };
 
-function xlParseDt(s){
-  if(!s||s==="INDET."||s==="!"||s==="--")return null;
-  s=s.replace(/\.$/,"").trim();
-  var p=s.split("/");
-  if(p.length!==3)return null;
-  return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));
-}
-function xlAsoStatus(aso){
-  var d=xlParseDt(aso);if(!d)return "nd";
-  var now=new Date();now.setHours(0,0,0,0);
-  var diff=Math.floor((d-now)/86400000);
-  if(diff<0)return "venc";if(diff<=30)return "warn";return "ok";
-}
-function xlExpStatus(val){
-  if(!val||val==="INDET.")return "indet";
-  var d=xlParseDt(val);if(!d)return "indet";
-  var now=new Date();now.setHours(0,0,0,0);
-  var diff=Math.floor((d-now)/86400000);
-  if(diff<0)return "venc";if(diff<=30)return "warn";return "ok";
-}
+function xlParseDt(s){if(!s||s===“INDET.”||s===”!”||s===”–”)return null;s=s.replace(/.$/,””).trim();var p=s.split(”/”);if(p.length!==3)return null;return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));}
+function xlAsoStatus(aso){var d=xlParseDt(aso);if(!d)return”nd”;var now=new Date();now.setHours(0,0,0,0);var diff=Math.floor((d-now)/86400000);if(diff<0)return”venc”;if(diff<=30)return”warn”;return”ok”;}
+function xlExpStatus(val){if(!val||val===“INDET.”)return”indet”;var d=xlParseDt(val);if(!d)return”indet”;var now=new Date();now.setHours(0,0,0,0);var diff=Math.floor((d-now)/86400000);if(diff<0)return”venc”;if(diff<=30)return”warn”;return”ok”;}
+function xlFill(argb){return{type:“pattern”,pattern:“solid”,fgColor:{argb:“FF”+argb}};}
+function xlFont(bold,argb,sz){return{name:“Arial”,size:sz||10,bold:!!bold,color:{argb:“FF”+argb}};}
+function xlAlign(h,v){return{horizontal:h||“center”,vertical:v||“middle”,wrapText:true};}
+function xlBorder(){var s={style:“thin”,color:{argb:“FFE0E0E0”}};return{bottom:s};}
 
-function xlFill(argb){return {type:"pattern",pattern:"solid",fgColor:{argb:"FF"+argb}};}
-function xlFont(bold,argb,sz){return {name:"Arial",size:sz||10,bold:!!bold,color:{argb:"FF"+argb}};}
-function xlAlign(h,v){return {horizontal:h||"center",vertical:v||"middle",wrapText:true};}
-function xlBorder(){var s={style:"thin",color:{argb:"FFE0E0E0"}};return {bottom:s};}
+function criarAbaEfetivo(wb,lista,titulo,corHex){
+var ws=wb.addWorksheet(titulo,{views:[{showGridLines:false,state:“frozen”,xSplit:0,ySplit:3}]});
+ws.columns=[{key:“idx”,width:4},{key:“re”,width:8},{key:“nome”,width:34},{key:“func”,width:28},{key:“setor”,width:24},{key:“adm”,width:12},{key:“e3”,width:12},{key:“e6”,width:12},{key:“tp”,width:11},{key:“aso”,width:13},{key:“obs”,width:28}];
+ws.mergeCells(“A1:K1”);
+var t=ws.getCell(“A1”);
+t.value=“BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | “+titulo;
+t.font=xlFont(true,“FFFFFF”,13);t.fill=xlFill(corHex);t.alignment=xlAlign(“center”);
+ws.getRow(1).height=28;
+ws.mergeCells(“A2:K2”);
+var s2=ws.getCell(“A2”);
+s2.value=“Atualizado em: “+DT+”   |   Total: “+lista.length+” funcionários”;
+s2.font=xlFont(false,“888888”,9);s2.fill=xlFill(“F0F2F5”);s2.alignment=xlAlign(“center”);
+ws.getRow(2).height=16;
+var hdrs=[”#”,“RE”,“NOME”,“FUNÇÃO”,“SETOR”,“ADM.”,“EXP.30”,“EXP.60”,“TIPO”,“ASO VENC.”,“OBSERVAÇÕES”];
+var hRow=ws.getRow(3);
+hdrs.forEach(function(h,i){var c=hRow.getCell(i+1);c.value=h;c.font=xlFont(true,“FFFFFF”,9);c.fill=xlFill(corHex);c.alignment=xlAlign(“center”);});
+hRow.height=20;
+lista.forEach(function(r,i){
+var row=ws.getRow(4+i);row.height=18;
+var bgRow=i%2===0?“F7F8FA”:“FFFFFF”;
+function sc(col,val,bold,fg,bg,hal){var c=row.getCell(col);c.value=val;c.font=xlFont(bold,fg||“333333”);c.fill=xlFill(bg||bgRow);c.alignment=xlAlign(hal||“left”);c.border=xlBorder();}
+sc(1,i+1,false,“BBBBBB”,bgRow,“center”);
+sc(2,r.re,true,“0A1F3D”,bgRow,“center”);
+sc(3,r.n,true,“111111”,bgRow,“left”);
+sc(4,r.f,false,“555555”,bgRow,“left”);
+var sc5=SETOR_CORES_XL[r.set]||{bg:“F0F2F5”,fg:“666666”};sc(5,r.set||””,true,sc5.fg,sc5.bg,“center”);
+sc(6,r.a,false,“888888”,bgRow,“center”);
+var e3st=xlExpStatus(r.e3);var e3fg=e3st===“warn”?“856404”:(e3st===“indet”||e3st===“venc”?“BBBBBB”:“888888”);sc(7,r.e3||””,e3st===“warn”,e3fg,bgRow,“center”);
+var e6st=xlExpStatus(r.e6);var e6fg=e6st===“warn”?“856404”:(e6st===“indet”||e6st===“venc”?“BBBBBB”:“888888”);sc(8,r.e6||””,e6st===“warn”,e6fg,bgRow,“center”);
+var isAdm=r.s===“A”;sc(9,isAdm?“ADM”:“OPER.”,true,isAdm?“1560A0”:“1A6B35”,isAdm?“DBE8F7”:“D5F0E0”,“center”);
+var ast=xlAsoStatus(r.aso);var asoBg={ok:“D5F0E0”,warn:“FFF3CD”,venc:“FDECEA”,nd:“F0F2F5”}[ast];var asoFg={ok:“1A6B35”,warn:“856404”,venc:“8B0000”,nd:“AAAAAA”}[ast];var asoVal=(r.aso&&r.aso!==”!”&&r.aso!==”–”)?r.aso:”-”;sc(10,asoVal,ast===“warn”||ast===“venc”,asoFg,asoBg,“center”);
+sc(11,r.obs||””,false,“888888”,bgRow,“left”);
+});
+}
 
 async function exportarExcel(){
-  var ExcelJS=window.ExcelJS;
-  var wb=new ExcelJS.Workbook();
-  wb.creator="Bucagrans"; wb.created=new Date();
+var ExcelJS=window.ExcelJS;
+var wb=new ExcelJS.Workbook();
+wb.creator=“Bucagrans”;wb.created=new Date();
 
-  // ════════════════════════════
-  //  ABA: EFETIVO
-  // ════════════════════════════
-  var ws=wb.addWorksheet("Efetivo",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:3}]});
-  ws.columns=[
-    {key:"idx",  width:4},
-    {key:"re",   width:8},
-    {key:"nome", width:34},
-    {key:"func", width:28},
-    {key:"setor",width:24},
-    {key:"adm",  width:12},
-    {key:"e3",   width:12},
-    {key:"e6",   width:12},
-    {key:"tp",   width:11},
-    {key:"aso",  width:13},
-  ];
+// Aba geral — todos efetivos
+criarAbaEfetivo(wb,EF,“Efetivo”,“0A1F3D”);
 
-  // Linha 1 – título
-  ws.mergeCells("A1:J1");
-  var t=ws.getCell("A1");
-  t.value="BUCAGRANS CONSTRUTORA  –  PCH LEBON REGIS  |  Efetivo";
-  t.font=xlFont(true,"FFFFFF",13); t.fill=xlFill("0A1F3D"); t.alignment=xlAlign("center");
-  ws.getRow(1).height=28;
+// Abas por setor
+var setores={};
+EF.forEach(function(e){var s=e.set||“SEM SETOR”;if(!setores[s])setores[s]=[];setores[s].push(e);});
+Object.keys(setores).sort().forEach(function(s){
+var cor=(SETOR_CORES_XL[s]?SETOR_CORES_XL[s].fg.replace(”#”,””):“444444”);
+var nome=s.length>25?s.substring(0,25):s;
+criarAbaEfetivo(wb,setores[s],nome,cor);
+});
 
-  // Linha 2 – subtítulo
-  ws.mergeCells("A2:J2");
-  var s2=ws.getCell("A2");
-  s2.value="Atualizado em: "+DT+"   |   Total Efetivo: "+EF.length+" funcionários";
-  s2.font=xlFont(false,"888888",9); s2.fill=xlFill("F0F2F5"); s2.alignment=xlAlign("center");
-  ws.getRow(2).height=16;
+// Aba terceiros
+var ws2=wb.addWorksheet(“Terceiros”,{views:[{showGridLines:false,state:“frozen”,xSplit:0,ySplit:2}]});
+ws2.columns=[{width:4},{width:32},{width:32},{width:26},{width:28}];
+ws2.mergeCells(“A1:E1”);
+var t2=ws2.getCell(“A1”);t2.value=“BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | Terceiros”;
+t2.font=xlFont(true,“FFFFFF”,13);t2.fill=xlFill(“8B0000”);t2.alignment=xlAlign(“center”);ws2.getRow(1).height=28;
+var h2Row=ws2.getRow(2);
+[”#”,“NOME”,“EMPRESA”,“FUNÇÃO”,“OBSERVAÇÕES”].forEach(function(h,i){var c=h2Row.getCell(i+1);c.value=h;c.font=xlFont(true,“FFFFFF”,9);c.fill=xlFill(“8B0000”);c.alignment=xlAlign(“center”);});h2Row.height=20;
+TER.forEach(function(r,i){var row=ws2.getRow(3+i);row.height=18;var bg=i%2===0?“F7F8FA”:“FFFFFF”;[[i+1,false,“BBBBBB”,bg,“center”],[r.n,true,“111111”,bg,“left”],[r.e,false,“555555”,bg,“left”],[r.f,false,“555555”,bg,“left”],[r.obs||””,false,“888888”,bg,“left”]].forEach(function(d,ci){var c=row.getCell(ci+1);c.value=d[0];c.font=xlFont(d[1],d[2]);c.fill=xlFill(d[3]);c.alignment=xlAlign(d[4]);c.border=xlBorder();});});
 
-  // Linha 3 – cabeçalho
-  var hdrs=["#","RE","NOME","FUNÇÃO","SETOR","ADM.","EXP.30","EXP.60","TIPO","ASO VENC."];
-  var hRow=ws.getRow(3);
-  hdrs.forEach(function(h,i){
-    var c=hRow.getCell(i+1);
-    c.value=h; c.font=xlFont(true,"FFFFFF",9);
-    c.fill=xlFill("0A1F3D"); c.alignment=xlAlign("center");
-  });
-  hRow.height=20;
+// Aba mobilização
+var ws3=wb.addWorksheet(“Mobilização”,{views:[{showGridLines:false,state:“frozen”,xSplit:0,ySplit:2}]});
+ws3.columns=[{width:4},{width:34},{width:28},{width:22},{width:28}];
+ws3.mergeCells(“A1:E1”);
+var t3=ws3.getCell(“A1”);t3.value=“BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | Em Mobilização”;
+t3.font=xlFont(true,“FFFFFF”,13);t3.fill=xlFill(“6A0DAD”);t3.alignment=xlAlign(“center”);ws3.getRow(1).height=28;
+var h3Row=ws3.getRow(2);
+[”#”,“NOME”,“FUNÇÃO”,“STATUS”,“OBSERVAÇÕES”].forEach(function(h,i){var c=h3Row.getCell(i+1);c.value=h;c.font=xlFont(true,“FFFFFF”,9);c.fill=xlFill(“6A0DAD”);c.alignment=xlAlign(“center”);});h3Row.height=20;
+MOB.forEach(function(r,i){var row=ws3.getRow(3+i);row.height=18;var bg=i%2===0?“F7F8FA”:“FFFFFF”;var aguard=(r.o||””).toLowerCase().indexOf(“aguard”)>-1;var sBg=aguard?“FDE8D8”:“D5F0E0”;var sFg=aguard?“8B0000”:“1A6B35”;[[i+1,false,“BBBBBB”,bg,“center”],[r.n,true,“111111”,bg,“left”],[r.f,false,“555555”,bg,“left”],[r.o,true,sFg,sBg,“center”],[r.obs||””,false,“888888”,bg,“left”]].forEach(function(d,ci){var c=row.getCell(ci+1);c.value=d[0];c.font=xlFont(d[1],d[2]);c.fill=xlFill(d[3]);c.alignment=xlAlign(d[4]);c.border=xlBorder();});});
 
-  // Linhas de dados
-  EF.forEach(function(r,i){
-    var row=ws.getRow(4+i);
-    row.height=18;
-    var bgRow=i%2===0?"F7F8FA":"FFFFFF";
+// Aba ASO
+var wsA=wb.addWorksheet(“ASO – Alertas”,{views:[{showGridLines:false,state:“frozen”,xSplit:0,ySplit:2}]});
+wsA.columns=[{width:4},{width:34},{width:28},{width:24},{width:13},{width:15}];
+wsA.mergeCells(“A1:F1”);
+var tA=wsA.getCell(“A1”);tA.value=“BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | Alertas de ASO”;
+tA.font=xlFont(true,“FFFFFF”,13);tA.fill=xlFill(“8B0000”);tA.alignment=xlAlign(“center”);wsA.getRow(1).height=28;
+var hARow=wsA.getRow(2);
+[”#”,“NOME”,“FUNÇÃO”,“SETOR”,“ASO VENC.”,“STATUS”].forEach(function(h,i){var c=hARow.getCell(i+1);c.value=h;c.font=xlFont(true,“FFFFFF”,9);c.fill=xlFill(“8B0000”);c.alignment=xlAlign(“center”);});hARow.height=20;
+var alertas=EF.filter(function(e){var st=xlAsoStatus(e.aso);return st===“venc”||st===“warn”;}).sort(function(a,b){var da=xlParseDt(a.aso)||new Date(9999,0,1),db=xlParseDt(b.aso)||new Date(9999,0,1);return da-db;});
+alertas.forEach(function(r,i){var row=wsA.getRow(3+i);row.height=18;var bg=i%2===0?“F7F8FA”:“FFFFFF”;var ast=xlAsoStatus(r.aso);var asoBg=ast===“venc”?“FDECEA”:“FFF3CD”;var asoFg=ast===“venc”?“8B0000”:“856404”;var status=ast===“venc”?“VENCIDO”:“VENCE EM 30D”;[[i+1,false,“BBBBBB”,bg,“center”],[r.n,true,“111111”,bg,“left”],[r.f,false,“555555”,bg,“left”],[r.set||””,false,“555555”,bg,“left”],[r.aso||”-”,true,asoFg,asoBg,“center”],[status,true,asoFg,asoBg,“center”]].forEach(function(d,ci){var c=row.getCell(ci+1);c.value=d[0];c.font=xlFont(d[1],d[2]);c.fill=xlFill(d[3]);c.alignment=xlAlign(d[4]);c.border=xlBorder();});});
 
-    function sc(col,val,bold,fg,bg,hal){
-      var c=row.getCell(col);
-      c.value=val; c.font=xlFont(bold,fg||"333333");
-      c.fill=xlFill(bg||bgRow); c.alignment=xlAlign(hal||"left");
-      c.border=xlBorder();
-    }
-
-    // # índice
-    sc(1,i+1,false,"BBBBBB",bgRow,"center");
-    // RE
-    sc(2,r.re,true,"0A1F3D",bgRow,"center");
-    // Nome
-    sc(3,r.n,true,"111111",bgRow,"left");
-    // Função
-    sc(4,r.f,false,"555555",bgRow,"left");
-    // Setor (cor do setor)
-    var sc5=SETOR_CORES_XL[r.set]||{bg:"F0F2F5",fg:"666666"};
-    sc(5,r.set||"",true,sc5.fg,sc5.bg,"center");
-    // Admissão
-    sc(6,r.a,false,"888888",bgRow,"center");
-    // Exp30
-    var e3st=xlExpStatus(r.e3);
-    var e3fg=e3st==="warn"?"856404":(e3st==="indet"||e3st==="venc"?"BBBBBB":"888888");
-    sc(7,r.e3||"",e3st==="warn",e3fg,bgRow,"center");
-    // Exp60
-    var e6st=xlExpStatus(r.e6);
-    var e6fg=e6st==="warn"?"856404":(e6st==="indet"||e6st==="venc"?"BBBBBB":"888888");
-    sc(8,r.e6||"",e6st==="warn",e6fg,bgRow,"center");
-    // Tipo ADM/OPER
-    var isAdm=r.s==="A";
-    sc(9,isAdm?"ADM":"OPER.",true,isAdm?"1560A0":"1A6B35",isAdm?"DBE8F7":"D5F0E0","center");
-    // ASO
-    var ast=xlAsoStatus(r.aso);
-    var asoBg={ok:"D5F0E0",warn:"FFF3CD",venc:"FDECEA",nd:"F0F2F5"}[ast];
-    var asoFg={ok:"1A6B35",warn:"856404",venc:"8B0000",nd:"AAAAAA"}[ast];
-    var asoVal=(r.aso&&r.aso!=="!"&&r.aso!=="--")?r.aso:"-";
-    sc(10,asoVal,ast==="warn"||ast==="venc",asoFg,asoBg,"center");
-  });
-
-  // ════════════════════════════
-  //  ABA: TERCEIROS
-  // ════════════════════════════
-  var ws2=wb.addWorksheet("Terceiros",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:2}]});
-  ws2.columns=[{width:4},{width:32},{width:32},{width:26}];
-
-  ws2.mergeCells("A1:D1");
-  var t2=ws2.getCell("A1");
-  t2.value="BUCAGRANS CONSTRUTORA  –  PCH LEBON REGIS  |  Terceiros";
-  t2.font=xlFont(true,"FFFFFF",13); t2.fill=xlFill("8B0000"); t2.alignment=xlAlign("center");
-  ws2.getRow(1).height=28;
-
-  var h2Row=ws2.getRow(2);
-  ["#","NOME","EMPRESA","FUNÇÃO"].forEach(function(h,i){
-    var c=h2Row.getCell(i+1);
-    c.value=h; c.font=xlFont(true,"FFFFFF",9);
-    c.fill=xlFill("8B0000"); c.alignment=xlAlign("center");
-  });
-  h2Row.height=20;
-
-  TER.forEach(function(r,i){
-    var row=ws2.getRow(3+i); row.height=18;
-    var bg=i%2===0?"F7F8FA":"FFFFFF";
-    [[i+1,false,"BBBBBB",bg,"center"],[r.n,true,"111111",bg,"left"],[r.e,false,"555555",bg,"left"],[r.f,false,"555555",bg,"left"]].forEach(function(d,ci){
-      var c=row.getCell(ci+1);
-      c.value=d[0]; c.font=xlFont(d[1],d[2]); c.fill=xlFill(d[3]); c.alignment=xlAlign(d[4]); c.border=xlBorder();
-    });
-  });
-
-  // ════════════════════════════
-  //  ABA: MOBILIZAÇÃO
-  // ════════════════════════════
-  var ws3=wb.addWorksheet("Mobilização",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:2}]});
-  ws3.columns=[{width:4},{width:34},{width:28},{width:22}];
-
-  ws3.mergeCells("A1:D1");
-  var t3=ws3.getCell("A1");
-  t3.value="BUCAGRANS CONSTRUTORA  –  PCH LEBON REGIS  |  Em Mobilização";
-  t3.font=xlFont(true,"FFFFFF",13); t3.fill=xlFill("6A0DAD"); t3.alignment=xlAlign("center");
-  ws3.getRow(1).height=28;
-
-  var h3Row=ws3.getRow(2);
-  ["#","NOME","FUNÇÃO","STATUS"].forEach(function(h,i){
-    var c=h3Row.getCell(i+1);
-    c.value=h; c.font=xlFont(true,"FFFFFF",9);
-    c.fill=xlFill("6A0DAD"); c.alignment=xlAlign("center");
-  });
-  h3Row.height=20;
-
-  MOB.forEach(function(r,i){
-    var row=ws3.getRow(3+i); row.height=18;
-    var bg=i%2===0?"F7F8FA":"FFFFFF";
-    var aguard=(r.o||"").toLowerCase().indexOf("aguard")>-1;
-    var sBg=aguard?"FDE8D8":"D5F0E0"; var sFg=aguard?"8B0000":"1A6B35";
-    [[i+1,false,"BBBBBB",bg,"center"],[r.n,true,"111111",bg,"left"],[r.f,false,"555555",bg,"left"],[r.o,true,sFg,sBg,"center"]].forEach(function(d,ci){
-      var c=row.getCell(ci+1);
-      c.value=d[0]; c.font=xlFont(d[1],d[2]); c.fill=xlFill(d[3]); c.alignment=xlAlign(d[4]); c.border=xlBorder();
-    });
-  });
-
-  // ── Download ──
-  var buf=await wb.xlsx.writeBuffer();
-  var blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement("a");
-  a.href=url; a.download="efetivo-pch-lebon-regis-"+dataHoje().replace(/\//g,"-")+".xlsx";
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
+// Download
+var buf=await wb.xlsx.writeBuffer();
+var blob=new Blob([buf],{type:“application/vnd.openxmlformats-officedocument.spreadsheetml.sheet”});
+var url=URL.createObjectURL(blob);
+var a=document.createElement(“a”);
+a.href=url;a.download=“efetivo-pch-lebon-regis-”+dataHoje().replace(///g,”-”)+”.xlsx”;
+document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+toast(“Excel exportado com sucesso!”,“success”);
 }
 
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
 async function init(){
-  await carregarDados();
-  document.getElementById("loadingScreen").style.display="none";
-  atualizarSub();
-  rTudo();
+await initHash();
+await carregarDados();
+document.getElementById(“loadingScreen”).style.display=“none”;
+atualizarSub();
+rTudo();
+// Iniciar filtro ASO no “Todos”
+document.getElementById(“fasoAll”).classList.add(“on”);
 }
 init();
 </script>
