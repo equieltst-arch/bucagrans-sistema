@@ -555,16 +555,18 @@ function asoHtml(aso){if(!aso)return"<span class='aso-nd'>-</span>";var st=asoSt
 function adm(){return EF.filter(function(e){return e.s==="A";});}
 function op(){return EF.filter(function(e){return e.s==="O";});}
 
-// Retorna funcionários com exp crítica dentro de X dias
-function getExpCriticos(dias){
+// Retorna funcionários com exp crítica dentro de X dias (exclui vencidas — diff < 0)
+function getExpCriticos(dias, incluirVencidas){
   var lista=[];
   EF.forEach(function(r){
     [["Exp.30",r.e3],["Exp.60",r.e6]].forEach(function(par){
       var label=par[0],val=par[1];
       var diff=diffDias(val);
       if(diff===null)return;
-      if(diff<=dias){
-        lista.push({nome:r.n,fn:r.f,setor:r.set||"",tipo:label,val:val,diff:diff,key:r.n+"|"+label});
+      if(incluirVencidas){
+        if(diff<=dias){lista.push({nome:r.n,fn:r.f,setor:r.set||"",tipo:label,val:val,diff:diff,key:r.n+"|"+label});}
+      }else{
+        if(diff>=0&&diff<=dias){lista.push({nome:r.n,fn:r.f,setor:r.set||"",tipo:label,val:val,diff:diff,key:r.n+"|"+label});}
       }
     });
   });
@@ -607,7 +609,7 @@ function gL(){
   var fSetor=document.getElementById("filtroSetor")?document.getElementById("filtroSetor").value:"";
   var r;
   if(fil==="exp_critico"){
-    var criticos=getExpCriticos(7);
+    var criticos=getExpCriticos(7,true);
     var nomes=criticos.map(function(c){return c.nome;});
     r=EF.filter(function(x){return nomes.indexOf(x.n)>-1;}).map(function(x){return Object.assign({},x,{t:"ef"});});
   }else if(fil==="todos")r=EF.map(function(x){return Object.assign({},x,{t:"ef"});}).concat(TER.map(function(x){return Object.assign({},x,{t:"ter"});})).concat(MOB.map(function(x){return Object.assign({},x,{t:"mob"});}));
@@ -623,7 +625,7 @@ function gL(){
 
 function rCards(){
   var A=adm(),O=op();
-  var criticos=getExpCriticos(7);
+  var criticos=getExpCriticos(7,true);
   var d=[
     {id:"todos",v:EF.length+TER.length+MOB.length,l:"TOTAL GERAL",c:"c0"},
     {id:"efetivo",v:EF.length,l:"TOTAL EFETIVO",c:"c1"},
@@ -651,7 +653,7 @@ function rTab(){
 
   // nomes críticos para destacar linha
   var nomesCriticos={};
-  getExpCriticos(7).forEach(function(c){nomesCriticos[c.nome]=true;});
+  getExpCriticos(7,true).forEach(function(c){nomesCriticos[c.nome]=true;});
 
   var eR=rows.filter(function(r){return r.t==="ef";}),tR=rows.filter(function(r){return r.t==="ter";}),mR=rows.filter(function(r){return r.t==="mob";});
   var h="";
@@ -683,7 +685,7 @@ function rTab(){
 
   // barra de ação
   var bar=document.getElementById("expActionBar"),sub=document.getElementById("expActionSub");
-  var c7=getExpCriticos(7);
+  var c7=getExpCriticos(7,true);
   if(c7.length>0){
     var nUnicos=[...new Set(c7.map(function(x){return x.nome;}))].length;
     bar.className="exp-action-bar visible";
