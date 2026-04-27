@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -34,6 +35,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 .c3{background:linear-gradient(135deg,#1a6b35,#27ae60)}
 .c4{background:linear-gradient(135deg,#8b0000,#c0392b)}
 .c5{background:linear-gradient(135deg,#6a0dad,#9b59b6)}
+/* card treinamento */
+.c-trein{background:linear-gradient(135deg,#b56a00,#e67e22);position:relative;overflow:hidden}
+.c-trein::after{content:'🎓';position:absolute;right:8px;bottom:4px;font-size:20px;opacity:.25}
 /* card especial de alerta */
 .c-exp{background:linear-gradient(135deg,#7b2d00,#c0392b);position:relative;overflow:hidden}
 .c-exp::after{content:'⚠';position:absolute;right:8px;bottom:4px;font-size:22px;opacity:.25}
@@ -44,7 +48,6 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 .search{border:1.5px solid #dde3ea;border-radius:8px;padding:7px 11px;font-size:13px;outline:none;flex:1;box-sizing:border-box}
 .search-sel{border:1.5px solid #dde3ea;border-radius:8px;padding:7px 11px;font-size:12px;outline:none;background:white;color:#444;cursor:pointer;min-width:160px}
 .search-sel:focus{border-color:#0a1f3d}
-/* barra de ação rápida de exp crítica */
 .exp-action-bar{display:none;margin:6px 12px 0;background:#fdecea;border-radius:10px;border-left:4px solid #c0392b;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,.08)}
 .exp-action-bar.visible{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .exp-action-bar .eab-title{font-size:12px;font-weight:700;color:#8b0000;flex:1}
@@ -56,10 +59,13 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 .tscroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:11px}
 thead th{background:#0a1f3d;color:white;padding:8px 9px;text-align:left;font-weight:600;font-size:9px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
+/* thead treinamento */
+thead.th-trein th{background:#b56a00}
 tbody tr{border-bottom:1px solid #f0f2f5}
 tbody tr:last-child{border-bottom:none}
 tbody td{padding:7px 9px;color:#333;vertical-align:middle}
 tbody tr.row-critico{background:#fff5f5}
+tbody tr.row-trein{background:#fffaf0}
 .norows{text-align:center;color:#bbb;padding:36px;font-size:14px}
 .badm{background:#dbe8f7;color:#1560a0;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .bop{background:#d5f0e0;color:#1a6b35;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
@@ -70,6 +76,11 @@ tbody tr.row-critico{background:#fff5f5}
 .aso-venc{background:#fdecea;color:#8b0000;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;animation:pulse .8s infinite alternate}
 .aso-nd{background:#f0f2f5;color:#aaa;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .bset{background:#f0e8ff;color:#6a0dad;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap}
+/* badge treinamento */
+.btrein{background:#fff3cd;color:#b56a00;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap}
+.btrein-status-ok{background:#d5f0e0;color:#1a6b35;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
+.btrein-status-and{background:#fff3cd;color:#b56a00;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;animation:pulse .8s infinite alternate}
+.btrein-status-pen{background:#fde8d8;color:#8b0000;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .exp-ok{color:#999;font-size:10px}
 .exp-warn{color:#856404;font-size:10px;font-weight:700}
 .exp-critico{color:#c0392b;font-size:10px;font-weight:700;animation:pulse .8s infinite alternate}
@@ -83,7 +94,6 @@ tbody tr.row-critico{background:#fff5f5}
 .bt{background:#eef0f3;border-radius:4px;height:7px;overflow:hidden}
 .bf{height:100%;border-radius:4px}
 .footer{text-align:center;padding:10px;font-size:9px;color:#aaa;margin-bottom:8px}
-/* overlay genérico */
 .ov{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:200;overflow-y:auto}
 .ov.on{display:block}
 .abox{background:white;border-radius:16px;padding:20px 16px;max-width:480px;margin:16px auto 40px}
@@ -94,11 +104,14 @@ tbody tr.row-critico{background:#fff5f5}
 .pwerr{color:#c0392b;font-size:12px;margin-bottom:10px;display:none}
 .btnp{width:100%;background:#0a1f3d;color:white;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px}
 .btns{width:100%;background:#f0f2f5;color:#555;border:none;border-radius:8px;padding:11px;font-size:13px;cursor:pointer}
-.tabs{display:flex;gap:6px;margin-bottom:14px}
-.tab{flex:1;padding:8px 4px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:#f0f2f5;color:#555}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{flex:1;padding:8px 4px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:#f0f2f5;color:#555;min-width:60px}
 .tab.on{background:#0a1f3d;color:white}
+.tab.on.trein-tab{background:#b56a00}
 .slbl{font-size:12px;font-weight:700;color:#0a1f3d;margin:14px 0 8px}
 .prow{display:flex;align-items:center;gap:8px;padding:9px 11px;background:#f7f8fa;border-radius:9px;margin-bottom:6px;border:1px solid #eef0f3}
+/* prow treinamento */
+.prow-trein{border-left:3px solid #e67e22}
 .pinfo{flex:1;min-width:0}
 .pname{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pfn{font-size:11px;color:#888;margin-top:2px}
@@ -108,6 +121,7 @@ tbody tr.row-critico{background:#fff5f5}
 .aform input,.aform select{width:100%;border:1.5px solid #dde3ea;border-radius:7px;padding:9px 11px;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:8px;background:white}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .badd{width:100%;background:#27ae60;color:white;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;margin-top:2px}
+.badd-trein{background:#e67e22}
 .ok{background:#d5f0e0;border:1.5px solid #27ae60;border-radius:8px;padding:9px;font-size:12px;color:#1a6b35;margin-top:8px;display:none;text-align:center;font-weight:700}
 .bsave{width:100%;background:#8b0000;color:white;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px}
 .save-status{font-size:11px;text-align:center;margin-top:8px;color:#888;min-height:16px}
@@ -128,8 +142,6 @@ tbody tr.row-critico{background:#fff5f5}
 .fb-status.online{background:#d5f0e0;color:#1a6b35}
 .fb-status.offline{background:#fdecea;color:#8b0000}
 .fb-status.saving{background:#fff3cd;color:#856404}
-
-/* ── MODAL DE NOTIFICAÇÃO ── */
 .notif-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);z-index:300;overflow-y:auto}
 .notif-overlay.on{display:block}
 .notif-box{background:white;border-radius:16px;padding:20px 16px 24px;max-width:500px;margin:20px auto 40px;box-shadow:0 8px 32px rgba(0,0,0,.18)}
@@ -137,11 +149,9 @@ tbody tr.row-critico{background:#fff5f5}
 .notif-title{font-size:16px;font-weight:800;color:#8b0000}
 .notif-close{background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1}
 .notif-sub{font-size:11px;color:#888;margin-bottom:14px}
-/* filtro de dias */
 .dias-filter{display:flex;gap:6px;margin-bottom:14px}
 .df-btn{flex:1;padding:7px 4px;border-radius:20px;border:1.5px solid #dde3ea;cursor:pointer;font-size:11px;font-weight:700;background:white;color:#555;transition:all .15s}
 .df-btn.on{background:#8b0000;color:white;border-color:#8b0000}
-/* lista de funcionários */
 .notif-list{max-height:260px;overflow-y:auto;margin-bottom:14px;border:1.5px solid #eef0f3;border-radius:10px;overflow:hidden}
 .notif-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid #f0f2f5;cursor:pointer;transition:background .1s}
 .notif-item:last-child{border-bottom:none}
@@ -158,14 +168,12 @@ tbody tr.row-critico{background:#fff5f5}
 .ni-badge.d0{background:#fdecea;color:#8b0000}
 .ni-badge.d1,.ni-badge.d2{background:#fde8d8;color:#7b2d00}
 .ni-badge.d3,.ni-badge.d4,.ni-badge.d5,.ni-badge.d6,.ni-badge.d7{background:#fff3cd;color:#856404}
-/* destinatários */
 .dest-label{font-size:11px;font-weight:700;color:#0a1f3d;margin-bottom:6px}
 .dest-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:28px;padding:6px 8px;border:1.5px solid #dde3ea;border-radius:8px;background:#f7f8fa}
 .dest-tag{background:#0a1f3d;color:white;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:5px}
 .dest-tag button{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;line-height:1;padding:0}
 .dest-input{border:1.5px solid #dde3ea;border-radius:8px;padding:8px 11px;font-size:12px;outline:none;width:100%;box-sizing:border-box;margin-bottom:12px}
 .dest-input:focus{border-color:#0a1f3d}
-/* ações do modal */
 .notif-actions{display:flex;gap:8px}
 .btn-selall{flex:1;background:#f0f2f5;color:#555;border:none;border-radius:8px;padding:10px;font-size:12px;font-weight:700;cursor:pointer}
 .btn-send{flex:2;background:#8b0000;color:white;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer}
@@ -173,12 +181,18 @@ tbody tr.row-critico{background:#fff5f5}
 .notif-status{font-size:11px;text-align:center;margin-top:8px;min-height:16px;color:#888}
 .notif-status.ok{color:#1a6b35;font-weight:700}
 .notif-status.err{color:#c0392b;font-weight:700}
-/* toast */
 .toast{position:fixed;bottom:48px;left:50%;transform:translateX(-50%);background:#0a1f3d;color:white;padding:10px 22px;border-radius:20px;font-size:12px;font-weight:700;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 .toast.ok{background:#1a6b35}
 .toast.err{background:#8b0000}
+
+/* ── BANNER TREINAMENTO ── */
+.trein-banner{display:none;margin:6px 12px 0;background:#fff8ee;border-radius:10px;border-left:4px solid #e67e22;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.trein-banner.visible{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.trein-banner .tb-title{font-size:12px;font-weight:700;color:#b56a00;flex:1}
+.trein-banner .tb-sub{font-size:10px;color:#e67e22;display:block;margin-top:2px}
 </style>
+
 </head>
 <body>
 
@@ -215,13 +229,24 @@ tbody tr.row-critico{background:#fff5f5}
 
 <div class="cards" id="cards"></div>
 
-<!-- Barra de ação rápida exp crítica -->
+<!-- Barra exp crítica -->
+
 <div class="exp-action-bar" id="expActionBar">
   <div>
     <span class="eab-title">⚠️ Experiências vencendo em até 7 dias</span>
     <span class="eab-sub" id="expActionSub"></span>
   </div>
   <button class="btn-notify" id="btnNotifPublico" style="display:none" onclick="abrirModalNotif()">✉ Notificar por Email</button>
+</div>
+
+<!-- Banner treinamento -->
+
+<div class="trein-banner" id="treinBanner">
+  <div>
+    <span class="tb-title">🎓 Funcionários em Treinamento para Mudança de Função</span>
+    <span class="tb-sub" id="treinBannerSub"></span>
+  </div>
+  <button class="btn-notify" style="background:#b56a00" onclick="sF('treinamento')">Ver Todos</button>
 </div>
 
 <div class="sbar">
@@ -247,6 +272,7 @@ tbody tr.row-critico{background:#fff5f5}
 <div class="footer">BUCAGRANS CONSTRUTORA DE OBRAS S/A - PCH Lebon Regis</div>
 
 <!-- Painel Admin -->
+
 <div class="ov" id="ov">
 <div class="abox">
   <div id="pLogin">
@@ -266,10 +292,10 @@ tbody tr.row-critico{background:#fff5f5}
       <button class="tab on" id="t0" onclick="mAba(0)">Efetivo</button>
       <button class="tab" id="t1" onclick="mAba(1)">Terceiros</button>
       <button class="tab" id="t2" onclick="mAba(2)">Mob.</button>
+      <button class="tab trein-tab" id="t3" onclick="mAba(3)" style="background:#fff3cd;color:#b56a00">🎓 Trein.</button>
     </div>
     <div id="a0">
       <div id="lEF" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
-      <!-- Botão de notificação: só visível após login admin -->
       <button class="btn-notify" style="width:100%;margin-bottom:12px;border-radius:8px;padding:10px" onclick="abrirModalNotif()">✉ Notificar Exp. Vencendo por Email</button>
       <div class="slbl">Adicionar Funcionario</div>
       <div class="aform">
@@ -320,13 +346,46 @@ tbody tr.row-critico{background:#fff5f5}
         <div class="ok" id="okMOB">Adicionado!</div>
       </div>
     </div>
-    <button class="bsave" onclick="salvar()">Salvar e Fechar</button>
-    <div class="save-status" id="saveStatus"></div>
+
+```
+<!-- ABA TREINAMENTO -->
+<div id="a3" style="display:none">
+  <div style="background:#fff8ee;border-radius:8px;padding:10px 12px;margin-bottom:10px;border-left:3px solid #e67e22;font-size:11px;color:#b56a00;font-weight:600">
+    🎓 Registre funcionários em treinamento para mudança de função. Informe a função atual, a função pretendida e o status do treinamento.
+  </div>
+  <div id="lTREIN" style="max-height:220px;overflow-y:auto;margin-bottom:10px"></div>
+  <div class="slbl">Adicionar em Treinamento</div>
+  <div class="aform">
+    <input id="trn" placeholder="Nome completo">
+    <div class="r2">
+      <input id="trf" placeholder="Função Atual">
+      <input id="trfp" placeholder="Função Pretendida">
+    </div>
+    <div class="r2">
+      <input id="tri" placeholder="Início do Treino dd/mm/aaaa">
+      <input id="trp" placeholder="Previsão dd/mm/aaaa (opcional)">
+    </div>
+    <select id="trst">
+      <option value="EM ANDAMENTO">EM ANDAMENTO</option>
+      <option value="PENDENTE AVALIAÇÃO">PENDENTE AVALIAÇÃO</option>
+      <option value="CONCLUÍDO">CONCLUÍDO</option>
+    </select>
+    <input id="trobs" placeholder="Observações (opcional)">
+    <button class="badd badd-trein" onclick="aTREIN()">Adicionar em Treinamento</button>
+    <div class="ok" id="okTREIN">Adicionado!</div>
+  </div>
+</div>
+
+<button class="bsave" onclick="salvar()">Salvar e Fechar</button>
+<div class="save-status" id="saveStatus"></div>
+```
+
   </div>
 </div>
 </div>
 
-<!-- Modal de Notificação por Email -->
+<!-- Modal Notificação Email -->
+
 <div class="notif-overlay" id="notifOv">
   <div class="notif-box">
     <div class="notif-header">
@@ -334,8 +393,6 @@ tbody tr.row-critico{background:#fff5f5}
       <button class="notif-close" onclick="fecharModalNotif()">×</button>
     </div>
     <div class="notif-sub">Selecione os funcionários e os destinatários do email</div>
-
-    <!-- Filtro de dias -->
     <div class="dias-filter">
       <button class="df-btn on" onclick="setDiasFiltro(7,this)">Até 7 dias</button>
       <button class="df-btn" onclick="setDiasFiltro(5,this)">Até 5 dias</button>
@@ -344,17 +401,11 @@ tbody tr.row-critico{background:#fff5f5}
       <button class="df-btn" onclick="setDiasFiltro(1,this)">Até 1 dia</button>
       <button class="df-btn" onclick="setDiasFiltro(0,this)">Hoje</button>
     </div>
-
-    <!-- Lista de funcionários -->
     <div class="notif-list" id="notifList"></div>
-
-    <!-- Destinatários -->
     <div class="dest-label">Destinatários</div>
     <div class="dest-tags" id="destTags"></div>
     <input class="dest-input" id="destInput" placeholder="Adicionar email e pressionar Enter..."
       onkeydown="adicionarDest(event)">
-
-    <!-- Ações -->
     <div class="notif-actions">
       <button class="btn-selall" onclick="toggleSelAll()">Marcar todos</button>
       <button class="btn-send" id="btnSend" onclick="enviarNotificacao()">✉ Enviar Email</button>
@@ -364,36 +415,22 @@ tbody tr.row-critico{background:#fff5f5}
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
-// ══════════════════════════════════════════
-//  EMAILJS
-// ══════════════════════════════════════════
 var EMAILJS_PUBLIC_KEY  = "KEnBTCVkWxdOB9w0-";
 var EMAILJS_SERVICE_ID  = "equieltst@gmail.com";
 var EMAILJS_TEMPLATE_ID = "template_ef4rzu7";
+(function(){try{emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});}catch(e){console.warn("EmailJS init:",e);}})();
 
-(function(){
-  try{ emailjs.init({publicKey: EMAILJS_PUBLIC_KEY}); }
-  catch(e){ console.warn("EmailJS init:", e); }
-})();
-
-// ══════════════════════════════════════════
-//  FIREBASE
-// ══════════════════════════════════════════
-var firebaseConfig={
-  apiKey:"AIzaSyAFtEMYKukQfD_Bhz84fPVIZ8ZoDqnJolM",
-  authDomain:"bucagrnas.firebaseapp.com",
-  projectId:"bucagrnas",
-  storageBucket:"bucagrnas.firebasestorage.app",
-  messagingSenderId:"134738205314",
-  appId:"1:134738205314:web:a095448e74044eb084329b",
-  measurementId:"G-C70QLW3ZH7"
-};
+var firebaseConfig={apiKey:"AIzaSyAFtEMYKukQfD_Bhz84fPVIZ8ZoDqnJolM",authDomain:"bucagrnas.firebaseapp.com",projectId:"bucagrnas",storageBucket:"bucagrnas.firebasestorage.app",messagingSenderId:"134738205314",appId:"1:134738205314:web:a095448e74044eb084329b",measurementId:"G-C70QLW3ZH7"};
 firebase.initializeApp(firebaseConfig);
 var db=firebase.firestore();
 db.enablePersistence().catch(function(err){console.warn("Persistência offline:",err.code);});
@@ -406,14 +443,10 @@ function setFbStatus(s){
   else{el.textContent="⬤ Offline";el.className="fb-status offline";}
 }
 
-// ══════════════════════════════════════════
-//  ESTADO
-// ══════════════════════════════════════════
 var PW="Buca@PCH#2026!",fil="todos",ter="",cI=null,cL=null,isAdmin=false;
-var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao",exp_critico:"⚠ Exp. Crítica (≤7d)"};
-var EF=[],TER=[],MOB=[],DT="";
+var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao",exp_critico:"⚠ Exp. Crítica (≤7d)",treinamento:"🎓 Em Treinamento"};
+var EF=[],TER=[],MOB=[],TREIN=[],DT="";
 
-// estado do modal
 var _diasFiltro=7;
 var _selecionados={};
 var _destinatarios=["equiel@bucagrans.com.br"];
@@ -496,9 +529,11 @@ var MOB_DEFAULT=[
 {n:"Jose Edenilson Pires da Silva",f:"Ajudante Geral - Armação",o:"Exame 22/04"},
 {n:"JOSIEL RODRIGUES DA SILVA",f:"Pedreiro",o:"Exame 29/04"},
 ];
+// Array padrão treinamento: vazio
+var TREIN_DEFAULT=[];
 
 // ══════════════════════════════════════════
-//  FIREBASE LOAD/SAVE
+//  FIREBASE
 // ══════════════════════════════════════════
 async function carregarDados(){
   document.getElementById("loadMsg").textContent="Buscando dados...";
@@ -506,26 +541,31 @@ async function carregarDados(){
     var snap=await DOC_REF.get();
     if(snap.exists){
       var d=snap.data();
-      EF=d.EF||EF_DEFAULT;TER=d.TER||TER_DEFAULT;MOB=d.MOB||MOB_DEFAULT;DT=d.DT||dataHoje();
+      EF=d.EF||EF_DEFAULT;TER=d.TER||TER_DEFAULT;MOB=d.MOB||MOB_DEFAULT;
+      TREIN=d.TREIN||TREIN_DEFAULT;
+      DT=d.DT||dataHoje();
       EF.forEach(function(e){if(e.set===undefined)e.set="";});
       EF.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
       TER.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
       MOB.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
+      TREIN.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
     }else{
-      EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));DT=dataHoje();
-      await DOC_REF.set({EF:EF,TER:TER,MOB:MOB,DT:DT});
+      EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));
+      MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));TREIN=JSON.parse(JSON.stringify(TREIN_DEFAULT));DT=dataHoje();
+      await DOC_REF.set({EF:EF,TER:TER,MOB:MOB,TREIN:TREIN,DT:DT});
     }
     setFbStatus("online");
   }catch(err){
     console.error("Firebase erro:",err);
-    EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));DT=dataHoje();
+    EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));
+    MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));TREIN=JSON.parse(JSON.stringify(TREIN_DEFAULT));DT=dataHoje();
     setFbStatus("offline");
     alert("Erro ao conectar ao Firebase.\n\nDetalhes: "+err.message);
   }
 }
 async function persistirDados(){
   setFbStatus("saving");
-  try{await DOC_REF.set({EF:EF,TER:TER,MOB:MOB,DT:DT});setFbStatus("online");return true;}
+  try{await DOC_REF.set({EF:EF,TER:TER,MOB:MOB,TREIN:TREIN,DT:DT});setFbStatus("online");return true;}
   catch(err){console.error("Erro ao salvar:",err);setFbStatus("offline");return false;}
 }
 
@@ -540,7 +580,6 @@ function diffDias(val){
   var now=new Date();now.setHours(0,0,0,0);
   return Math.floor((d-now)/86400000);
 }
-
 function expHtml(val){
   var diff=diffDias(val);
   if(diff===null)return"<span class='exp-ok'>INDET.</span>";
@@ -555,7 +594,12 @@ function asoHtml(aso){if(!aso)return"<span class='aso-nd'>-</span>";var st=asoSt
 function adm(){return EF.filter(function(e){return e.s==="A";});}
 function op(){return EF.filter(function(e){return e.s==="O";});}
 
-// Retorna funcionários com exp crítica dentro de X dias (exclui vencidas — diff < 0)
+function treinStatusHtml(st){
+  if(st==="CONCLUÍDO") return"<span class='btrein-status-ok'>✓ "+st+"</span>";
+  if(st==="EM ANDAMENTO") return"<span class='btrein-status-and'>⟳ "+st+"</span>";
+  return"<span class='btrein-status-pen'>⏳ "+st+"</span>";
+}
+
 function getExpCriticos(dias, incluirVencidas){
   var lista=[];
   EF.forEach(function(r){
@@ -580,7 +624,6 @@ function showToast(msg,tipo){
   t.classList.add("show");
   setTimeout(function(){t.classList.remove("show");},3500);
 }
-
 function nomeHtml(re,nome,funcao){
   var nEsc=nome.replace(/'/g,"&#39;"),fEsc=funcao.replace(/'/g,"&#39;");
   return"<span class='nome-tip' onmouseenter='showTip(event,\""+re+"\",\""+nEsc+"\",\""+fEsc+"\")' onmouseleave='hideTip()'><b>"+nome+"</b></span>";
@@ -603,7 +646,7 @@ function hideTip(){document.getElementById("fotoTip").style.display="none";}
 document.addEventListener("mousemove",function(e){var tip=document.getElementById("fotoTip");if(tip.style.display==="block")moverTip(e);});
 
 // ══════════════════════════════════════════
-//  RENDER CARDS + TABELA
+//  CARDS + TABELA
 // ══════════════════════════════════════════
 function gL(){
   var fSetor=document.getElementById("filtroSetor")?document.getElementById("filtroSetor").value:"";
@@ -612,13 +655,19 @@ function gL(){
     var criticos=getExpCriticos(7,true);
     var nomes=criticos.map(function(c){return c.nome;});
     r=EF.filter(function(x){return nomes.indexOf(x.n)>-1;}).map(function(x){return Object.assign({},x,{t:"ef"});});
-  }else if(fil==="todos")r=EF.map(function(x){return Object.assign({},x,{t:"ef"});}).concat(TER.map(function(x){return Object.assign({},x,{t:"ter"});})).concat(MOB.map(function(x){return Object.assign({},x,{t:"mob"});}));
-  else if(fil==="efetivo")r=EF.map(function(x){return Object.assign({},x,{t:"ef"});});
+  }else if(fil==="treinamento"){
+    r=TREIN.map(function(x){return Object.assign({},x,{t:"trein"});});
+  }else if(fil==="todos"){
+    r=EF.map(function(x){return Object.assign({},x,{t:"ef"});})
+      .concat(TER.map(function(x){return Object.assign({},x,{t:"ter"});}))
+      .concat(MOB.map(function(x){return Object.assign({},x,{t:"mob"});}))
+      .concat(TREIN.filter(function(x){return x.status!=="CONCLUÍDO";}).map(function(x){return Object.assign({},x,{t:"trein"});}));
+  }else if(fil==="efetivo")r=EF.map(function(x){return Object.assign({},x,{t:"ef"});});
   else if(fil==="adm")r=adm().map(function(x){return Object.assign({},x,{t:"ef"});});
   else if(fil==="op")r=op().map(function(x){return Object.assign({},x,{t:"ef"});});
   else if(fil==="terceiros")r=TER.map(function(x){return Object.assign({},x,{t:"ter"});});
   else r=MOB.map(function(x){return Object.assign({},x,{t:"mob"});});
-  if(ter)r=r.filter(function(x){return(x.n||"").toLowerCase().indexOf(ter)>-1||(x.f||"").toLowerCase().indexOf(ter)>-1||(x.e||"").toLowerCase().indexOf(ter)>-1||(x.set||"").toLowerCase().indexOf(ter)>-1;});
+  if(ter)r=r.filter(function(x){return(x.n||"").toLowerCase().indexOf(ter)>-1||(x.f||"").toLowerCase().indexOf(ter)>-1||(x.e||"").toLowerCase().indexOf(ter)>-1||(x.set||"").toLowerCase().indexOf(ter)>-1||(x.fp||"").toLowerCase().indexOf(ter)>-1;});
   if(fSetor)r=r.filter(function(x){return(x.set||"")===fSetor;});
   return r;
 }
@@ -626,6 +675,7 @@ function gL(){
 function rCards(){
   var A=adm(),O=op();
   var criticos=getExpCriticos(7,true);
+  var treinAtivos=TREIN.filter(function(t){return t.status!=="CONCLUÍDO";});
   var d=[
     {id:"todos",v:EF.length+TER.length+MOB.length,l:"TOTAL GERAL",c:"c0"},
     {id:"efetivo",v:EF.length,l:"TOTAL EFETIVO",c:"c1"},
@@ -635,10 +685,13 @@ function rCards(){
     {id:"mob",v:MOB.length,l:"MOBILIZACAO",c:"c5"}
   ];
   var html=d.map(function(c){return"<div class='card "+c.c+(fil===c.id?" active":"")+"' onclick='sF(\""+c.id+"\")'><div class='num'>"+c.v+"</div><div class='lbl'>"+c.l+"</div></div>";}).join("");
-  // card especial de exp crítica
   if(criticos.length>0){
     var nomesCriticos=[...new Set(criticos.map(function(c){return c.nome;}))].length;
     html+="<div class='card c-exp"+(fil==="exp_critico"?" active":"")+"' onclick='sF(\"exp_critico\")'><div class='num'>"+nomesCriticos+"</div><div class='lbl'>EXP. CRÍTICA ≤7d</div></div>";
+  }
+  // Card treinamento
+  if(TREIN.length>0){
+    html+="<div class='card c-trein"+(fil==="treinamento"?" active":"")+"' onclick='sF(\"treinamento\")'><div class='num'>"+TREIN.length+"</div><div class='lbl'>TREINAMENTO</div></div>";
   }
   document.getElementById("cards").innerHTML=html;
 }
@@ -647,17 +700,21 @@ function sF(f){fil=f;ter="";document.getElementById("busca").value="";document.g
 function buscar(){ter=document.getElementById("busca").value.toLowerCase();rTab();}
 
 function rTab(){
-  var rows=gL(),mix=fil==="todos";
+  var rows=gL(),mix=(fil==="todos");
   document.getElementById("sT").textContent=TI[fil]||fil;
   document.getElementById("sC").textContent=rows.length+" registro"+(rows.length!==1?"s":"");
 
-  // nomes críticos para destacar linha
   var nomesCriticos={};
   getExpCriticos(7,true).forEach(function(c){nomesCriticos[c.nome]=true;});
 
-  var eR=rows.filter(function(r){return r.t==="ef";}),tR=rows.filter(function(r){return r.t==="ter";}),mR=rows.filter(function(r){return r.t==="mob";});
+  var eR=rows.filter(function(r){return r.t==="ef";}),
+      tR=rows.filter(function(r){return r.t==="ter";}),
+      mR=rows.filter(function(r){return r.t==="mob";}),
+      trR=rows.filter(function(r){return r.t==="trein";});
+
   var h="";
   if(!rows.length){h="<div class='norows'>Nenhum registro.</div>";}
+
   if(eR.length){
     if(mix)h+="<div class='sdiv'>EFETIVO</div>";
     h+="<div class='tscroll'><table><thead><tr><th>#</th><th>RE</th><th>Nome</th><th>Funcao</th><th>Setor</th><th>Adm.</th><th>Exp.30</th><th>Exp.60</th><th>Setor ADM</th><th>ASO Venc.</th></tr></thead><tbody>";
@@ -668,7 +725,7 @@ function rTab(){
       h+="<tr"+rowClass+"><td style='color:#bbb;font-size:9px'>"+(i+1)+"</td><td><b>"+r.re+"</b></td><td style='white-space:nowrap'>"+nomeHtml(r.re,r.n,r.f)+"</td><td style='color:#555;white-space:nowrap;font-size:10px'>"+r.f+"</td><td>"+setHtml+"</td><td style='color:#999;font-size:10px'>"+r.a+"</td><td>"+expHtml(r.e3)+"</td><td>"+expHtml(r.e6)+"</td><td>"+b+"</td><td>"+asoHtml(r.aso)+"</td></tr>";
     });
     h+="</tbody></table></div>";
-}
+  }
   if(tR.length){
     if(mix)h+="<div class='sdiv'>TERCEIROS</div>";
     h+="<div class='tscroll'><table><thead><tr><th>#</th><th>Nome</th><th>Empresa</th><th>Funcao</th></tr></thead><tbody>";
@@ -681,9 +738,29 @@ function rTab(){
     mR.forEach(function(r,i){var ag=(r.o||"").toLowerCase().indexOf("aguard")>-1;h+="<tr><td style='color:#bbb;font-size:9px'>"+(i+1)+"</td><td style='white-space:nowrap'><b>"+r.n+"</b></td><td style='color:#555;font-size:10px'>"+r.f+"</td><td><span class='"+(ag?"bag":"blib")+"'>"+r.o+"</span></td></tr>";});
     h+="</tbody></table></div>";
   }
+
+  // ── TABELA TREINAMENTO ──
+  if(trR.length){
+    if(mix)h+="<div class='sdiv' style='color:#b56a00'>🎓 EM TREINAMENTO — MUDANÇA DE FUNÇÃO</div>";
+    h+="<div class='tscroll'><table><thead class='th-trein'><tr><th>#</th><th>Nome</th><th>Função Atual</th><th>Função Pretendida</th><th>Início</th><th>Previsão</th><th>Status</th><th>Obs.</th></tr></thead><tbody>";
+    trR.forEach(function(r,i){
+      h+="<tr class='row-trein'>"
+        +"<td style='color:#bbb;font-size:9px'>"+(i+1)+"</td>"
+        +"<td style='white-space:nowrap'><b>"+r.n+"</b></td>"
+        +"<td style='color:#555;font-size:10px;white-space:nowrap'>"+r.f+"</td>"
+        +"<td><span class='btrein'>➜ "+(r.fp||"—")+"</span></td>"
+        +"<td style='color:#999;font-size:10px'>"+(r.ini||"—")+"</td>"
+        +"<td style='color:#999;font-size:10px'>"+(r.prev||"—")+"</td>"
+        +"<td>"+treinStatusHtml(r.status||"EM ANDAMENTO")+"</td>"
+        +"<td style='color:#888;font-size:10px'>"+(r.obs||"—")+"</td>"
+        +"</tr>";
+    });
+    h+="</tbody></table></div>";
+  }
+
   document.getElementById("tbox").innerHTML=h;
 
-  // barra de ação
+  // barra exp crítica
   var bar=document.getElementById("expActionBar"),sub=document.getElementById("expActionSub");
   var c7=getExpCriticos(7,true);
   if(c7.length>0){
@@ -693,11 +770,21 @@ function rTab(){
   }else{
     bar.className="exp-action-bar";
   }
+
+  // banner treinamento
+  var tb=document.getElementById("treinBanner"),tbs=document.getElementById("treinBannerSub");
+  var trAtivos=TREIN.filter(function(t){return t.status==="EM ANDAMENTO";});
+  if(trAtivos.length>0&&fil!=="treinamento"){
+    tb.className="trein-banner visible";
+    tbs.textContent=trAtivos.length+" em andamento — clique para visualizar";
+  }else{
+    tb.className="trein-banner";
+  }
 }
 
 function rGraf(){
   var A=adm(),O=op(),tot=EF.length+TER.length+MOB.length||1;
-  var s=[{l:"Operacional",v:O.length,c:"#27ae60"},{l:"ADM",v:A.length,c:"#1a3a6b"},{l:"Terceiros",v:TER.length,c:"#c0392b"},{l:"Mobilizacao",v:MOB.length,c:"#6a0dad"}];
+  var s=[{l:"Operacional",v:O.length,c:"#27ae60"},{l:"ADM",v:A.length,c:"#1a3a6b"},{l:"Terceiros",v:TER.length,c:"#c0392b"},{l:"Mobilizacao",v:MOB.length,c:"#6a0dad"},{l:"Treinamento",v:TREIN.length,c:"#e67e22"}];
   var bS=s.map(function(d){return"<div class='bi'><div class='bl'><span>"+d.l+"</span><span><b>"+d.v+"</b> ("+Math.round(d.v/tot*100)+"%)</span></div><div class='bt'><div class='bf' style='width:"+Math.round(d.v/tot*100)+"%;background:"+d.c+"'></div></div></div>";}).join("");
   var sc={};EF.forEach(function(e){if(e.set){sc[e.set]=(sc[e.set]||0)+1;}});
   var ts=Object.keys(sc).map(function(k){return[k,sc[k]];}).sort(function(a,b){return b[1]-a[1];});
@@ -710,43 +797,30 @@ function rTudo(){rCards();rTab();rGraf();}
 function atualizarSub(){document.getElementById("sub").textContent="Atualizado em: "+DT;}
 
 // ══════════════════════════════════════════
-//  MODAL DE NOTIFICAÇÃO
+//  MODAL NOTIFICAÇÃO
 // ══════════════════════════════════════════
 function abrirModalNotif(){
   if(!isAdmin){alert("Acesso restrito. Faça login como administrador.");return;}
-  _diasFiltro=7;
-  _selecionados={};
+  _diasFiltro=7;_selecionados={};
   document.getElementById("notifStatus").textContent="";
   document.getElementById("notifStatus").className="notif-status";
-  // reset filtro visual
   document.querySelectorAll(".df-btn").forEach(function(b){b.classList.remove("on");});
   document.querySelectorAll(".df-btn")[0].classList.add("on");
-  renderDestTags();
-  renderNotifList();
+  renderDestTags();renderNotifList();
   document.getElementById("notifOv").classList.add("on");
 }
-function fecharModalNotif(){
-  document.getElementById("notifOv").classList.remove("on");
-}
-
+function fecharModalNotif(){document.getElementById("notifOv").classList.remove("on");}
 function setDiasFiltro(dias,btn){
-  _diasFiltro=dias;
-  _selecionados={};
+  _diasFiltro=dias;_selecionados={};
   document.querySelectorAll(".df-btn").forEach(function(b){b.classList.remove("on");});
-  btn.classList.add("on");
-  renderNotifList();
+  btn.classList.add("on");renderNotifList();
 }
-
 function renderNotifList(){
   var lista=getExpCriticos(_diasFiltro);
   var el=document.getElementById("notifList");
-  if(!lista.length){
-    el.innerHTML="<div style='padding:20px;text-align:center;color:#aaa;font-size:13px'>Nenhum funcionário neste período.</div>";
-    return;
-  }
+  if(!lista.length){el.innerHTML="<div style='padding:20px;text-align:center;color:#aaa;font-size:13px'>Nenhum funcionário neste período.</div>";return;}
   el.innerHTML=lista.map(function(it){
-    var key=it.key;
-    var checked=!!_selecionados[key];
+    var key=it.key,checked=!!_selecionados[key];
     var badgeCls=it.diff<0?"vencida":it.diff===0?"d0":"d"+it.diff;
     var badgeTxt=it.diff<0?"VENCIDA":it.diff===0?"HOJE":it.diff+"d";
     return"<div class='notif-item"+(checked?" checked":"")+"' onclick='toggleItem(\""+key.replace(/"/g,'&quot;')+"\")'>"
@@ -756,94 +830,41 @@ function renderNotifList(){
       +"</div>";
   }).join("");
 }
-
-function toggleItem(key){
-  if(_selecionados[key]) delete _selecionados[key];
-  else _selecionados[key]=true;
-  renderNotifList();
-}
-
+function toggleItem(key){if(_selecionados[key])delete _selecionados[key];else _selecionados[key]=true;renderNotifList();}
 function toggleSelAll(){
   var lista=getExpCriticos(_diasFiltro);
   var todosOn=lista.every(function(it){return _selecionados[it.key];});
-  _selecionados={};
-  if(!todosOn) lista.forEach(function(it){_selecionados[it.key]=true;});
+  _selecionados={};if(!todosOn)lista.forEach(function(it){_selecionados[it.key]=true;});
   renderNotifList();
 }
-
-// Destinatários
 function renderDestTags(){
   var el=document.getElementById("destTags");
-  el.innerHTML=_destinatarios.map(function(d,i){
-    return"<span class='dest-tag'>"+d+"<button onclick='removerDest("+i+")'>×</button></span>";
-  }).join("");
+  el.innerHTML=_destinatarios.map(function(d,i){return"<span class='dest-tag'>"+d+"<button onclick='removerDest("+i+")'>×</button></span>";}).join("");
 }
-function removerDest(i){
-  _destinatarios.splice(i,1);
-  renderDestTags();
-}
+function removerDest(i){_destinatarios.splice(i,1);renderDestTags();}
 function adicionarDest(e){
-  if(e.key!=="Enter"&&e.key!==",")return;
-  e.preventDefault();
+  if(e.key!=="Enter"&&e.key!==",")return;e.preventDefault();
   var v=document.getElementById("destInput").value.trim().replace(/,$/,"");
-  if(v&&v.indexOf("@")>-1&&_destinatarios.indexOf(v)===-1){
-    _destinatarios.push(v);
-    renderDestTags();
-  }
+  if(v&&v.indexOf("@")>-1&&_destinatarios.indexOf(v)===-1){_destinatarios.push(v);renderDestTags();}
   document.getElementById("destInput").value="";
 }
-
-// Envio
 async function enviarNotificacao(){
   var selecionados=getExpCriticos(_diasFiltro).filter(function(it){return _selecionados[it.key];});
   if(!selecionados.length){showToast("Selecione ao menos 1 funcionário.","err");return;}
   if(!_destinatarios.length){showToast("Adicione ao menos 1 destinatário.","err");return;}
-
   var btn=document.getElementById("btnSend"),statusEl=document.getElementById("notifStatus");
-  btn.disabled=true;btn.textContent="Enviando...";
-  statusEl.textContent="";statusEl.className="notif-status";
-
-var hoje=dataHoje();
-  var linhas=selecionados.map(function(it){
-    var status=it.diff<0?"VENCIDA":it.diff===0?"HOJE":it.diff+"d";
-    return"  • "+it.nome+" | "+it.fn+" | "+it.tipo+": "+it.val+" ("+status+")";
-  });
-  var corpo=[
-    "BUCAGRANS CONSTRUTORA – PCH LEBON REGIS",
-    "Alerta de Experiências Vencendo – "+hoje,
-    "",
-    "Os funcionários abaixo possuem período de experiência vencendo em até "+_diasFiltro+" dia(s):",
-    "",
-    linhas.join("\n"),
-    "",
-    "Total: "+selecionados.length+" ocorrência(s)",
-    "",
-    "Por favor, providenciar prorrogação ou encerramento conforme o caso.",
-    "— Sistema RH · PCH Lebon Regis"
-  ].join("\n");
-
+  btn.disabled=true;btn.textContent="Enviando...";statusEl.textContent="";statusEl.className="notif-status";
+  var hoje=dataHoje();
+  var linhas=selecionados.map(function(it){var status=it.diff<0?"VENCIDA":it.diff===0?"HOJE":it.diff+"d";return"  • "+it.nome+" | "+it.fn+" | "+it.tipo+": "+it.val+" ("+status+")";});
+  var corpo=["BUCAGRANS CONSTRUTORA – PCH LEBON REGIS","Alerta de Experiências Vencendo – "+hoje,"","Os funcionários abaixo possuem período de experiência vencendo em até "+_diasFiltro+" dia(s):","",linhas.join("\n"),"","Total: "+selecionados.length+" ocorrência(s)","","Por favor, providenciar prorrogação ou encerramento conforme o caso.","— Sistema RH · PCH Lebon Regis"].join("\n");
   var assunto="⚠ Exp. Vencendo ("+selecionados.length+" func.) – PCH Lebon Regis – "+hoje;
-
   try{
-    var promessas=_destinatarios.map(function(dest){
-      return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID,{
-        to_email:dest,
-        to_name:dest.split("@")[0],
-        assunto:assunto,
-        corpo:corpo,
-        data:hoje,
-        total:String(selecionados.length)
-      });
-    });
+    var promessas=_destinatarios.map(function(dest){return emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,{to_email:dest,to_name:dest.split("@")[0],assunto:assunto,corpo:corpo,data:hoje,total:String(selecionados.length)});});
     await Promise.all(promessas);
-    statusEl.textContent="✓ Email enviado para "+_destinatarios.length+" destinatário(s)!";
-    statusEl.className="notif-status ok";
-    showToast("✓ Email enviado!","ok");
-    setTimeout(function(){fecharModalNotif();},1800);
+    statusEl.textContent="✓ Email enviado para "+_destinatarios.length+" destinatário(s)!";statusEl.className="notif-status ok";
+    showToast("✓ Email enviado!","ok");setTimeout(function(){fecharModalNotif();},1800);
   }catch(err){
-    console.error("EmailJS:",err);
-    statusEl.textContent="Erro ao enviar: "+err.text;
-    statusEl.className="notif-status err";
+    console.error("EmailJS:",err);statusEl.textContent="Erro ao enviar: "+err.text;statusEl.className="notif-status err";
   }
   btn.disabled=false;btn.textContent="✉ Enviar Email";
 }
@@ -856,11 +877,7 @@ function abrirAdmin(){
   document.getElementById("pwi").value="";document.getElementById("pwerr").style.display="none";
   document.getElementById("pwi").classList.remove("err");document.getElementById("ov").classList.add("on");
 }
-function fAdmin(){
-  document.getElementById("ov").classList.remove("on");
-  isAdmin=false;
-  document.getElementById("btnNotifPublico").style.display="none";
-}
+function fAdmin(){document.getElementById("ov").classList.remove("on");isAdmin=false;document.getElementById("btnNotifPublico").style.display="none";}
 function chk(){
   if(document.getElementById("pwi").value===PW){
     isAdmin=true;
@@ -870,8 +887,17 @@ function chk(){
     mAba(0);rListas();
   }else{document.getElementById("pwerr").style.display="block";document.getElementById("pwi").classList.add("err");}
 }
-function mAba(n){for(var i=0;i<3;i++){document.getElementById("a"+i).style.display=i===n?"block":"none";document.getElementById("t"+i).className="tab"+(i===n?" on":"");}}
+function mAba(n){
+  for(var i=0;i<4;i++){
+    document.getElementById("a"+i).style.display=i===n?"block":"none";
+    var tab=document.getElementById("t"+i);
+    tab.className="tab"+(i===3?" trein-tab":"")+(i===n?" on":"");
+    if(i===3){tab.style.background=i===n?"#b56a00":"#fff3cd";tab.style.color=i===n?"white":"#b56a00";}
+    else{tab.style.background="";tab.style.color="";}
+  }
+}
 function rListas(){
+  // Efetivo
   var hE="";
   for(var i=0;i<EF.length;i++){
     var ic=cL==="EF"&&cI===i;
@@ -879,23 +905,37 @@ function rListas(){
     hE+="<div class='prow'><div class='pinfo'><div class='pname'>"+EF[i].re+" - "+EF[i].n+"</div><div class='pfn'>"+EF[i].f+" | "+(EF[i].s==="A"?"ADM":"OPER.")+setInfo+asoInfo+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='EF' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
   }
   document.getElementById("lEF").innerHTML=hE||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Vazia.</div>";
+  // Terceiros
   var hT="";
   for(var i=0;i<TER.length;i++){
     var ic=cL==="TER"&&cI===i;
     hT+="<div class='prow'><div class='pinfo'><div class='pname'>"+TER[i].n+"</div><div class='pfn'>"+TER[i].e+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='TER' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
   }
   document.getElementById("lTER").innerHTML=hT||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Vazia.</div>";
+  // Mobilização
   var hM="";
   for(var i=0;i<MOB.length;i++){
     var ic=cL==="MOB"&&cI===i;
     hM+="<div class='prow'><div class='pinfo'><div class='pname'>"+MOB[i].n+"</div><div class='pfn'>"+MOB[i].o+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='MOB' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
   }
   document.getElementById("lMOB").innerHTML=hM||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Vazia.</div>";
+  // Treinamento
+  var hTR="";
+  for(var i=0;i<TREIN.length;i++){
+    var ic=cL==="TREIN"&&cI===i;
+    var stBadge=TREIN[i].status==="CONCLUÍDO"?"✓":"⟳";
+    hTR+="<div class='prow prow-trein'><div class='pinfo'><div class='pname'>"+TREIN[i].n+"</div><div class='pfn'>"+TREIN[i].f+" ➜ "+(TREIN[i].fp||"—")+" | "+stBadge+" "+(TREIN[i].status||"EM ANDAMENTO")+(TREIN[i].ini?" | Início: "+TREIN[i].ini:"")+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='TREIN' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
+  }
+  document.getElementById("lTREIN").innerHTML=hTR||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Nenhum em treinamento.</div>";
 }
+
 function cRem(b){
   var l=b.getAttribute("data-l"),i=parseInt(b.getAttribute("data-i"));
   if(cL===l&&cI===i){
-    if(l==="EF")EF.splice(i,1);else if(l==="TER")TER.splice(i,1);else if(l==="MOB")MOB.splice(i,1);
+    if(l==="EF")EF.splice(i,1);
+    else if(l==="TER")TER.splice(i,1);
+    else if(l==="MOB")MOB.splice(i,1);
+    else if(l==="TREIN")TREIN.splice(i,1);
     cI=null;cL=null;rListas();rTudo();
   }else{cI=i;cL=l;rListas();setTimeout(function(){cI=null;cL=null;rListas();},3000);}
 }
@@ -920,6 +960,23 @@ function aMOB(){
   MOB.push({n:n,f:f,o:o});MOB.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
   ["mn","mf","mo"].forEach(function(id){document.getElementById(id).value="";});rListas();rTudo();mOk("okMOB");
 }
+// NOVO: Adicionar treinamento
+function aTREIN(){
+  var n=document.getElementById("trn").value.trim().toUpperCase(),
+      f=document.getElementById("trf").value.trim().toUpperCase(),
+      fp=document.getElementById("trfp").value.trim().toUpperCase(),
+      ini=document.getElementById("tri").value.trim(),
+      prev=document.getElementById("trp").value.trim(),
+      status=document.getElementById("trst").value,
+      obs=document.getElementById("trobs").value.trim();
+  if(!n||!f||!fp){alert("Preencha Nome, Função Atual e Função Pretendida.");return;}
+  TREIN.push({n:n,f:f,fp:fp,ini:ini,prev:prev,status:status,obs:obs});
+  TREIN.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
+  ["trn","trf","trfp","tri","trp","trobs"].forEach(function(id){document.getElementById(id).value="";});
+  document.getElementById("trst").value="EM ANDAMENTO";
+  rListas();rTudo();mOk("okTREIN");
+}
+
 async function salvar(){
   var btn=document.querySelector(".bsave"),statusEl=document.getElementById("saveStatus");
   btn.disabled=true;btn.textContent="Salvando...";statusEl.textContent="";statusEl.className="save-status";
@@ -949,6 +1006,7 @@ function xlAlign(h,v){return{horizontal:h||"center",vertical:v||"middle",wrapTex
 function xlBorder(){var s={style:"thin",color:{argb:"FFE0E0E0"}};return{bottom:s};}
 async function exportarExcel(){
   var ExcelJS=window.ExcelJS,wb=new ExcelJS.Workbook();wb.creator="Bucagrans";wb.created=new Date();
+  // Aba Efetivo
   var ws=wb.addWorksheet("Efetivo",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:3}]});
   ws.columns=[{key:"idx",width:4},{key:"re",width:8},{key:"nome",width:34},{key:"func",width:28},{key:"setor",width:24},{key:"adm",width:12},{key:"e3",width:12},{key:"e6",width:12},{key:"tp",width:11},{key:"aso",width:13}];
   ws.mergeCells("A1:J1");var t=ws.getCell("A1");t.value="BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | Efetivo";t.font=xlFont(true,"FFFFFF",13);t.fill=xlFill("0A1F3D");t.alignment=xlAlign("center");ws.getRow(1).height=28;
@@ -966,14 +1024,29 @@ async function exportarExcel(){
     var ast=xlAsoStatus(r.aso),asoBg={ok:"D5F0E0",warn:"FFF3CD",venc:"FDECEA",nd:"F0F2F5"}[ast],asoFg={ok:"1A6B35",warn:"856404",venc:"8B0000",nd:"AAAAAA"}[ast],asoVal=(r.aso&&r.aso!=="!"&&r.aso!=="--")?r.aso:"-";
     sc(10,asoVal,ast==="warn"||ast==="venc",asoFg,asoBg,"center");
   });
+  // Aba Terceiros
   var ws2=wb.addWorksheet("Terceiros",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:2}]});ws2.columns=[{width:4},{width:32},{width:32},{width:26}];
   ws2.mergeCells("A1:D1");var t2=ws2.getCell("A1");t2.value="BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | Terceiros";t2.font=xlFont(true,"FFFFFF",13);t2.fill=xlFill("8B0000");t2.alignment=xlAlign("center");ws2.getRow(1).height=28;
   var h2Row=ws2.getRow(2);["#","NOME","EMPRESA","FUNÇÃO"].forEach(function(h,i){var c=h2Row.getCell(i+1);c.value=h;c.font=xlFont(true,"FFFFFF",9);c.fill=xlFill("8B0000");c.alignment=xlAlign("center");});h2Row.height=20;
   TER.forEach(function(r,i){var row=ws2.getRow(3+i);row.height=18;var bg=i%2===0?"F7F8FA":"FFFFFF";[[i+1,false,"BBBBBB",bg,"center"],[r.n,true,"111111",bg,"left"],[r.e,false,"555555",bg,"left"],[r.f,false,"555555",bg,"left"]].forEach(function(d,ci){var c=row.getCell(ci+1);c.value=d[0];c.font=xlFont(d[1],d[2]);c.fill=xlFill(d[3]);c.alignment=xlAlign(d[4]);c.border=xlBorder();});});
+  // Aba Mobilização
   var ws3=wb.addWorksheet("Mobilização",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:2}]});ws3.columns=[{width:4},{width:34},{width:28},{width:22}];
   ws3.mergeCells("A1:D1");var t3=ws3.getCell("A1");t3.value="BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | Em Mobilização";t3.font=xlFont(true,"FFFFFF",13);t3.fill=xlFill("6A0DAD");t3.alignment=xlAlign("center");ws3.getRow(1).height=28;
   var h3Row=ws3.getRow(2);["#","NOME","FUNÇÃO","STATUS"].forEach(function(h,i){var c=h3Row.getCell(i+1);c.value=h;c.font=xlFont(true,"FFFFFF",9);c.fill=xlFill("6A0DAD");c.alignment=xlAlign("center");});h3Row.height=20;
   MOB.forEach(function(r,i){var row=ws3.getRow(3+i);row.height=18;var bg=i%2===0?"F7F8FA":"FFFFFF";var aguard=(r.o||"").toLowerCase().indexOf("aguard")>-1;var sBg=aguard?"FDE8D8":"D5F0E0";var sFg=aguard?"8B0000":"1A6B35";[[i+1,false,"BBBBBB",bg,"center"],[r.n,true,"111111",bg,"left"],[r.f,false,"555555",bg,"left"],[r.o,true,sFg,sBg,"center"]].forEach(function(d,ci){var c=row.getCell(ci+1);c.value=d[0];c.font=xlFont(d[1],d[2]);c.fill=xlFill(d[3]);c.alignment=xlAlign(d[4]);c.border=xlBorder();});});
+  // Aba Treinamento
+  if(TREIN.length>0){
+    var ws4=wb.addWorksheet("Treinamento",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:2}]});
+    ws4.columns=[{width:4},{width:34},{width:26},{width:26},{width:14},{width:14},{width:20},{width:30}];
+    ws4.mergeCells("A1:H1");var t4=ws4.getCell("A1");t4.value="BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | Em Treinamento – Mudança de Função";t4.font=xlFont(true,"FFFFFF",13);t4.fill=xlFill("B56A00");t4.alignment=xlAlign("center");ws4.getRow(1).height=28;
+    var h4Row=ws4.getRow(2);["#","NOME","FUNÇÃO ATUAL","FUNÇÃO PRETENDIDA","INÍCIO","PREVISÃO","STATUS","OBSERVAÇÕES"].forEach(function(h,i){var c=h4Row.getCell(i+1);c.value=h;c.font=xlFont(true,"FFFFFF",9);c.fill=xlFill("B56A00");c.alignment=xlAlign("center");});h4Row.height=20;
+    TREIN.forEach(function(r,i){
+      var row=ws4.getRow(3+i);row.height=18;var bg=i%2===0?"FFF8EE":"FFFFFF";
+      var stBg=r.status==="CONCLUÍDO"?"D5F0E0":(r.status==="EM ANDAMENTO"?"FFF3CD":"FDE8D8");
+      var stFg=r.status==="CONCLUÍDO"?"1A6B35":(r.status==="EM ANDAMENTO"?"856404":"8B0000");
+      [[i+1,false,"BBBBBB",bg,"center"],[r.n,true,"111111",bg,"left"],[r.f,false,"555555",bg,"left"],[r.fp||"—",true,"B56A00","FFF3CD","center"],[r.ini||"—",false,"888888",bg,"center"],[r.prev||"—",false,"888888",bg,"center"],[r.status||"EM ANDAMENTO",true,stFg,stBg,"center"],[r.obs||"—",false,"888888",bg,"left"]].forEach(function(d,ci){var c=row.getCell(ci+1);c.value=d[0];c.font=xlFont(d[1],d[2]);c.fill=xlFill(d[3]);c.alignment=xlAlign(d[4]);c.border=xlBorder();});
+    });
+  }
   var buf=await wb.xlsx.writeBuffer();var blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
   var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="efetivo-pch-lebon-regis-"+dataHoje().replace(/\//g,"-")+".xlsx";
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
@@ -986,5 +1059,6 @@ async function init(){
 }
 init();
 </script>
+
 </body>
 </html>
