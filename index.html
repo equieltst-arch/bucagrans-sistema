@@ -41,6 +41,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222}
 /* card especial de alerta */
 .c-exp{background:linear-gradient(135deg,#7b2d00,#c0392b);position:relative;overflow:hidden}
 .c-exp::after{content:'⚠';position:absolute;right:8px;bottom:4px;font-size:22px;opacity:.25}
+/* card demitidos */
+.c-dem{background:linear-gradient(135deg,#4a4a4a,#222222);position:relative;overflow:hidden}
+.c-dem::after{content:'✕';position:absolute;right:8px;bottom:4px;font-size:22px;opacity:.25}
 .sbar{margin:5px 12px 0;background:white;border-radius:10px;padding:8px 13px;box-shadow:0 1px 6px rgba(0,0,0,.08);border-left:4px solid #8b0000}
 .sbar-t{font-size:12px;font-weight:700;color:#0a1f3d}
 .sbar-c{font-size:11px;color:#aaa;margin-top:1px}
@@ -70,6 +73,7 @@ tbody tr.row-trein{background:#fffaf0}
 .badm{background:#dbe8f7;color:#1560a0;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .bop{background:#d5f0e0;color:#1a6b35;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .blib{background:#d5f0e0;color:#1a6b35;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
+.bdem{background:#e0e0e0;color:#444;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .bag{background:#fde8d8;color:#8b0000;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .aso-ok{background:#d5f0e0;color:#1a6b35;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
 .aso-warn{background:#fff3cd;color:#856404;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700}
@@ -293,6 +297,7 @@ tbody tr.row-trein{background:#fffaf0}
       <button class="tab" id="t1" onclick="mAba(1)">Terceiros</button>
       <button class="tab" id="t2" onclick="mAba(2)">Mob.</button>
       <button class="tab trein-tab" id="t3" onclick="mAba(3)" style="background:#fff3cd;color:#b56a00">🎓 Trein.</button>
+      <button class="tab" id="t4" onclick="mAba(4)" style="background:#e0e0e0;color:#555">✕ Demit.</button>
     </div>
     <div id="a0">
       <div id="lEF" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
@@ -347,7 +352,6 @@ tbody tr.row-trein{background:#fffaf0}
       </div>
     </div>
 
-```
 <!-- ABA TREINAMENTO -->
 <div id="a3" style="display:none">
   <div style="background:#fff8ee;border-radius:8px;padding:10px 12px;margin-bottom:10px;border-left:3px solid #e67e22;font-size:11px;color:#b56a00;font-weight:600">
@@ -376,9 +380,31 @@ tbody tr.row-trein{background:#fffaf0}
   </div>
 </div>
 
+<div id="a4" style="display:none">
+  <div style="background:#f5f5f5;border-radius:8px;padding:10px 12px;margin-bottom:10px;border-left:3px solid #888;font-size:11px;color:#555;font-weight:600">
+    ✕ Registre funcionários demitidos. Eles ficam armazenados no histórico mas fora do efetivo ativo.
+  </div>
+  <div id="lDEM" style="max-height:220px;overflow-y:auto;margin-bottom:10px"></div>
+  <div class="slbl">Registrar Demitido</div>
+  <div class="aform">
+    <div class="r2">
+      <input id="dre" placeholder="RE" type="number">
+      <input id="dno" placeholder="Nome completo">
+    </div>
+    <input id="dfn" placeholder="Função">
+    <div class="r2">
+      <input id="dset" placeholder="Setor">
+      <input id="dad" placeholder="Admissão dd/mm/aaaa">
+    </div>
+    <input id="ddd" placeholder="Data demissão dd/mm/aaaa">
+    <input id="dmot" placeholder="Motivo (opcional)">
+    <button class="badd" style="background:#555" onclick="aDEM()">Registrar Demissão</button>
+    <div class="ok" id="okDEM">Registrado!</div>
+  </div>
+</div>
+
 <button class="bsave" onclick="salvar()">Salvar e Fechar</button>
 <div class="save-status" id="saveStatus"></div>
-```
 
   </div>
 </div>
@@ -444,8 +470,8 @@ function setFbStatus(s){
 }
 
 var PW="Buca@PCH#2026!",fil="todos",ter="",cI=null,cL=null,isAdmin=false;
-var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao",exp_critico:"⚠ Exp. Crítica (≤7d)",treinamento:"🎓 Em Treinamento"};
-var EF=[],TER=[],MOB=[],TREIN=[],DT="";
+var TI={todos:"Todos os registros",efetivo:"Efetivo",adm:"ADM",op:"Operacional",terceiros:"Terceiros",mob:"Em Mobilizacao",exp_critico:"⚠ Exp. Crítica (≤7d)",treinamento:"🎓 Em Treinamento",demitidos:"✕ Demitidos"};
+var EF=[],TER=[],MOB=[],TREIN=[],DEM=[],DT="";
 
 var _diasFiltro=7;
 var _selecionados={};
@@ -531,6 +557,8 @@ var MOB_DEFAULT=[
 ];
 // Array padrão treinamento: vazio
 var TREIN_DEFAULT=[];
+// Array padrão demitidos: vazio
+var DEM_DEFAULT=[];
 
 // ══════════════════════════════════════════
 //  FIREBASE
@@ -542,30 +570,31 @@ async function carregarDados(){
     if(snap.exists){
       var d=snap.data();
       EF=d.EF||EF_DEFAULT;TER=d.TER||TER_DEFAULT;MOB=d.MOB||MOB_DEFAULT;
-      TREIN=d.TREIN||TREIN_DEFAULT;
+      TREIN=d.TREIN||TREIN_DEFAULT;DEM=d.DEM||DEM_DEFAULT;
       DT=d.DT||dataHoje();
       EF.forEach(function(e){if(e.set===undefined)e.set="";});
       EF.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
       TER.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
       MOB.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
       TREIN.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
+      DEM.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
     }else{
       EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));
-      MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));TREIN=JSON.parse(JSON.stringify(TREIN_DEFAULT));DT=dataHoje();
-      await DOC_REF.set({EF:EF,TER:TER,MOB:MOB,TREIN:TREIN,DT:DT});
+      MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));TREIN=JSON.parse(JSON.stringify(TREIN_DEFAULT));DEM=JSON.parse(JSON.stringify(DEM_DEFAULT));DT=dataHoje();
+      await DOC_REF.set({EF:EF,TER:TER,MOB:MOB,TREIN:TREIN,DEM:DEM,DT:DT});
     }
     setFbStatus("online");
   }catch(err){
     console.error("Firebase erro:",err);
     EF=JSON.parse(JSON.stringify(EF_DEFAULT));TER=JSON.parse(JSON.stringify(TER_DEFAULT));
-    MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));TREIN=JSON.parse(JSON.stringify(TREIN_DEFAULT));DT=dataHoje();
+    MOB=JSON.parse(JSON.stringify(MOB_DEFAULT));TREIN=JSON.parse(JSON.stringify(TREIN_DEFAULT));DEM=JSON.parse(JSON.stringify(DEM_DEFAULT));DT=dataHoje();
     setFbStatus("offline");
     alert("Erro ao conectar ao Firebase.\n\nDetalhes: "+err.message);
   }
 }
 async function persistirDados(){
   setFbStatus("saving");
-  try{await DOC_REF.set({EF:EF,TER:TER,MOB:MOB,TREIN:TREIN,DT:DT});setFbStatus("online");return true;}
+  try{await DOC_REF.set({EF:EF,TER:TER,MOB:MOB,TREIN:TREIN,DEM:DEM,DT:DT});setFbStatus("online");return true;}
   catch(err){console.error("Erro ao salvar:",err);setFbStatus("offline");return false;}
 }
 
@@ -666,6 +695,7 @@ function gL(){
   else if(fil==="adm")r=adm().map(function(x){return Object.assign({},x,{t:"ef"});});
   else if(fil==="op")r=op().map(function(x){return Object.assign({},x,{t:"ef"});});
   else if(fil==="terceiros")r=TER.map(function(x){return Object.assign({},x,{t:"ter"});});
+  else if(fil==="demitidos")r=DEM.map(function(x){return Object.assign({},x,{t:"dem"});});
   else r=MOB.map(function(x){return Object.assign({},x,{t:"mob"});});
   if(ter)r=r.filter(function(x){return(x.n||"").toLowerCase().indexOf(ter)>-1||(x.f||"").toLowerCase().indexOf(ter)>-1||(x.e||"").toLowerCase().indexOf(ter)>-1||(x.set||"").toLowerCase().indexOf(ter)>-1||(x.fp||"").toLowerCase().indexOf(ter)>-1;});
   if(fSetor)r=r.filter(function(x){return(x.set||"")===fSetor;});
@@ -693,6 +723,10 @@ function rCards(){
   if(TREIN.length>0){
     html+="<div class='card c-trein"+(fil==="treinamento"?" active":"")+"' onclick='sF(\"treinamento\")'><div class='num'>"+TREIN.length+"</div><div class='lbl'>TREINAMENTO</div></div>";
   }
+  // Card demitidos
+  if(DEM.length>0){
+    html+="<div class='card c-dem"+(fil==="demitidos"?" active":"")+"' onclick='sF(\"demitidos\")'><div class='num'>"+DEM.length+"</div><div class='lbl'>DEMITIDOS</div></div>";
+  }
   document.getElementById("cards").innerHTML=html;
 }
 
@@ -710,7 +744,8 @@ function rTab(){
   var eR=rows.filter(function(r){return r.t==="ef";}),
       tR=rows.filter(function(r){return r.t==="ter";}),
       mR=rows.filter(function(r){return r.t==="mob";}),
-      trR=rows.filter(function(r){return r.t==="trein";});
+      trR=rows.filter(function(r){return r.t==="trein";}),
+      dR=rows.filter(function(r){return r.t==="dem";});
 
   var h="";
   if(!rows.length){h="<div class='norows'>Nenhum registro.</div>";}
@@ -753,6 +788,25 @@ function rTab(){
         +"<td style='color:#999;font-size:10px'>"+(r.prev||"—")+"</td>"
         +"<td>"+treinStatusHtml(r.status||"EM ANDAMENTO")+"</td>"
         +"<td style='color:#888;font-size:10px'>"+(r.obs||"—")+"</td>"
+        +"</tr>";
+    });
+    h+="</tbody></table></div>";
+  }
+
+  // ── TABELA DEMITIDOS ──
+  if(dR.length){
+    if(mix)h+="<div class='sdiv' style='color:#555'>✕ DEMITIDOS</div>";
+    h+="<div class='tscroll'><table><thead style='background:#444'><tr><th>#</th><th>RE</th><th>Nome</th><th>Função</th><th>Setor</th><th>Admissão</th><th>Demissão</th><th>Motivo</th></tr></thead><tbody>";
+    dR.forEach(function(r,i){
+      h+="<tr style='opacity:.75'>"
+        +"<td style='color:#bbb;font-size:9px'>"+(i+1)+"</td>"
+        +"<td><b style='color:#888'>"+r.re+"</b></td>"
+        +"<td style='white-space:nowrap;text-decoration:line-through;color:#888'>"+r.n+"</td>"
+        +"<td style='color:#999;font-size:10px'>"+r.f+"</td>"
+        +"<td><span class='bdem'>"+(r.set||"-")+"</span></td>"
+        +"<td style='color:#aaa;font-size:10px'>"+(r.a||"-")+"</td>"
+        +"<td style='color:#c0392b;font-size:10px;font-weight:700'>"+(r.dd||"-")+"</td>"
+        +"<td style='color:#999;font-size:10px'>"+(r.mot||"-")+"</td>"
         +"</tr>";
     });
     h+="</tbody></table></div>";
@@ -888,11 +942,12 @@ function chk(){
   }else{document.getElementById("pwerr").style.display="block";document.getElementById("pwi").classList.add("err");}
 }
 function mAba(n){
-  for(var i=0;i<4;i++){
+  for(var i=0;i<5;i++){
     document.getElementById("a"+i).style.display=i===n?"block":"none";
     var tab=document.getElementById("t"+i);
     tab.className="tab"+(i===3?" trein-tab":"")+(i===n?" on":"");
     if(i===3){tab.style.background=i===n?"#b56a00":"#fff3cd";tab.style.color=i===n?"white":"#b56a00";}
+    else if(i===4){tab.style.background=i===n?"#444":"#e0e0e0";tab.style.color=i===n?"white":"#555";}
     else{tab.style.background="";tab.style.color="";}
   }
 }
@@ -927,6 +982,13 @@ function rListas(){
     hTR+="<div class='prow prow-trein'><div class='pinfo'><div class='pname'>"+TREIN[i].n+"</div><div class='pfn'>"+TREIN[i].f+" ➜ "+(TREIN[i].fp||"—")+" | "+stBadge+" "+(TREIN[i].status||"EM ANDAMENTO")+(TREIN[i].ini?" | Início: "+TREIN[i].ini:"")+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='TREIN' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
   }
   document.getElementById("lTREIN").innerHTML=hTR||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Nenhum em treinamento.</div>";
+  // Demitidos
+  var hDEM="";
+  for(var i=0;i<DEM.length;i++){
+    var ic=cL==="DEM"&&cI===i;
+    hDEM+="<div class='prow' style='opacity:.75'><div class='pinfo'><div class='pname' style='text-decoration:line-through;color:#888'>"+DEM[i].re+" - "+DEM[i].n+"</div><div class='pfn'>"+DEM[i].f+(DEM[i].dd?" | Dem.: "+DEM[i].dd:"")+(DEM[i].mot?" | "+DEM[i].mot:"")+"</div></div><button class='bdel"+(ic?" conf":"")+"' data-l='DEM' data-i='"+i+"' onclick='cRem(this)'>"+(ic?"Confirmar":"Remover")+"</button></div>";
+  }
+  document.getElementById("lDEM").innerHTML=hDEM||"<div style='color:#aaa;padding:8px 0;font-size:13px'>Nenhum demitido registrado.</div>";
 }
 
 function cRem(b){
@@ -936,6 +998,7 @@ function cRem(b){
     else if(l==="TER")TER.splice(i,1);
     else if(l==="MOB")MOB.splice(i,1);
     else if(l==="TREIN")TREIN.splice(i,1);
+    else if(l==="DEM")DEM.splice(i,1);
     cI=null;cL=null;rListas();rTudo();
   }else{cI=i;cL=l;rListas();setTimeout(function(){cI=null;cL=null;rListas();},3000);}
 }
@@ -977,7 +1040,21 @@ function aTREIN(){
   rListas();rTudo();mOk("okTREIN");
 }
 
-async function salvar(){
+// NOVO: Adicionar demitido
+function aDEM(){
+  var re=document.getElementById("dre").value.trim(),
+      n=document.getElementById("dno").value.trim().toUpperCase(),
+      f=document.getElementById("dfn").value.trim().toUpperCase(),
+      set=document.getElementById("dset").value.trim().toUpperCase(),
+      a=document.getElementById("dad").value.trim(),
+      dd=document.getElementById("ddd").value.trim(),
+      mot=document.getElementById("dmot").value.trim();
+  if(!n||!f||!dd){alert("Preencha Nome, Função e Data de Demissão.");return;}
+  DEM.push({re:re,n:n,f:f,set:set,a:a,dd:dd,mot:mot});
+  DEM.sort(function(a,b){return a.n.localeCompare(b.n,"pt-BR");});
+  ["dre","dno","dfn","dset","dad","ddd","dmot"].forEach(function(id){document.getElementById(id).value="";});
+  rListas();rTudo();mOk("okDEM");
+}
   var btn=document.querySelector(".bsave"),statusEl=document.getElementById("saveStatus");
   btn.disabled=true;btn.textContent="Salvando...";statusEl.textContent="";statusEl.className="save-status";
   DT=dataHoje();
@@ -1046,6 +1123,14 @@ async function exportarExcel(){
       var stFg=r.status==="CONCLUÍDO"?"1A6B35":(r.status==="EM ANDAMENTO"?"856404":"8B0000");
       [[i+1,false,"BBBBBB",bg,"center"],[r.n,true,"111111",bg,"left"],[r.f,false,"555555",bg,"left"],[r.fp||"—",true,"B56A00","FFF3CD","center"],[r.ini||"—",false,"888888",bg,"center"],[r.prev||"—",false,"888888",bg,"center"],[r.status||"EM ANDAMENTO",true,stFg,stBg,"center"],[r.obs||"—",false,"888888",bg,"left"]].forEach(function(d,ci){var c=row.getCell(ci+1);c.value=d[0];c.font=xlFont(d[1],d[2]);c.fill=xlFill(d[3]);c.alignment=xlAlign(d[4]);c.border=xlBorder();});
     });
+  }
+  // Aba Demitidos
+  if(DEM.length>0){
+    var ws5=wb.addWorksheet("Demitidos",{views:[{showGridLines:false,state:"frozen",xSplit:0,ySplit:2}]});
+    ws5.columns=[{width:6},{width:8},{width:34},{width:28},{width:22},{width:12},{width:12},{width:26}];
+    ws5.mergeCells("A1:H1");var t5=ws5.getCell("A1");t5.value="BUCAGRANS CONSTRUTORA – PCH LEBON REGIS | Demitidos";t5.font=xlFont(true,"FFFFFF",13);t5.fill=xlFill("444444");t5.alignment=xlAlign("center");ws5.getRow(1).height=28;
+    var h5Row=ws5.getRow(2);["#","RE","NOME","FUNÇÃO","SETOR","ADMISSÃO","DEMISSÃO","MOTIVO"].forEach(function(h,i){var c=h5Row.getCell(i+1);c.value=h;c.font=xlFont(true,"FFFFFF",9);c.fill=xlFill("444444");c.alignment=xlAlign("center");});h5Row.height=20;
+    DEM.forEach(function(r,i){var row=ws5.getRow(3+i);row.height=18;var bg=i%2===0?"F5F5F5":"FFFFFF";[[i+1,false,"BBBBBB",bg,"center"],[r.re||"",false,"888888",bg,"center"],[r.n,false,"888888",bg,"left"],[r.f||"",false,"999999",bg,"left"],[r.set||"",false,"999999",bg,"center"],[r.a||"-",false,"AAAAAA",bg,"center"],[r.dd||"-",true,"8B0000","FDECEA","center"],[r.mot||"-",false,"999999",bg,"left"]].forEach(function(d,ci){var c=row.getCell(ci+1);c.value=d[0];c.font=xlFont(d[1],d[2]);c.fill=xlFill(d[3]);c.alignment=xlAlign(d[4]);c.border=xlBorder();});});
   }
   var buf=await wb.xlsx.writeBuffer();var blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
   var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="efetivo-pch-lebon-regis-"+dataHoje().replace(/\//g,"-")+".xlsx";
